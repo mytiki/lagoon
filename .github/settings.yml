@@ -1,0 +1,63 @@
+# Reference: https://github.com/repository-settings/app
+
+_extends: .github
+
+repository:
+#  # The name of the repository. Changing this will rename the repository
+#  name: repo-name
+#
+#  # A short description of the repository that will show up on GitHub
+#  description: description of repo
+#
+#  # A URL with more information about the repository
+#  homepage: https://example.github.io/
+#
+#  # A comma-separated list of topics to set on the repository
+#  topics: github, probot
+#
+#  # Either `true` to make the repository private, or `false` to make it public.
+#  private: false
+
+  has_issues: true
+  has_projects: true
+  has_discussions: false
+
+#teams:
+#  - name: core
+#    permission: admin
+
+#collaborators:
+#  - username: bkeepers
+#    permission: push
+
+# The permission to grant:
+# * `pull` - can pull, but not push to or administer this repository.
+# * `push` - can pull and push, but not administer this repository.
+# * `admin` - can pull, push and administer this repository.
+# * `maintain` - Recommended for project managers who need to manage the repository without access to sensitive or destructive actions.
+# * `triage` - Recommended for contributors who need to proactively manage issues and pull requests without write access.
+
+#environments:
+#  - name: production
+#    reviewers:
+#      - id: 1
+#        type: 'Team'
+
+#branches:
+#  - name: main
+#    protection:
+#      required_status_checks:
+#        strict: true
+#        # Required. The list of status checks to require in order to merge into this branch
+#        contexts: []
+
+#labels:
+#  - name: breaking
+#    color: D73A4A
+#    description: Introduces a breaking change.
+
+#milestones:
+#  - title: milestone-title
+#    description: milestone-description
+#    # The state of the milestone. Either `open` or `closed`
+#    state: open
