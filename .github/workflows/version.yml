@@ -1,0 +1,55 @@
+name: Version
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  semver:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Checkout PR
+        id: getpr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr checkout ${{ github.event.pull_request.number }}
+          export PR_BRANCH=$(git branch --show-current)
+          echo "branch=$PR_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Install xmlstarlet
+        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+
+      - name: Get Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
+          branch: ${{ steps.getpr.outputs.branch }}
+
+      - name: Update Version
+        run: xmlstarlet ed -L -u "_:project/_:version" -v "${{ steps.semver.outputs.nextStrict }}" pom.xml
+
+      - name: Commit Changes
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          git config --global user.email "admin@mytiki.com"
+          git config --global user.name "mytiki bot"
+          git add pom.xml
+          git commit -m 'version bump'
+          git push
+
+    outputs:
+      version: ${{ steps.semver.outputs.nextStrict }}
