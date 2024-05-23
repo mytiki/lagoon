@@ -4,3 +4,8 @@
 
 # Fuckin' Macs
 .DS_Store
+
+# Build Files
+out
+target
+.aws-sam

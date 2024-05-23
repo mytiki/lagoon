@@ -1,0 +1,13 @@
+PipelineAthenaWorkgroup:
+  Type: AWS::Athena::WorkGroup
+  Properties:
+    Name: !Ref AWS::StackName
+    Description: !Sub Workgroup for the ${AWS::StackName} pipelines
+    State: ENABLED
+    RecursiveDeleteOption: true
+    WorkGroupConfiguration:
+      ResultConfiguration:
+        OutputLocation: !Sub s3://${StorageBucket}/queries/
+      EnforceWorkGroupConfiguration: true
+      EngineVersion:
+        SelectedEngineVersion: Athena engine version 3

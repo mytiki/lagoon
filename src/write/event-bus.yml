@@ -1,0 +1,4 @@
+WriteEventBus:
+  Type: AWS::Events::EventBus
+  Properties:
+    Name: !Ref AWS::StackName

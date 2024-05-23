@@ -1,0 +1,8 @@
+PipelineAthenaCatalog:
+  Type: AWS::Athena::DataCatalog
+  Properties:
+      Name: !Ref AWS::StackName
+      Description: Metadata catalog for customer lagoons
+      Type: GLUE
+      Parameters:
+        catalog-id: !Ref AWS::AccountId
