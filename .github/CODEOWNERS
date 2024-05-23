@@ -3,4 +3,4 @@
 # @org/team will be requested for review when someone opens
 # a pull request. Order is important; the last matching
 # pattern takes the most precedence.
-*                    @org/backend
+*                    @mytiki/backend
