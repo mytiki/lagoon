@@ -1,0 +1,36 @@
+{
+  "Records": [
+    {
+      "messageId": "2c266685-c019-42a0-a618-38837935d43f",
+      "body": "dummy",
+      "attributes": {
+        "MessageGroupId": "taLJYlBhI2bqJy/6xtl0Sq9LRarNlqp8/Lkx7jtVglk="
+      },
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-2:123456789012:TestLambda",
+      "awsRegion": "us-east-2"
+    },
+    {
+      "messageId": "61b9adbc-e974-457b-9313-88d8551e776b",
+      "receiptHandle": "7kam5bfzbDsjtcjElvhSbxeLJbeey3A==",
+      "body": "dummy",
+      "attributes": {
+        "MessageGroupId": "taLJYlBhI2bqJy/6xtl0Sq9LRarNlqp8/Lkx7jtVglk="
+      },
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-2:123456789012:TestLambda",
+      "awsRegion": "us-east-2"
+    },
+    {
+      "messageId": "0f59aac5-79b3-494f-849b-95f5209aa3ab",
+      "receiptHandle": "7kam5bfzbDsjtcjElvhSbxeLJbeey3A==",
+      "body": "dummy",
+      "attributes": {
+        "MessageGroupId": "taLJYlBhI2bqJy/6xtl0Sq9LRarNlqp8/Lkx7jtVglk="
+      },
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-2:123456789012:TestLambda",
+      "awsRegion": "us-east-2"
+    }
+  ]
+}
