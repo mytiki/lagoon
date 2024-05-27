@@ -24,7 +24,7 @@ jobs:
           distribution: 'corretto'
 
       - name: Maven Package
-        run: cd write/function && mvn clean package
+        run: cd src/write/function && mvn clean package
 
       - name: Upload Results
         uses: actions/upload-artifact@v4
