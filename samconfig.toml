@@ -1,24 +1,15 @@
-# More information about the configuration file can be found here:
-# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-config.html
 version = 0.1
 
 [default.global.parameters]
-stack_name = "lagoon"
-#s3_bucket = "mytiki-artifacts-sar"
-s3_bucket = "mytiki-sam-deploy-sandbox-mike-us-east-2"
-s3_prefix = "lagoon"
+stack_name = "sar-template"
+s3_bucket = "mytiki-artifacts-sar"
+s3_prefix = "sar-template"
 region = "us-east-2"
-template = "out/template.yml"
-profile = "sandbox"
 
 [default.deploy.parameters]
 confirm_changeset = false
 capabilities = [
-    "CAPABILITY_IAM",
-    "CAPABILITY_AUTO_EXPAND",
-    "CAPABILITY_NAMED_IAM"
+    "CAPABILITY_AUTO_EXPAND"
 ]
-
-parameter_overrides = [
-    "AccessRole=arn:aws:iam::992382514660:root",
-]
+image_repositories = []
+parameter_overrides = []

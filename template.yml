@@ -2,18 +2,45 @@
 
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
-Description: Create consumption-ready data. Aggregate raw application data in an Iceberg data lake, transform with dbt, and enforce compliance requirements. Use with mytiki.com to monetize your new data assets.
 
 Parameters:
   AccessRole:
     Type: String
     Description: The ARN of the mytiki.com role that will access the lagoon
 
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mytiki-lagoon
+    Description: Create consumption-ready data. Aggregate raw application data in an Iceberg data lake, transform with dbt, and enforce compliance requirements. Use with mytiki.com to monetize your new data assets.
+    Author: mytiki
+    SpdxLicenseId: AGPL-3.0-or-later
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    HomePageUrl: https://mytiki.com
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/mytiki/lagoon
+    Labels:
+      - lagoon
+      - iceberg
+      - dbt
+      - mytiki.com
+      - data
+      - productization
+      - compliance
+      - lake
+      - monetization
+      - tiki
+
 Resources:
 
-#Outputs:
-#  LakeFormation:
-#    Description: The managed Lake Formation instance. Use to extended LF IaC.
-#    Value: !Ref LakeFormation
-#    Export:
-#        Name: !Sub ${AWS::StackName}-${AWS::Region}-lake-formation
+Outputs:
+  AccessPoint:
+    Description: The S3 access point for mytiki.com
+    Value: !Ref StorageAccessPoint
+    Export:
+        Name: !Sub ${AWS::StackName}-${AWS::Region}-access-point
+  AccessRole:
+    Description: The mytiki.com access role
+    Value: !Ref StorageAccessRole
+    Export:
+        Name: !Sub ${AWS::StackName}-${AWS::Region}-access-role
