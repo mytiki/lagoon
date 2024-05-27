@@ -37,8 +37,8 @@ jobs:
           token: ${{ github.token }}
           branch: ${{ steps.getpr.outputs.branch }}
 
-      - name: Update Version
-        run: xmlstarlet ed -L -u "_:project/_:version" -v "${{ steps.semver.outputs.nextStrict }}" pom.xml
+      - name: Update Versions
+        run: xmlstarlet ed -L -u "_:project/_:version" -v "${{ steps.semver.outputs.nextStrict }}" src/write/function/pom.xml
 
       - name: Commit Changes
         continue-on-error: true
