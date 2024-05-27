@@ -36,6 +36,9 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
+      - name: Build with Maven
+        run: mvn -B package --file src/write/function/pom.xml
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
