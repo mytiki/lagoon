@@ -4,7 +4,7 @@
  */
 
 package com.mytiki.lagoon.write;
-import com.mytiki.lagoon.write.utils.Iceberg;
+import com.mytiki.lagoon.write.utils.IcebergFacade;
 import com.mytiki.utils.lambda.Env;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,15 +24,14 @@ public class IcebergTest {
     @Test
     public void Test_Initialize_Success() {
         Map<String, String> config = new HashMap<>(){{
-            put(Iceberg.CATALOG_NAME, CATALOG_NAME);
-            put(Iceberg.CATALOG_IMPL, CATALOG_IMPL);
-            put(Iceberg.WAREHOUSE, WAREHOUSE);
-            put(Iceberg.IO_IMPL, IO_IMPL);
-            put(Iceberg.GLUE_SKIP_ARCHIVE, GLUE_SKIP_ARCHIVE);
-            put(Iceberg.DATABASE_NAME, DATABASE_NAME);
+            put(IcebergFacade.CATALOG_NAME, CATALOG_NAME);
+            put(IcebergFacade.CATALOG_IMPL, CATALOG_IMPL);
+            put(IcebergFacade.WAREHOUSE, WAREHOUSE);
+            put(IcebergFacade.IO_IMPL, IO_IMPL);
+            put(IcebergFacade.GLUE_SKIP_ARCHIVE, GLUE_SKIP_ARCHIVE);
         }};
 
-        Iceberg iceberg = Mockito.spy(new Iceberg(config));
+        IcebergFacade iceberg = Mockito.spy(new IcebergFacade(config));
         Mockito.doNothing().when(iceberg).initialize(Mockito.any(), Mockito.any());
 
         iceberg = iceberg.initialize();
@@ -41,12 +40,11 @@ public class IcebergTest {
         Assertions.assertEquals(IO_IMPL, iceberg.getIoImpl());
         Assertions.assertEquals(CATALOG_NAME, iceberg.getCatalogName());
         Assertions.assertEquals(GLUE_SKIP_ARCHIVE, iceberg.getGlueSkipArchive());
-        Assertions.assertEquals(DATABASE_NAME, iceberg.getDatabase().toString());
     }
 
     @Test
     public void Test_Load_No_Env_Success() {
-        Iceberg iceberg = Mockito.spy(Iceberg.load());
+        IcebergFacade iceberg = Mockito.spy(IcebergFacade.load());
         Mockito.doNothing().when(iceberg).initialize(Mockito.any(), Mockito.any());
 
         iceberg = iceberg.initialize();
@@ -55,17 +53,16 @@ public class IcebergTest {
         Assertions.assertEquals(IO_IMPL, iceberg.getIoImpl());
         Assertions.assertEquals(CATALOG_NAME, iceberg.getCatalogName());
         Assertions.assertEquals(GLUE_SKIP_ARCHIVE, iceberg.getGlueSkipArchive());
-        Assertions.assertEquals(DATABASE_NAME, iceberg.getDatabase().toString());
     }
 
     @Test
     public void Test_Load_Env_Success() {
         String override = "override";
         Env env = Mockito.spy(new Env());
-        String envVar = env.name(Iceberg.ENV_PREFIX + Iceberg.WAREHOUSE);
+        String envVar = env.name(IcebergFacade.ENV_PREFIX + IcebergFacade.WAREHOUSE);
         Mockito.doReturn(override).when(env).get(envVar);
 
-        Iceberg iceberg = Mockito.spy(Iceberg.load(env));
+        IcebergFacade iceberg = Mockito.spy(IcebergFacade.load(env));
         Mockito.doNothing().when(iceberg).initialize(Mockito.any(), Mockito.any());
 
         iceberg = iceberg.initialize();
@@ -74,7 +71,5 @@ public class IcebergTest {
         Assertions.assertEquals(IO_IMPL, iceberg.getIoImpl());
         Assertions.assertEquals(CATALOG_NAME, iceberg.getCatalogName());
         Assertions.assertEquals(GLUE_SKIP_ARCHIVE, iceberg.getGlueSkipArchive());
-        Assertions.assertEquals(DATABASE_NAME, iceberg.getDatabase().toString());
-
     }
 }

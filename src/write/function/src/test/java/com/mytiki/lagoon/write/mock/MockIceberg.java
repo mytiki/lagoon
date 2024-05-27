@@ -5,12 +5,11 @@
 
 package com.mytiki.lagoon.write.mock;
 
-import com.mytiki.lagoon.write.utils.Iceberg;
+import com.mytiki.lagoon.write.utils.IcebergFacade;
 import org.apache.iceberg.AppendFiles;
 import org.apache.iceberg.PartitionSpec;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.Transaction;
-import org.apache.iceberg.catalog.Namespace;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -19,15 +18,15 @@ import java.util.List;
 import java.util.Properties;
 
 public class MockIceberg {
-    private final Iceberg iceberg;
+    private final IcebergFacade iceberg;
     private final String name;
 
     public MockIceberg() {
-        try (InputStream input = Iceberg.class.getClassLoader().getResourceAsStream("iceberg.properties")) {
+        try (InputStream input = IcebergFacade.class.getClassLoader().getResourceAsStream("iceberg.properties")) {
             Properties prop = new Properties();
             prop.load(input);
             name = prop.getProperty("database-name");
-            iceberg = Mockito.mock(Iceberg.class);
+            iceberg = Mockito.mock(IcebergFacade.class);
 
             Table table = Mockito.mock(Table.class);
             Transaction transaction = Mockito.mock(Transaction.class);
@@ -43,13 +42,12 @@ public class MockIceberg {
             Mockito.lenient().doNothing().when(transaction).commitTransaction();
             Mockito.lenient().doNothing().when(appendFiles).commit();
             Mockito.lenient().doReturn(appendFiles).when(appendFiles).appendFile(Mockito.any());
-            Mockito.lenient().doReturn(Namespace.of(name)).when(iceberg).getDatabase();
         }catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    public Iceberg iceberg() {
+    public IcebergFacade iceberg() {
         return iceberg;
     }
 
