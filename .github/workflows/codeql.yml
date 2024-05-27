@@ -36,15 +36,15 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Build with Maven
-        run: mvn -B package --file src/write/function/pom.xml
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
 
+      - name: Build with Maven
+        run: mvn -B package --file src/write/function/pom.xml
+               
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
