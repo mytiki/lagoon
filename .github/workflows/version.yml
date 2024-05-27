@@ -47,7 +47,7 @@ jobs:
         run: |
           git config --global user.email "admin@mytiki.com"
           git config --global user.name "mytiki bot"
-          git add pom.xml
+          git add src/write/function/pom.xml
           git commit -m 'version bump'
           git push
 
