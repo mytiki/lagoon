@@ -1,6 +1,7 @@
 name: "CodeQL"
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "main" ]
   pull_request:
@@ -44,7 +45,7 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file src/write/function/pom.xml
-               
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
