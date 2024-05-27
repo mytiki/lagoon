@@ -49,6 +49,7 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GH Action"
           git add src/write/function/pom.xml
+          git add template.yml
           git commit -m 'version bump'
           git push
 
