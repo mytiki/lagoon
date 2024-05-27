@@ -13,6 +13,7 @@ import org.apache.parquet.hadoop.ParquetFileReader;
 import org.apache.parquet.hadoop.util.HadoopInputFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +48,7 @@ public class WriteService {
             if(!iceberg.tableExists(tableId)) {
                 logger.debug("creating table: {}", tableId);
                 Schema inferred = storage.readSchema(reader);
-                List<Types.NestedField> fields = inferred.columns();
+                List<Types.NestedField> fields = new ArrayList<>(inferred.columns());
                 fields.add(Types.NestedField.optional(
                         fields.size() + 1, IcebergFacade.ETL_LOADED_AT, Types.TimestampType.withoutZone()));
                 Schema schema = new Schema(fields);

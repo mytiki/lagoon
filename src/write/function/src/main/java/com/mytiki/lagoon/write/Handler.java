@@ -25,15 +25,21 @@ import java.util.List;
 
 public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
     protected static final Logger logger = Initialize.logger(Handler.class);
-    private final IcebergFacade iceberg = IcebergFacade.load();
-    private final StorageFacade storage = StorageFacade.dflt();
     private final PojoSerializer<S3EventNotification> serializer =
             LambdaEventSerializers.serializerFor(S3EventNotification.class, ClassLoader.getSystemClassLoader());
     private final List<SQSBatchResponse.BatchItemFailure> failures = new ArrayList<>();
+    private final IcebergFacade iceberg;
+    private final StorageFacade storage;
+
+    public Handler() { this(IcebergFacade.load(), StorageFacade.dflt()); }
+
+    public Handler(IcebergFacade iceberg, StorageFacade storage) {
+        this.iceberg = iceberg.initialize();
+        this.storage = storage;
+    }
 
     public SQSBatchResponse handleRequest(final SQSEvent event, final Context context) {
         try {
-            iceberg.initialize();
             WriteService writeService = new WriteService(iceberg, storage);
             event.getRecords().forEach(ev -> {
                 try {
