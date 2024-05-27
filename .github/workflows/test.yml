@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  Test:
+  WriteFunction:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,11 +24,11 @@ jobs:
           distribution: 'corretto'
 
       - name: Maven Package
-        run: mvn clean package
+        run: cd write/function && mvn clean package
 
       - name: Upload Results
         uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: test-results
-          path: target/surefire-reports/**/*.xml
+          path: write/function/target/surefire-reports/**/*.xml
