@@ -7,10 +7,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mytiki.lagoon</groupId>
   <artifactId>write</artifactId>
-  <version>0.2.1</version>
+  <version>0.1.0</version>
   <packaging>jar</packaging>
   <name>Lagoon: Iceberg Writer</name>
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
@@ -20,14 +19,12 @@
     <parquet.version>1.14.0</parquet.version>
     <hadoop.version>3.4.0</hadoop.version>
   </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.mytiki</groupId>
       <artifactId>utils-lambda-java</artifactId>
       <version>1.0.3</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.iceberg</groupId>
       <artifactId>iceberg-core</artifactId>
@@ -48,7 +45,6 @@
       <artifactId>iceberg-parquet</artifactId>
       <version>${iceberg.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-lambda-java-core</artifactId>
@@ -64,7 +60,6 @@
       <artifactId>aws-lambda-java-events</artifactId>
       <version>3.11.5</version>
     </dependency>
-
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>glue</artifactId>
@@ -80,7 +75,6 @@
       <artifactId>s3</artifactId>
       <version>${awssdk.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.parquet</groupId>
       <artifactId>parquet-avro</artifactId>
@@ -91,7 +85,6 @@
       <artifactId>parquet-hadoop</artifactId>
       <version>${parquet.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-common</artifactId>
@@ -131,13 +124,11 @@
       <artifactId>hadoop-aws</artifactId>
       <version>${hadoop.version}</version>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
       <version>2.17.1</version>
     </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
@@ -157,7 +148,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
