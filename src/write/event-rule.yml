@@ -3,6 +3,7 @@ WriteEventRule:
   Properties:
     Name: !Sub ${AWS::StackName}-write
     State: ENABLED
+    EventBusName: !Ref WriteEventBus
     Targets:
       - Arn: !GetAtt WriteQueue.Arn
         Id: !GetAtt WriteQueue.QueueName
@@ -14,7 +15,7 @@ WriteEventRule:
       detail:
         bucket:
           name:
-            - Ref StorageBucket
+            - !Ref StorageBucket
         object:
           key:
             - wildcard: load/*
