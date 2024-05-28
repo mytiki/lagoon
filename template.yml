@@ -14,8 +14,8 @@ Metadata:
     Description: Create consumption-ready data. Aggregate raw application data in an Iceberg data lake, transform with dbt, and enforce compliance requirements. Use with mytiki.com to monetize your new data assets.
     Author: mytiki
     SpdxLicenseId: AGPL-3.0-or-later
-    LicenseUrl: LICENSE
-    ReadmeUrl: README.md
+    LicenseUrl: ../LICENSE
+    ReadmeUrl: ../README.md
     HomePageUrl: https://mytiki.com
     SemanticVersion: 0.1.0
     SourceCodeUrl: https://github.com/mytiki/lagoon
