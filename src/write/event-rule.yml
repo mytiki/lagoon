@@ -7,6 +7,8 @@ WriteEventRule:
     Targets:
       - Arn: !GetAtt WriteQueue.Arn
         Id: !GetAtt WriteQueue.QueueName
+        SqsParameters:
+          MessageGroupId: !Ref AWS::StackName
     EventPattern:
       source:
         - aws.s3
