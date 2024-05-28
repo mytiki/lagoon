@@ -61,3 +61,34 @@ jobs:
           --statements Principals=*,PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
         env:
           AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+
+  Release:
+    needs: Publish
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
+      - name: Create Tag
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git tag -a ${{ steps.semver.outputs.nextStrict }} -m "Release ${{ steps.semver.outputs.nextStrict }}"
+          git push origin ${{ steps.semver.outputs.nextStrict }}
+
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ steps.semver.outputs.nextStrict }} \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${{ steps.semver.outputs.nextStrict }}" \
+              --generate-notes
