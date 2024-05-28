@@ -34,13 +34,13 @@ Metadata:
 Resources:
 
 Outputs:
-  AccessPoint:
-    Description: The S3 access point for mytiki.com
-    Value: !Ref StorageAccessPoint
-    Export:
-        Name: !Sub ${AWS::StackName}-${AWS::Region}-access-point
   AccessRole:
     Description: The mytiki.com access role
     Value: !Ref StorageAccessRole
     Export:
         Name: !Sub ${AWS::StackName}-${AWS::Region}-access-role
+  LagoonBucket:
+    Description: The s3 bucket hosting the lagoon
+    Value: !Ref StorageBucket
+    Export:
+        Name: !Sub ${AWS::StackName}-${AWS::Region}-bucket
