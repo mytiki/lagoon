@@ -32,10 +32,14 @@ jobs:
           mask-aws-account-id: true
           role-chaining: true
 
+      - name: Build Application
+        run: |
+          make compile
+          make build
+
       - name: Publish Application
         id: publish
         run: |
-          sam build
           sam package --output-template-file .aws-sam/packaged.yaml
           result=$(sam publish --template .aws-sam/packaged.yaml)
           echo "$result"
