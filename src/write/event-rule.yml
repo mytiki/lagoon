@@ -1,0 +1,22 @@
+WriteEventRule:
+  Type: AWS::Events::Rule
+  Properties:
+    Name: !Sub ${AWS::StackName}-write
+    State: ENABLED
+    Targets:
+      - Arn: !GetAtt WriteQueue.Arn
+        Id: !GetAtt WriteQueue.QueueName
+        SqsParameters:
+          MessageGroupId: !Ref AWS::StackName
+    EventPattern:
+      source:
+        - aws.s3
+      detail-type:
+        - Object Created
+      detail:
+        bucket:
+          name:
+            - !Ref StorageBucket
+        object:
+          key:
+            - wildcard: load/*
