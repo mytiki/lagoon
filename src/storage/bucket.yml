@@ -7,3 +7,6 @@ StorageBucket:
         - BucketKeyEnabled: true
           ServerSideEncryptionByDefault:
             SSEAlgorithm: AES256
+    NotificationConfiguration:
+      EventBridgeConfiguration:
+        EventBridgeEnabled: true
