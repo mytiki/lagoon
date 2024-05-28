@@ -8,5 +8,13 @@ StorageBucket:
           ServerSideEncryptionByDefault:
             SSEAlgorithm: AES256
     NotificationConfiguration:
-      EventBridgeConfiguration:
-        EventBridgeEnabled: true
+      QueueConfigurations:
+        - Event: s3:ObjectCreated:*
+          Queue: !GetAtt WriteQueue.Arn
+          Filter:
+            S3Key:
+              Rules:
+                - Name: prefix
+                  Value: load/
+                - Name: suffix
+                  Value: .parquet
