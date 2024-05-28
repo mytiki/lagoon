@@ -20,7 +20,7 @@ StorageAccessRole:
                 - s3:GetObject
                 - s3:GetObjectVersion
               Resource:
-                - !Sub s3://${StorageBucket}/prd/*
+                - !Sub arn:aws:s3:::${StorageBucket}/prd/*
             - Effect: Allow
               Action:
                 - s3:GetObject
@@ -31,9 +31,9 @@ StorageAccessRole:
                 - s3:ListMultipartUploadParts
                 - s3:AbortMultipartUpload
               Resource:
-                - !Sub s3://${StorageBucket}/trail/*
-                - !Sub s3://${StorageBucket}/assets/*
-                - !Sub s3://${StorageBucket}/load/mytiki/*
+                - !Sub arn:aws:s3:::${StorageBucket}/trail/*
+                - !Sub arn:aws:s3:::${StorageBucket}/assets/*
+                - !Sub arn:aws:s3:::${StorageBucket}/load/mytiki/*
             - Effect: Allow
               Action: s3:ListBucket
-              Resource: !Sub s3://${StorageBucket}
+              Resource: !Sub arn:aws:s3:::${StorageBucket}
