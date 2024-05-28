@@ -1,0 +1,58 @@
+name: "Publish"
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: "us-east-2"
+  VERSION: 0.0.2
+
+jobs:
+  Publish:
+    runs-on: ubuntu-latest
+    environment: Production
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assume OIDC Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_IDENTITY_ID }}:role/GitHubOidc
+          aws-region: ${{ env.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Assume Artifacts Role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubSarPublish
+          aws-region: ${{ env.AWS_REGION }}
+          mask-aws-account-id: true
+          role-chaining: true
+
+      - name: Set Version
+        run: |
+          sed -i 's/${Version}/${{ env.VERSION }}/' template.yml
+
+      - name: Publish Application
+        id: publish
+        run: |
+          sam build
+          sam package --output-template-file .aws-sam/packaged.yaml
+          result=$(sam publish --template .aws-sam/packaged.yaml)
+          echo "$result"
+          arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+' | head -n 1)
+          arn_clean=$(echo "$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]')
+          echo "application_arn=$arn_clean" >> "$GITHUB_OUTPUT"
+
+      - name: Share Application
+        run: |
+          echo "Application ARN: ${{ steps.publish.outputs.application_arn }}"
+          aws serverlessrepo put-application-policy \
+          --application-id ${{ steps.publish.outputs.application_arn }} \
+          --statements Principals=*,PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
+        env:
+          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}

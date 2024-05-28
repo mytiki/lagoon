@@ -1,0 +1,20 @@
+StorageAccessRole:
+  Type: AWS::IAM::Role
+  DependsOn: StorageBucket
+  Properties:
+    RoleName: !Sub ${AWS::StackName}-mytiki
+    AssumeRolePolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+        - Effect: Allow
+          Principal:
+            AWS: !Ref AccessRole
+          Action: sts:AssumeRole
+    Policies:
+      - PolicyName: AccessPoint
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: s3:GetAccessPoint
+              Resource: !Sub arn:aws:s3:${AWS::Region}:${AWS::AccountId}:accesspoint/mytiki

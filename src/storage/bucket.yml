@@ -1,0 +1,9 @@
+StorageBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: !Sub mytiki-${AWS::StackName}-${AWS::AccountId}-${AWS::Region}
+    BucketEncryption:
+      ServerSideEncryptionConfiguration:
+        - BucketKeyEnabled: true
+          ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
