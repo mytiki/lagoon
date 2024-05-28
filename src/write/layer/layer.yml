@@ -1,0 +1,11 @@
+WriteLayer:
+  Type: AWS::Serverless::LayerVersion
+  Properties:
+    LayerName: write-layer
+    Description: Dependencies for the write function
+    ContentUri: ../src/write/layer/target/lambda/layer-content.zip
+    CompatibleRuntimes:
+      - java21
+    CompatibleArchitectures:
+      - x86_64
+    LicenseInfo: 'AGPL-3.0-or-later'

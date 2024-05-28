@@ -1,7 +1,10 @@
 package com.mytiki.lagoon.write.write;
 
+import com.amazonaws.services.lambda.runtime.events.ScheduledEvent;
 import com.amazonaws.services.lambda.runtime.events.models.s3.S3EventNotification;
 import com.mytiki.utils.lambda.ApiExceptionBuilder;
+
+import java.util.Map;
 
 public class WriteReq {
     private final String bucket;
@@ -11,9 +14,11 @@ public class WriteReq {
     private String file;
     private String type;
 
-    public WriteReq(S3EventNotification.S3EventNotificationRecord record) {
-        this.key = record.getS3().getObject().getKey();
-        this.bucket = record.getS3().getBucket().getName();
+    public WriteReq(ScheduledEvent event) {
+        Map<String, Object> s3Object = (Map<String, Object>) event.getDetail().get("object");
+        Map<String, Object> s3Bucket = (Map<String, Object>) event.getDetail().get("bucket");
+        this.key = (String) s3Object.get("key");
+        this.bucket = (String) s3Bucket.get("name");
         parseKey(this.key);
     }
 
