@@ -3,7 +3,7 @@ version = 0.1
 [default.global.parameters]
 stack_name = "sar-template"
 s3_bucket = "mytiki-artifacts-sar"
-s3_prefix = "sar-template"
+s3_prefix = "lagoon"
 region = "us-east-2"
 template_file = "out/template.yml"
 

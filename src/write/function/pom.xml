@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mytiki.lagoon</groupId>
   <artifactId>write</artifactId>
-  <version>0.1.8</version>
+  <version>0.1.9</version>
   <packaging>jar</packaging>
   <name>Lagoon: Iceberg Writer</name>
   <properties>
@@ -172,9 +172,7 @@
               <artifact>*:*</artifact>
               <excludes>
                 <exclude>module-info.class</exclude>
-                <exclude>META-INF/*</exclude>
-                <exclude>META-INF/versions/**</exclude>
-                <exclude>META-INF/services/**</exclude>
+                <exclude>META-INF/**</exclude>
                 <exclude>**/about.html</exclude>
                 <exclude>LICENSE</exclude>
                 <exclude>NOTICE</exclude>
