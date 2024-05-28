@@ -6,7 +6,6 @@ on:
 
 env:
   AWS_REGION: "us-east-2"
-  VERSION: 0.0.2
 
 jobs:
   Publish:
@@ -32,10 +31,6 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           mask-aws-account-id: true
           role-chaining: true
-
-      - name: Set Version
-        run: |
-          sed -i 's/${Version}/${{ env.VERSION }}/' template.yml
 
       - name: Publish Application
         id: publish
