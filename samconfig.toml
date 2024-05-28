@@ -5,7 +5,7 @@ stack_name = "sar-template"
 s3_bucket = "mytiki-artifacts-sar"
 s3_prefix = "sar-template"
 region = "us-east-2"
-template_file = "out/template.yaml"
+template_file = "out/template.yml"
 
 [default.deploy.parameters]
 confirm_changeset = false
