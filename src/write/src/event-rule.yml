@@ -1,13 +1,13 @@
 WriteEventRule:
   Type: AWS::Events::Rule
   Properties:
-    Name: !Sub ${AWS::StackName}-write
+    Name: mytiki-lagoon-write
     State: ENABLED
     Targets:
       - Arn: !GetAtt WriteQueue.Arn
         Id: !GetAtt WriteQueue.QueueName
         SqsParameters:
-          MessageGroupId: !Ref AWS::StackName
+          MessageGroupId: lagoon
     EventPattern:
       source:
         - aws.s3

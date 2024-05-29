@@ -21,7 +21,7 @@ Metadata:
     LicenseUrl: ../../../../LICENSE
     ReadmeUrl: ../../../../README.md
     HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.2.1
+    SemanticVersion: 0.2.2
     SourceCodeUrl: https://github.com/mytiki/lagoon
     Labels:
       - lagoon
@@ -34,7 +34,7 @@ Resources:
       SkipBuild: True
     Properties:
       Description: Writes raw data files to Iceberg compatible tables
-      FunctionName: !Sub ${AWS::StackName}-write
+      FunctionName: mytiki-lagoon-write
       CodeUri: s3://mytiki-artifacts-sar/lagoon/packages/write-function.zip
       Handler: com.mytiki.lagoon.write.Handler::handleRequest
       Runtime: java21
@@ -63,7 +63,7 @@ Resources:
             BatchSize: 10
             Queue:
               Fn::ImportValue:
-                !Sub ${AWS::StackName}-${AWS::Region}-write-layer
+                !Sub lagoon-${AWS::Region}-write-layer
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref StorageBucket

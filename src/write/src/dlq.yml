@@ -1,7 +1,7 @@
 WriteDlq:
   Type: AWS::SQS::Queue
   Properties:
-    QueueName: !Sub ${AWS::StackName}-dlq.fifo
+    QueueName: mytiki-lagoon-dlq.fifo
     ContentBasedDeduplication: true
     DeduplicationScope: messageGroup
     FifoQueue: true
@@ -10,4 +10,4 @@ WriteDlq:
     RedriveAllowPolicy:
       redrivePermission: byQueue
       sourceQueueArns:
-        - !Sub arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:${AWS::StackName}.fifo
+        - !Sub arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:lagoon.fifo
