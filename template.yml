@@ -32,15 +32,28 @@ Metadata:
       - tiki
 
 Resources:
-
-Outputs:
-  AccessRole:
-    Description: The mytiki.com access role
-    Value: !Ref StorageAccessRole
-    Export:
-        Name: !Sub ${AWS::StackName}-${AWS::Region}-access-role
-  LagoonBucket:
-    Description: The s3 bucket hosting the lagoon
-    Value: !Ref StorageBucket
-    Export:
-        Name: !Sub ${AWS::StackName}-${AWS::Region}-bucket
+  Storage:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-storage
+        SemanticVersion: 0.2.0
+      Parameters:
+        AccessRole: !Ref AccessRole
+  Pipeline:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-pipeline
+        SemanticVersion: 0.2.0
+      Parameters:
+        StorageBucket: !GetAtt Storage.Outputs.StorageBucket
+  Write:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-write
+        SemanticVersion: 0.2.0
+      Parameters:
+        StorageBucket: !GetAtt Storage.Outputs.StorageBucket
+        PipelineWorkgroup: !GetAtt Pipeline.Outputs.PipelineWorkgroup

@@ -1,10 +1,12 @@
 version = 0.1
 
 [default.global.parameters]
-stack_name = "lagoon"
+stack_name = "lagoon-write"
 s3_bucket = "mytiki-artifacts-sar"
-s3_prefix = "lagoon"
+s3_prefix = "lagoon/write"
 region = "us-east-2"
+template_file = "out/template.yml"
+profile = "artifacts"
 
 [default.deploy.parameters]
 confirm_changeset = false

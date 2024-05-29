@@ -1,9 +1,9 @@
 version = 0.1
 
 [default.global.parameters]
-stack_name = "lagoon"
+stack_name = "lagoon-write-function"
 s3_bucket = "mytiki-artifacts-sar"
-s3_prefix = "lagoon/write/layer"
+s3_prefix = "lagoon/write/function"
 region = "us-east-2"
 
 [default.deploy.parameters]

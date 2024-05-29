@@ -38,33 +38,9 @@ jobs:
           mask-aws-account-id: true
           role-chaining: true
 
-      - name: Build Application
-        run: |
-          make compile
-          make build
-
-      - name: Publish Artifacts
-        run: |
-          zip src/write/function/target/lambda/write-function.zip src/write/function/target/lambda/write-function.jar
-          aws s3 cp src/write/function/target/lambda/write-function.jar s3://mytiki-artifacts-sar/lagoon/packages/write-function.zip
-          aws s3 cp src/write/layer/target/lambda/layer-content.zip s3://mytiki-artifacts-sar/lagoon/packages/layer-content.zip
-
-      - name: Publish Application
-        id: publish
-        run: |
-          sam package --output-template-file .aws-sam/packaged.yaml
-          result=$(sam publish --template .aws-sam/packaged.yaml)
-          echo "$result"
-          arn=$(echo "$result" | grep -oP 'arn:aws:serverlessrepo:[^ ]+' | head -n 1)
-          arn_clean=$(echo "$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]')
-          echo "application_arn=$arn_clean" >> "$GITHUB_OUTPUT"
-
       - name: Share Application
         run: |
-          echo "Application ARN: ${{ steps.publish.outputs.application_arn }}"
-          aws serverlessrepo put-application-policy \
-          --application-id ${{ steps.publish.outputs.application_arn }} \
-          --statements Principals=*,PrincipalOrgIDs=${{ secrets.AWS_ORG_ID }},Actions=Deploy,UnshareApplication
+          make publish org=${{ secrets.AWS_ORG_ID }}
         env:
           AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
 

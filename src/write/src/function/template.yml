@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  StorageBucket:
+    Type: String
+    Description: The S3 bucket name for the Lagoon
+  PipelineWorkgroup:
+    Type: String
+    Description: The Athena workgroup for the Lagoon
+  WriteDependencies:
+    Type: String
+    Description: The ARN of the layer containing the library dependencies
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mytiki-lagoon-write-function
+    Description: Sub-component of the mytiki.com Lagoon application. Deploys a Lambda function for loading data into the Lagoon.
+    Author: mytiki
+    SpdxLicenseId: AGPL-3.0-or-later
+    LicenseUrl: ../../../../LICENSE
+    ReadmeUrl: ../../../../README.md
+    HomePageUrl: https://mytiki.com
+    SemanticVersion: 0.2.0
+    SourceCodeUrl: https://github.com/mytiki/lagoon
+    Labels:
+      - lagoon
+      - mytiki
+
+Resources:
+  WriteFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      SkipBuild: True
+    Properties:
+      Description: Writes raw data files to Iceberg compatible tables
+      FunctionName: !Sub ${AWS::StackName}-write
+      CodeUri: s3://mytiki-artifacts-sar/lagoon/packages/write-function.zip
+      Handler: com.mytiki.lagoon.write.Handler::handleRequest
+      Runtime: java21
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Timeout: 30
+      Tracing: Active
+      LoggingConfig:
+        LogFormat: JSON
+        ApplicationLogLevel: TRACE
+        SystemLogLevel: DEBUG
+      Environment:
+        Variables:
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-sqs-handler
+          ICEBERG_WAREHOUSE: !Sub s3://${StorageBucket}
+      ReservedConcurrentExecutions: 1
+      PropagateTags: true
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Enabled: true
+            FunctionResponseTypes:
+              - ReportBatchItemFailures
+            BatchSize: 10
+            Queue:
+              Fn::ImportValue:
+                !Sub ${AWS::StackName}-${AWS::Region}-write-layer
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref StorageBucket
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - xray:PutTraceSegments
+                - xray:PutTelemetryRecords
+              Resource: "*"
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: athena:StartQueryExecution
+              Resource: !Sub arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${PipelineWorkgroup}
+            - Effect: Allow
+              Action:
+                - glue:GetTable
+                - glue:GetTables
+                - glue:CreateTable
+                - glue:UpdateTable
+                - glue:GetDatabase
+                - glue:GetDatabases
+                - glue:CreateDatabase
+                - glue:UpdateDatabase
+              Resource:
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
+      Layers:
+        - !Ref WriteDependencies
+        - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1
