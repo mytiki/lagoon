@@ -39,6 +39,7 @@ jobs:
       - name: Update Versions
         run: |
           xmlstarlet ed -L -u "_:project/_:version" -v "${{ steps.semver.outputs.nextStrict }}" src/write/function/pom.xml
+          xmlstarlet ed -L -u "_:project/_:version" -v "${{ steps.semver.outputs.nextStrict }}" src/write/layer/pom.xml
           sed -i 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: ${{ steps.semver.outputs.nextStrict }}/' template.yml
 
       - name: Commit Changes
@@ -49,6 +50,7 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GH Action"
           git add src/write/function/pom.xml
+          git add src/write/layer/pom.xml
           git add template.yml
           git commit -m 'version bump'
           git push
