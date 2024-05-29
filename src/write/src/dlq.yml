@@ -10,4 +10,4 @@ WriteDlq:
     RedriveAllowPolicy:
       redrivePermission: byQueue
       sourceQueueArns:
-        - !Sub arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:lagoon.fifo
+        - !Sub arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:mytiki-lagoon.fifo
