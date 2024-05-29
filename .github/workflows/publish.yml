@@ -45,7 +45,8 @@ jobs:
 
       - name: Publish Artifacts
         run: |
-          aws s3 cp src/write/function/target/lambda/write-function.jar s3://mytiki-artifacts-sar/lagoon/packages/write-function.jar
+          zip src/write/function/target/lambda/write-function.zip src/write/function/target/lambda/write-function.jar
+          aws s3 cp src/write/function/target/lambda/write-function.jar s3://mytiki-artifacts-sar/lagoon/packages/write-function.zip
           aws s3 cp src/write/layer/target/lambda/layer-content.zip s3://mytiki-artifacts-sar/lagoon/packages/layer-content.zip
 
       - name: Publish Application

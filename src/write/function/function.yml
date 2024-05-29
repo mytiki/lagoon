@@ -5,7 +5,7 @@ WriteFunction:
   Properties:
     Description: Writes raw data files to Iceberg compatible tables
     FunctionName: !Sub ${AWS::StackName}-write
-    CodeUri: s3://mytiki-artifacts-sar/lagoon/packages/write-function.jar
+    CodeUri: s3://mytiki-artifacts-sar/lagoon/packages/write-function.zip
     Handler: com.mytiki.lagoon.write.Handler::handleRequest
     Runtime: java21
     Architectures:
