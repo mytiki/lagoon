@@ -25,7 +25,7 @@ jobs:
           distribution: 'corretto'
 
       - name: Maven Package
-        run: cd src/write/function && make build
+        run: cd src/write/src/function && make build
 
       - name: Upload Results
         uses: actions/upload-artifact@v4

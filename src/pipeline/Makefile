@@ -3,7 +3,7 @@
 RESOURCES = $(wildcard src/*.yml)
 
 semver:
-	sed -i '' 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml
+	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
 compile: template.yml
 	@echo "YML files to merge: $(RESOURCES)"
