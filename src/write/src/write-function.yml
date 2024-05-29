@@ -8,3 +8,4 @@ WriteFunction:
       StorageBucket: !Ref StorageBucket
       PipelineWorkgroup: !Ref PipelineWorkgroup
       WriteDependencies: !GetAtt WriteLayer.Outputs.WriteLayer
+      WriteQueue: !GetAtt WriteQueue.Arn

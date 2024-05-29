@@ -11,6 +11,9 @@ Parameters:
   WriteDependencies:
     Type: String
     Description: The ARN of the layer containing the library dependencies
+  WriteQueue:
+    Type: String
+    Description: The ARN of the SQS queue for the S3 events
 
 Metadata:
   AWS::ServerlessRepo::Application:
@@ -61,9 +64,7 @@ Resources:
             FunctionResponseTypes:
               - ReportBatchItemFailures
             BatchSize: 10
-            Queue:
-              Fn::ImportValue:
-                !Sub lagoon-${AWS::Region}-write-layer
+            Queue: !Ref WriteQueue
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref StorageBucket
