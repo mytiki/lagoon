@@ -1,8 +1,8 @@
 PipelineAthenaWorkgroup:
   Type: AWS::Athena::WorkGroup
   Properties:
-    Name: !Ref AWS::StackName
-    Description: !Sub Workgroup for the ${AWS::StackName} pipelines
+    Name: mytiki-lagoon
+    Description: Workgroup for the lagoon pipelines
     State: ENABLED
     RecursiveDeleteOption: true
     WorkGroupConfiguration:

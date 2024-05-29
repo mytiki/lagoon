@@ -29,3 +29,4 @@ publish: build
 clean:
 	mvn clean
 	rm -rf target
+	rm -rf .aws-sam

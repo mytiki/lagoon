@@ -21,7 +21,7 @@ Resources:
   WriteLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: write-layer
+      LayerName: mytiki-lagoon-write-dependencies
       Description: Dependencies for the write function
       ContentUri: ./target/lambda/layer-content.zip
       CompatibleRuntimes:

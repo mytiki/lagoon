@@ -1,7 +1,7 @@
 WriteQueue:
   Type: AWS::SQS::Queue
   Properties:
-    QueueName: !Sub ${AWS::StackName}.fifo
+    QueueName: mytiki-lagoon.fifo
     ContentBasedDeduplication: true
     DeduplicationScope: messageGroup
     FifoQueue: true

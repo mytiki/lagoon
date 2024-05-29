@@ -2,7 +2,7 @@ StorageAccessRole:
   Type: AWS::IAM::Role
   DependsOn: StorageBucket
   Properties:
-    RoleName: !Sub ${AWS::StackName}-mytiki
+    RoleName: mytiki-lagoon-access
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
