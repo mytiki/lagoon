@@ -13,8 +13,8 @@ build:
 	sam validate --lint
 
 publish:
-	cd src/write/layer && make publish org=$(org)
-	cd src/write/function && make publish org=$(org)
+	cd src/write/src/layer && make publish org=$(org)
+	cd src/write/src/function && make publish org=$(org)
 	cd src/storage && make publish org=$(org)
 	cd src/pipeline && make publish org=$(org)
 	cd src/write && make publish org=$(org)
