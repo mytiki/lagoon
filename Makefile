@@ -1,4 +1,4 @@
-.PHONY: compile clean
+.PHONY: clean
 
 RESOURCES = $(wildcard src/*.yml src/*/*.yml src/*/*/*.yml)
 
@@ -11,9 +11,14 @@ compile: template.yml
 		yq eval '.Resources += load("'$$res'")' out/template.yml -i || exit 1; \
 	done
 
-build:
+build: compile
+	cd src/write/layer && make build
+	cd src/write/function && make build
 	sam build
 	sam validate --lint
 
 clean:
+	cd src/write/function && make clean
+	cd src/write/layer && make clean
 	rm -rf out
+	rm -rf .aws-sam

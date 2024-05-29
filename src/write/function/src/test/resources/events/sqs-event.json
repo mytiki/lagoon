@@ -1,20 +1,42 @@
 {
   "Records": [
     {
-      "messageId": "2e1424d4-f796-459a-8184-9c92662be6da",
-      "receiptHandle": "AQEBzWwaftRI0KuVm4tP+/7q1rGgNqicHq...",
-      "body": "{\"Records\":[{\"eventVersion\":\"2.1\",\"eventSource\":\"aws:s3\",\"awsRegion\":\"us-west-2\",\"eventTime\":\"1970-01-01T00:00:00.000Z\",\"eventName\":\"ObjectCreated:Put\",\"userIdentity\":{\"principalId\":\"AIDAJDPLRKLG7UEXAMPLE\"},\"requestParameters\":{\"sourceIPAddress\":\"127.0.0.1\"},\"responseElements\":{\"x-amz-request-id\":\"C3D13FE58DE4C810\",\"x-amz-id-2\":\"FMyUVURIY8/IgAtTv8xRjskZQpcIZ9KG4V5Wp6S7S/JRWeUWerMUE5JgHvANOjpD\"},\"s3\":{\"s3SchemaVersion\":\"1.0\",\"configurationId\":\"testConfigRule\",\"bucket\":{\"name\":\"mybucket\",\"ownerIdentity\":{\"principalId\":\"A3NL1KOZZKExample\"},\"arn\":\"arn:aws:s3:::mybucket\"},\"object\":{\"key\":\"load/dummydb/dummytable/dummyfile.parquet\",\"size\":1024,\"eTag\":\"d41d8cd98f00b204e9800998ecf8427e\",\"versionId\":\"096fKKXTRTtl3on89fVO.nfljtsv6qko\",\"sequencer\":\"0055AED6DCD90281E5\"}}}]}",
+      "messageId": "c929b177-aed5-463c-9b1b-6feaaf080783",
+      "receiptHandle": "AQEB39OvjmPQfXACoF8e8ggbFFYfVoZyuzj5k254taKwkG6dcLx3HlTtBhPJ16JtqMQYbUe2C108pBcO/HblzYDLhJAh/O+rLxvOHQLPgnXpjU3sy4BCQIJFj2B6VdBuDYzuJ5vAcxiRVUzP11ZQZDZGaqRZBT29uIl0aE3VjZ8ZujBhJVe5ZAXImFOVNeptyrsrU6P3y/a0Hr3kvsnudJ9525d+J+8vy9BsgVUT0hU8U3gXPC5CuR5ultj0bBfnznRRAPXzaf09UwlESb549RiGCA==",
+      "eventSourceARN": "arn:aws:sqs:us-east-2:590184107666:lagoon.fifo",
+      "eventSource": "aws:sqs",
+      "awsRegion": "us-east-2",
+      "body": "{\"version\":\"0\",\"id\":\"fd050654-0337-33a0-cd13-f9c3c014f51f\",\"detail-type\":\"Object Created\",\"source\":\"aws.s3\",\"account\":\"590184107666\",\"time\":\"2024-05-28T21:59:28Z\",\"region\":\"us-east-2\",\"resources\":[\"arn:aws:s3:::mytiki-lagoon-590184107666-us-east-2\"],\"detail\":{\"version\":\"0\",\"bucket\":{\"name\":\"mytiki-lagoon-590184107666-us-east-2\"},\"object\":{\"key\":\"load/mytiki/users/\",\"size\":0,\"etag\":\"d41d8cd98f00b204e9800998ecf8427e\",\"sequencer\":\"00665653C0EB06F2CA\"},\"request-id\":\"0R747GZMM62GFWKM\",\"requester\":\"590184107666\",\"source-ip-address\":\"172.16.216.9\",\"reason\":\"PutObject\"}}",
+      "md5OfBody": "6104cd732cd0685e7f71d0449ec03c0d",
+      "attributes": {
+        "ApproximateReceiveCount": "4",
+        "SentTimestamp": "1716933569734",
+        "SequenceNumber": "18886279067561455616",
+        "MessageGroupId": "lagoon",
+        "SenderId": "AIDAIMTEBMVXFWRSXIKCK",
+        "MessageDeduplicationId": "367b76c4f7d1e65a3a1bc0cbfad2cf42b9deab211c92286c22d74e06b87b787a",
+        "ApproximateFirstReceiveTimestamp": "1716933569734"
+      },
+      "messageAttributes": {}
+    },
+    {
+      "messageId": "9b0011c4-a817-47a7-aa7c-09504f6e2020",
+      "receiptHandle": "AQEBQT9vCsOA7y8fMqtTJAklXZDm9Cb2+mm7eG3zxR/xMUIhE/4xRvn6+SJpsSyCltXiJ6a4dQyu4g1E+avzR3m8kz3MCAlhW4HwzqZ8mUdYvhwSZbLdaK/lMVK+GVn3CeSbELvK905liu6LDDK+LPWVuYm//gTTAVVmSsjB9H+r1B4hW7MIuROjj7k1EleXDnbmTpH+1W57yY/zcjzXSc/ZIznaOV1rrVFIfuQLwk8YfKxH0sTdchHAxlSNV0YjjvAdBSGlBVwx9nqwLZaI7fAWSA==",
+      "eventSourceARN": "arn:aws:sqs:us-east-2:590184107666:lagoon.fifo",
+      "eventSource": "aws:sqs",
+      "awsRegion": "us-east-2",
+      "body": "{\"version\":\"0\",\"id\":\"229a064b-de5c-154f-9272-acfdcd02892c\",\"detail-type\":\"Object Created\",\"source\":\"aws.s3\",\"account\":\"590184107666\",\"time\":\"2024-05-28T22:00:33Z\",\"region\":\"us-east-2\",\"resources\":[\"arn:aws:s3:::mytiki-lagoon-590184107666-us-east-2\"],\"detail\":{\"version\":\"0\",\"bucket\":{\"name\":\"mytiki-lagoon-590184107666-us-east-2\"},\"object\":{\"key\":\"load/mytiki/users/test.parquet\",\"size\":0,\"etag\":\"d41d8cd98f00b204e9800998ecf8427e\",\"sequencer\":\"0066565401BC05CDD9\"},\"request-id\":\"3B6YV14FDMJC3T6P\",\"requester\":\"590184107666\",\"source-ip-address\":\"68.84.93.108\",\"reason\":\"PutObject\"}}",
+      "md5OfBody": "2f9536733e6b073a07c3680792911a82",
       "attributes": {
         "ApproximateReceiveCount": "1",
-        "SentTimestamp": "1545082650636",
-        "SenderId": "AIDAIENQZJOLO23YVJ4VO",
-        "ApproximateFirstReceiveTimestamp": "1545082650649"
+        "SentTimestamp": "1716933635045",
+        "SequenceNumber": "18886279084281071616",
+        "MessageGroupId": "lagoon",
+        "SenderId": "AIDAIMTEBMVXFWRSXIKCK",
+        "MessageDeduplicationId": "93a2f10a077b384739dcd09ee6225311ac11ec6772a6b423a4e8334a2fd603a2",
+        "ApproximateFirstReceiveTimestamp": "1716933659798"
       },
-      "messageAttributes": {},
-      "md5OfBody": "e4e68fb7bd0e697a0ae8f1bb342846b3",
-      "eventSource": "aws:sqs",
-      "eventSourceARN": "arn:aws:sqs:us-east-2:123456789012:my-queue",
-      "awsRegion": "us-east-2"
+      "messageAttributes": {}
     }
   ]
 }

@@ -1,9 +1,11 @@
 WriteFunction:
   Type: AWS::Serverless::Function
+  Metadata:
+    SkipBuild: True
   Properties:
     Description: Writes raw data files to Iceberg compatible tables
     FunctionName: !Sub ${AWS::StackName}-write
-    CodeUri: ../src/write/function
+    CodeUri: ../src/write/function/target/lambda/write-function.jar
     Handler: com.mytiki.lagoon.write.Handler::handleRequest
     Runtime: java21
     Architectures:
@@ -37,17 +39,28 @@ WriteFunction:
         Statement:
           - Effect: Allow
             Action:
+              - xray:PutTraceSegments
+              - xray:PutTelemetryRecords
+            Resource: "*"
+      - Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: athena:StartQueryExecution
+            Resource: !Sub arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${PipelineAthenaWorkgroup}
+          - Effect: Allow
+            Action:
               - glue:GetTable
               - glue:GetTables
+              - glue:CreateTable
               - glue:UpdateTable
+              - glue:GetDatabase
+              - glue:GetDatabases
+              - glue:CreateDatabase
+              - glue:UpdateDatabase
             Resource:
               - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
               - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
               - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
-          - Effect: Allow
-            Action:
-              - xray:PutTraceSegments
-              - xray:PutTelemetryRecords
-            Resource: "*"
     Layers:
+      - !Ref WriteLayer
       - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1
