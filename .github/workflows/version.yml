@@ -38,7 +38,7 @@ jobs:
 
       - name: Update Versions
         run: |
-          make semvar version=${{ steps.semver.outputs.nextStrict }}
+          make semver version=${{ steps.semver.outputs.nextStrict }}
 
       - name: Commit Changes
         continue-on-error: true
