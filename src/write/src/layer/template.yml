@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mytiki-lagoon-write-layer
+    Description: Sub-component of the mytiki.com Lagoon application. Deploys a Lambda dependency layer for the Lagoon Write function.
+    Author: mytiki
+    SpdxLicenseId: AGPL-3.0-or-later
+    LicenseUrl: ../../../../LICENSE
+    ReadmeUrl: ../../../../README.md
+    HomePageUrl: https://mytiki.com
+    SemanticVersion: 0.2.1
+    SourceCodeUrl: https://github.com/mytiki/lagoon
+    Labels:
+      - lagoon
+      - mytiki
+      - component
+
+Resources:
+  WriteLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: write-layer
+      Description: Dependencies for the write function
+      ContentUri: ./target/lambda/layer-content.zip
+      CompatibleRuntimes:
+        - java21
+      CompatibleArchitectures:
+        - x86_64
+      LicenseInfo: 'AGPL-3.0-or-later'
+
+Outputs:
+  WriteLayer:
+    Description: The dependency layer created for the write function
+    Value: !Ref WriteLayer
+

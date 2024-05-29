@@ -25,11 +25,11 @@ jobs:
           distribution: 'corretto'
 
       - name: Maven Package
-        run: cd src/write/function && make build
+        run: cd src/write/src/function && make build
 
       - name: Upload Results
         uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: test-results
-          path: src/write/function/target/surefire-reports/**/*.xml
+          path: src/write/src/function/target/surefire-reports/**/*.xml

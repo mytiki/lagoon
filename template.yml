@@ -14,10 +14,10 @@ Metadata:
     Description: Create consumption-ready data. Aggregate raw application data in an Iceberg data lake, transform with dbt, and enforce compliance requirements. Use with mytiki.com to monetize your new data assets.
     Author: mytiki
     SpdxLicenseId: AGPL-3.0-or-later
-    LicenseUrl: ../LICENSE
-    ReadmeUrl: ../README.md
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
     HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.2.0
+    SemanticVersion: 0.2.1
     SourceCodeUrl: https://github.com/mytiki/lagoon
     Labels:
       - lagoon
@@ -32,15 +32,28 @@ Metadata:
       - tiki
 
 Resources:
-
-Outputs:
-  AccessRole:
-    Description: The mytiki.com access role
-    Value: !Ref StorageAccessRole
-    Export:
-        Name: !Sub ${AWS::StackName}-${AWS::Region}-access-role
-  LagoonBucket:
-    Description: The s3 bucket hosting the lagoon
-    Value: !Ref StorageBucket
-    Export:
-        Name: !Sub ${AWS::StackName}-${AWS::Region}-bucket
+  Storage:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-storage
+        SemanticVersion: 0.2.1
+      Parameters:
+        AccessRole: !Ref AccessRole
+  Pipeline:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-pipeline
+        SemanticVersion: 0.2.1
+      Parameters:
+        StorageBucket: !GetAtt Storage.Outputs.StorageBucket
+  Write:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-write
+        SemanticVersion: 0.2.1
+      Parameters:
+        StorageBucket: !GetAtt Storage.Outputs.StorageBucket
+        PipelineWorkgroup: !GetAtt Pipeline.Outputs.PipelineWorkgroup
