@@ -38,7 +38,7 @@ jobs:
           mask-aws-account-id: true
           role-chaining: true
 
-      - name: Share Application
+      - name: Publish Application
         run: |
           make publish org=${{ secrets.AWS_ORG_ID }}
         env:

@@ -6,7 +6,6 @@ s3_bucket = "mytiki-artifacts-sar"
 s3_prefix = "lagoon/write"
 region = "us-east-2"
 template_file = "out/template.yml"
-profile = "artifacts"
 
 [default.deploy.parameters]
 confirm_changeset = false
