@@ -1,0 +1,15 @@
+version = 0.1
+
+[default.global.parameters]
+stack_name = "lagoon"
+s3_bucket = "mytiki-artifacts-sar"
+s3_prefix = "lagoon"
+region = "us-east-2"
+template_file = "out/template.yml"
+
+[default.deploy.parameters]
+confirm_changeset = false
+capabilities = [
+    "CAPABILITY_AUTO_EXPAND",
+    "CAPABILITY_NAMED_IAM"
+]
