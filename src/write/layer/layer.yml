@@ -3,7 +3,7 @@ WriteLayer:
   Properties:
     LayerName: write-layer
     Description: Dependencies for the write function
-    ContentUri: ../src/write/layer/target/lambda/layer-content.zip
+    ContentUri: s3://mytiki-artifacts-sar/lagoon/packages/layer-content.zip
     CompatibleRuntimes:
       - java21
     CompatibleArchitectures:
