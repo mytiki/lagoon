@@ -32,4 +32,4 @@ jobs:
         if: success() || failure()
         with:
           name: test-results
-          path: src/write/function/target/surefire-reports/**/*.xml
+          path: src/write/src/function/target/surefire-reports/**/*.xml
