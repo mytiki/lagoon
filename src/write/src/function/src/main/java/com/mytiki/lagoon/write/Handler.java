@@ -33,7 +33,10 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
     private final StorageFacade storage;
     private final AthenaFacade athena;
 
-    public Handler() { this(IcebergFacade.load(), StorageFacade.dflt(), AthenaFacade.dflt()); }
+    public Handler() {
+        this(IcebergFacade.load(), StorageFacade.dflt(), AthenaFacade.dflt());
+        logger.debug("Initializing");
+    }
 
     public Handler(IcebergFacade iceberg, StorageFacade storage, AthenaFacade athena) {
         this.iceberg = iceberg.initialize();
@@ -44,6 +47,7 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
     public SQSBatchResponse handleRequest(final SQSEvent event, final Context context) {
         try {
             WriteService writeService = new WriteService(iceberg, storage, athena);
+            logger.debug("SQSEvent: {}", event);
             event.getRecords().forEach(msg -> {
                 try {
                     ScheduledEvent scheduledEvent = serializer.fromJson(msg.getBody());
@@ -52,7 +56,6 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
                 }catch (Exception ex){ reportFailure(msg, ex); }
             });
         } catch (Exception ex) {reportFailure(event, ex); }
-        iceberg.close();
         return SQSBatchResponse.builder()
                 .withBatchItemFailures(failures)
                 .build();

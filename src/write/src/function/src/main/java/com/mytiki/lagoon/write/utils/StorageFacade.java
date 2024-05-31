@@ -33,6 +33,7 @@ public class StorageFacade {
     public StorageFacade(S3Client s3, Configuration clientConfig) {
         this.s3 = s3;
         this.clientConfig = clientConfig;
+        logger.debug("storage initialize");
     }
 
     public static StorageFacade dflt() {

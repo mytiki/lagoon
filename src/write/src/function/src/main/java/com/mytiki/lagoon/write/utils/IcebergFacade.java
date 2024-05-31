@@ -88,7 +88,7 @@ public class IcebergFacade extends GlueCatalog {
     @Override
     public void close() {
         try {
-            logger.debug("iceberg close");
+            logger.debug("closing Iceberg connection");
             super.close();
         } catch (IOException e) {
             logger.error(e);

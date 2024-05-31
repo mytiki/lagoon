@@ -100,4 +100,16 @@ public class WriteReq {
         String[] fileSplit = this.file.split("\\.");
         this.type = fileSplit.length < 2 ? "unknown" : fileSplit[1];
     }
+
+    @Override
+    public String toString() {
+        return "WriteReq{" +
+                "bucket='" + bucket + '\'' +
+                ", key='" + key + '\'' +
+                ", database='" + database + '\'' +
+                ", table='" + table + '\'' +
+                ", file='" + file + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
