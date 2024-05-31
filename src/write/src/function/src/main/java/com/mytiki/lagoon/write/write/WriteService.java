@@ -31,6 +31,7 @@ public class WriteService {
     }
 
     public void write(WriteReq req) {
+        logger.debug("WriteReq: {}", req);
         if(!req.getType().equals("parquet"))
             throw new ApiExceptionBuilder(404)
                     .message("Bad Request")

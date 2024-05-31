@@ -2,23 +2,20 @@ package com.mytiki.lagoon.write.utils;
 
 import com.mytiki.lagoon.write.write.WriteReq;
 import com.mytiki.utils.lambda.Initialize;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.logging.log4j.Logger;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
 import software.amazon.awssdk.services.athena.AthenaClient;
 import software.amazon.awssdk.services.athena.model.QueryExecutionContext;
-import software.amazon.awssdk.services.athena.model.ResultConfiguration;
 import software.amazon.awssdk.services.athena.model.StartQueryExecutionRequest;
 import software.amazon.awssdk.services.athena.model.StartQueryExecutionResponse;
-import software.amazon.awssdk.services.s3.S3Client;
 
 public class AthenaFacade {
     protected static final Logger logger = Initialize.logger(StorageFacade.class);
     private final AthenaClient athena;
     private static final String CATALOG = "AwsDataCatalog";
-    private static final String WORKGROUP = "lagoon";
+    private static final String WORKGROUP = "mytiki-lagoon";
 
     public AthenaFacade(AthenaClient athena) {
         this.athena = athena;
@@ -38,6 +35,7 @@ public class AthenaFacade {
     }
 
     public String setEtlLoadedAt(WriteReq req) {
+        logger.debug("updating {} for: {}", IcebergFacade.ETL_LOADED_AT, req.getTable());
         String query = String.format(
                 "UPDATE %1$s SET %2$s = now() WHERE %2$s IS NULL",
                 req.getTable(),
@@ -52,7 +50,7 @@ public class AthenaFacade {
                 .build();
         StartQueryExecutionResponse execRsp = athena.startQueryExecution(execReq);
         String execId = execRsp.queryExecutionId();
-        logger.info("setEtlLoadedAt execution id: {}", execId);
+        logger.info("{} execution id: {}", IcebergFacade.ETL_LOADED_AT, execId);
         return execId;
     }
 }
