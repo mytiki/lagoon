@@ -12,7 +12,8 @@ compile:
 build: compile
 	mvn package
 	mkdir -p target/lambda/
-	cp -r target/write-function-*.jar target/lambda/write-function.jar
+	cp -r target/write-function-*.jar target/lambda/
+	mv target/lambda/write-function-*.jar target/lambda/write-function.jar
 	sam build
 	sam validate --lint
 
