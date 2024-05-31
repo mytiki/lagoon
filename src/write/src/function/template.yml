@@ -24,7 +24,7 @@ Metadata:
     LicenseUrl: ../../../../LICENSE
     ReadmeUrl: ../../../../README.md
     HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.2.5
+    SemanticVersion: 0.2.6
     SourceCodeUrl: https://github.com/mytiki/lagoon
     Labels:
       - lagoon
@@ -38,7 +38,7 @@ Resources:
     Properties:
       Description: Writes raw data files to Iceberg compatible tables
       FunctionName: mytiki-lagoon-write
-      CodeUri: s3://mytiki-artifacts-sar/lagoon/packages/write-function.zip
+      CodeUri: ./target/lambda/write-function.jar
       Handler: com.mytiki.lagoon.write.Handler::handleRequest
       Runtime: java21
       Architectures:
