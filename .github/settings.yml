@@ -31,9 +31,3 @@ branches:
       required_status_checks:
         strict: true
         contexts: []
-
-milestones:
-  - title: 0.0.1
-    description: |
-      Pre-release with basic Iceberg lake aggregation functionality. Adds lake storage with data import, staging, and metadata management.
-    state: open

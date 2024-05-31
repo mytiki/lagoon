@@ -25,7 +25,7 @@ publish:
 	arn_clean=$$(echo "$$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]') ;\
 	aws serverlessrepo put-application-policy \
 		--application-id $$arn_clean \
-		--statements Principals=*,PrincipalOrgIDs=$(org),Actions=Deploy,UnshareApplication \
+		--statements Principals=*,Actions=Deploy \
 		> /dev/null
 
 clean:
