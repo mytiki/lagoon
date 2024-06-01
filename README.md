@@ -1,3 +1,13 @@
+<p align="center">
+  <a href="https://github.com/mytiki/platform">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mytiki/.github/assets/3769672/931b81d7-0359-4e3c-8f86-5b34e5e24d57">
+      <source media="(prefers-color-scheme: light)" srcset="https://github.com/mytiki/.github/assets/3769672/10278053-ec4d-40d1-a778-dd03a7d36c95">
+      <img alt="mytiki logo" src="https://github.com/mytiki/.github/assets/3769672/10278053-ec4d-40d1-a778-dd03a7d36c95" height="50">
+    </picture>
+  </a>
+</p>
+
 # Lagoon
 Create consumption-ready data. Aggregate raw application data in an Iceberg data lake, transform with dbt, and enforce compliance requirements. Use with [mytiki.com](https://mytiki.com) to monetize your new data assets.
 
