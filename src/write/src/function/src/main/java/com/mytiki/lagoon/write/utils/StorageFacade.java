@@ -66,7 +66,7 @@ public class StorageFacade {
         try {
             Path s3Path = new Path("s3a://" + path);
             return HadoopInputFile.fromPath(s3Path, clientConfig);
-        }catch (IOException e) {
+        } catch (IOException e) {
             logger.error("failed to open file: {}", path);
             throw new ApiExceptionBuilder(403)
                     .message("Forbidden")

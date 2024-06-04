@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface GenericReader extends Closeable {
     GenericReader open(String bucket, String key);
+
     List<URI> read();
 }

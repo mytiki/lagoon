@@ -16,8 +16,14 @@ public class S3Facade {
     private static final String TRASH_PREFIX = "trash";
     private final S3Client s3;
 
-    public S3Facade() { this(DefaultCredentialsProvider.builder().build()); }
-    public S3Facade(S3Client s3) { this.s3 = s3; }
+    public S3Facade() {
+        this(DefaultCredentialsProvider.builder().build());
+    }
+
+    public S3Facade(S3Client s3) {
+        this.s3 = s3;
+    }
+
     public S3Facade(AwsCredentialsProvider provider) {
         this(S3Client.builder()
                 .credentialsProvider(provider)

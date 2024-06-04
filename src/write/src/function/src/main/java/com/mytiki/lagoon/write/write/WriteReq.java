@@ -64,14 +64,9 @@ public class WriteReq {
         return String.format("s3a://%s/%s", bucket, key);
     }
 
-    private String parseType(String file) {
-        String[] split = this.file.split("\\.");
-        return split.length < 2 ? "unknown" : split[1];
-    }
-
     private void parseKey(String key) {
         String[] split = key.split("/");
-        if(!split[0].equals("load")) {
+        if (!split[0].equals("load")) {
             throw new ApiExceptionBuilder(400)
                     .message("Invalid key")
                     .help("Expected key to start with 'load/'")
@@ -79,14 +74,14 @@ public class WriteReq {
                     .build();
         }
         int len = split.length;
-        if(len != 4) {
+        if (len != 4) {
             throw new ApiExceptionBuilder(400)
                     .message("Invalid key")
                     .help("Expected key to look like 'load/[database]/[table]/[file]'")
                     .properties("key", key)
                     .build();
         }
-        if(!Character.isLetter(split[1].charAt(0)) || !Character.isLetter(split[2].charAt(0))) {
+        if (!Character.isLetter(split[1].charAt(0)) || !Character.isLetter(split[2].charAt(0))) {
             throw new ApiExceptionBuilder(400)
                     .message("Invalid key")
                     .detail("Database and table name must start with a letter")

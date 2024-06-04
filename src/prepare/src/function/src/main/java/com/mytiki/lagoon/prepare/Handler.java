@@ -23,7 +23,10 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
     private final List<SQSBatchResponse.BatchItemFailure> failures = new ArrayList<>();
     private final S3Facade s3;
 
-    public Handler(S3Facade s3) { this.s3 = s3; }
+    public Handler(S3Facade s3) {
+        this.s3 = s3;
+    }
+
     public Handler() {
         this(new S3Facade());
         logger.debug("Initializing");
@@ -37,10 +40,18 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
                 try {
                     ScheduledEvent scheduledEvent = serializer.fromJson(msg.getBody());
                     PrepareReq req = new PrepareReq(scheduledEvent);
-                    try{ prepareService.prepare(req); } catch (Exception ex){ reportFailure(msg, ex); }
-                }catch (Exception ex){ reportFailure(msg, ex); }
+                    try {
+                        prepareService.prepare(req);
+                    } catch (Exception ex) {
+                        reportFailure(msg, ex);
+                    }
+                } catch (Exception ex) {
+                    reportFailure(msg, ex);
+                }
             });
-        } catch (Exception ex) {reportFailure(event, ex); }
+        } catch (Exception ex) {
+            reportFailure(event, ex);
+        }
         return SQSBatchResponse.builder()
                 .withBatchItemFailures(failures)
                 .build();

@@ -12,6 +12,7 @@ public class PrepareReq {
     private String table;
     private String file;
     private String type;
+    private String compression;
 
     public PrepareReq(ScheduledEvent event) {
         Map<String, Object> s3Object = (Map<String, Object>) event.getDetail().get("object");
@@ -51,6 +52,10 @@ public class PrepareReq {
         return key;
     }
 
+    public String getCompression() {
+        return compression;
+    }
+
     public String getPath() {
         return String.format("%s/%s", bucket, key);
     }
@@ -63,14 +68,9 @@ public class PrepareReq {
         return String.format("s3a://%s/%s", bucket, key);
     }
 
-    private String parseType(String file) {
-        String[] split = this.file.split("\\.");
-        return split.length < 2 ? "unknown" : split[1];
-    }
-
     private void parseKey(String key) {
         String[] split = key.split("/");
-        if(!split[0].equals("prepare")) {
+        if (!split[0].equals("prepare")) {
             throw new ApiExceptionBuilder(400)
                     .message("Invalid key")
                     .help("Expected key to start with 'prepare/'")
@@ -78,14 +78,14 @@ public class PrepareReq {
                     .build();
         }
         int len = split.length;
-        if(len != 4) {
+        if (len != 4) {
             throw new ApiExceptionBuilder(400)
                     .message("Invalid key")
                     .help("Expected key to look like 'prepare/[database]/[table]/[file]'")
                     .properties("key", key)
                     .build();
         }
-        if(!Character.isLetter(split[1].charAt(0)) || !Character.isLetter(split[2].charAt(0))) {
+        if (!Character.isLetter(split[1].charAt(0)) || !Character.isLetter(split[2].charAt(0))) {
             throw new ApiExceptionBuilder(400)
                     .message("Invalid key")
                     .detail("Database and table name must start with a letter")
@@ -96,8 +96,16 @@ public class PrepareReq {
         this.database = split[1].toLowerCase();
         this.table = split[2].toLowerCase();
         this.file = split[3];
+
         String[] fileSplit = this.file.split("\\.");
-        this.type = fileSplit.length < 2 ? "unknown" : fileSplit[1];
+        if (fileSplit.length < 2) {
+            this.type = "unknown";
+        } else if (fileSplit.length == 2) {
+            this.type = fileSplit[1];
+        } else {
+            this.compression = fileSplit[1];
+            this.type = fileSplit[2];
+        }
     }
 
     @Override

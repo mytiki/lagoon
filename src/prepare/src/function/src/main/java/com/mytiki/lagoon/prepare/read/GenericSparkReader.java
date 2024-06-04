@@ -26,13 +26,17 @@ public abstract class GenericSparkReader implements GenericReader {
     protected String bucket;
     protected String key;
 
-    public GenericSparkReader() { this(DefaultCredentialsProvider.builder().build()); }
+    public GenericSparkReader() {
+        this(DefaultCredentialsProvider.builder().build());
+    }
+
     public GenericSparkReader(AwsCredentialsProvider provider) {
         this.config = new SparkConf()
                 .set("fs.s3a.aws.credentials.provider", provider.getClass().getName())
                 .set("spark.sql.parquet.compression.codec", "uncompressed")
                 .set("spark.sql.files.maxPartitionBytes", Long.toString(128 * 1024 * 1024));
     }
+
     public GenericSparkReader(SparkConf config) {
         this.config = config;
         logger.debug("Configuring SparkReader with {}", config);

@@ -52,15 +52,18 @@ public class IcebergFacade extends GlueCatalog {
         return this;
     }
 
-    public static IcebergFacade load() { return load(new Env()); }
+    public static IcebergFacade load() {
+        return load(new Env());
+    }
+
     public static IcebergFacade load(Env env) {
         Properties properties = Initialize.properties(PROPERTIES);
 
-        String catalogName = env.get(env.name(ENV_PREFIX+CATALOG_NAME));
-        String catalogImpl = env.get(env.name(ENV_PREFIX+CATALOG_IMPL));
-        String warehouse = env.get(env.name(ENV_PREFIX+WAREHOUSE));
-        String ioImpl = env.get(env.name(ENV_PREFIX+IO_IMPL));
-        String glueSkipArchive = env.get(env.name(ENV_PREFIX+GLUE_SKIP_ARCHIVE));
+        String catalogName = env.get(env.name(ENV_PREFIX + CATALOG_NAME));
+        String catalogImpl = env.get(env.name(ENV_PREFIX + CATALOG_IMPL));
+        String warehouse = env.get(env.name(ENV_PREFIX + WAREHOUSE));
+        String ioImpl = env.get(env.name(ENV_PREFIX + IO_IMPL));
+        String glueSkipArchive = env.get(env.name(ENV_PREFIX + GLUE_SKIP_ARCHIVE));
 
         Map<String, String> cfg = new HashMap<>() {{
             put(CATALOG_NAME, catalogName != null ? catalogName : properties.getProperty(CATALOG_NAME));
@@ -76,9 +79,10 @@ public class IcebergFacade extends GlueCatalog {
     public Namespace getDatabase(String name) {
         return Namespace.of(name);
     }
+
     public Namespace getDatabaseSafe(String name) {
         Namespace database = getDatabase(name);
-        if(!this.namespaceExists(database)) {
+        if (!this.namespaceExists(database)) {
             logger.debug("create database: {}", database);
             this.createNamespace(database);
         }

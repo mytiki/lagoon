@@ -27,5 +27,6 @@ public class ParquetReader implements GenericReader {
     }
 
     @Override
-    public void close() throws IOException {}
+    public void close() throws IOException {
+    }
 }
