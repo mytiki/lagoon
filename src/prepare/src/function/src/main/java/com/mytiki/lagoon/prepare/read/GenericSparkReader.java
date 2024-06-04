@@ -48,7 +48,7 @@ public abstract class GenericSparkReader implements GenericReader {
     public void close() throws IOException { this.spark.close(); }
 
     protected List<URI> convert(Dataset<Row> dataset) {
-        return convert(URI.create(String.format("s3a://%s/load/prepare/%s", bucket, UUID.randomUUID())), dataset);
+        return convert(URI.create(String.format("s3a://%s/tmp/prepare/%s", bucket, UUID.randomUUID())), dataset);
     }
 
     protected List<URI> convert(URI location, Dataset<Row> dataset) {
