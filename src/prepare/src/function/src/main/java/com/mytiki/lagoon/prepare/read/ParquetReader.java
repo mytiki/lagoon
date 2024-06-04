@@ -1,32 +1,18 @@
 package com.mytiki.lagoon.prepare.read;
 
-import com.mytiki.utils.lambda.Initialize;
-import org.apache.logging.log4j.Logger;
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-public class ParquetReader implements GenericReader {
-    protected static final Logger logger = Initialize.logger(ParquetReader.class);
-    private String bucket;
-    private String key;
-
-    @Override
-    public GenericReader open(String bucket, String key) {
-        this.bucket = bucket;
-        this.key = key;
-        return this;
-    }
-
+public class ParquetReader extends GenericSparkReader {
     @Override
     public List<URI> read() {
-        URI uri = URI.create(String.format("s3a://%s/%s", bucket, key));
-        logger.debug("Reading Parquet file from {}", uri);
-        return List.of(uri);
-    }
-
-    @Override
-    public void close() throws IOException {
+        logger.debug("Reading Parquet file from {}/{}", bucket, key);
+        Dataset<Row> df = spark.read()
+                .option("header", "true")
+                .parquet(String.format("s3a://%s/%s", bucket, key));
+        return convert(df);
     }
 }
