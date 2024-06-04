@@ -11,6 +11,7 @@ import java.util.List;
 public class AvroReader extends GenericSparkReader {
     @Override
     public List<URI> read() {
+        logger.debug("Reading Avro file from {}/{}", bucket, key);
         Dataset<Row> df = spark.read()
                 .option("header", "true")
                 .format("avro")

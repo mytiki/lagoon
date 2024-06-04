@@ -1,9 +1,11 @@
 package com.mytiki.lagoon.prepare.read;
 
 import com.mytiki.utils.lambda.ApiExceptionBuilder;
+import com.mytiki.utils.lambda.Initialize;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.logging.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -18,22 +20,27 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class GenericSparkReader implements GenericReader {
+    protected static final Logger logger = Initialize.logger(GenericSparkReader.class);
     private final SparkConf config;
     protected SparkSession spark;
     protected String bucket;
     protected String key;
 
     public GenericSparkReader() { this(DefaultCredentialsProvider.builder().build()); }
-    public GenericSparkReader(SparkConf config) { this.config = config; }
     public GenericSparkReader(AwsCredentialsProvider provider) {
         this.config = new SparkConf()
                 .set("fs.s3a.aws.credentials.provider", provider.getClass().getName())
                 .set("spark.sql.parquet.compression.codec", "uncompressed")
                 .set("spark.sql.files.maxPartitionBytes", Long.toString(128 * 1024 * 1024));
     }
+    public GenericSparkReader(SparkConf config) {
+        this.config = config;
+        logger.debug("Configuring SparkReader with {}", config);
+    }
 
     @Override
     public GenericReader open(String bucket, String key) {
+        logger.debug("Open SparkSession for {}/{}", bucket, key);
         this.spark = SparkSession.builder()
                 .appName("GenericSparkReader-" + UUID.randomUUID())
                 .master("local")
@@ -45,7 +52,10 @@ public abstract class GenericSparkReader implements GenericReader {
     }
 
     @Override
-    public void close() throws IOException { this.spark.close(); }
+    public void close() throws IOException {
+        logger.debug("Closing SparkSession for {}/{}", bucket, key);
+        this.spark.close();
+    }
 
     protected List<URI> convert(Dataset<Row> dataset) {
         return convert(URI.create(String.format("s3a://%s/tmp/prepare/%s", bucket, UUID.randomUUID())), dataset);
@@ -62,6 +72,7 @@ public abstract class GenericSparkReader implements GenericReader {
                     parts.add(fileStatus.getPath().toUri());
                 }
             }
+            logger.debug("Parquet files created: {}", parts);
         } catch (Exception e) {
             throw new ApiExceptionBuilder(424)
                     .message("Failed to list parquet files")
