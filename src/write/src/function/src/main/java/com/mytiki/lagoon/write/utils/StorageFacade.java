@@ -27,6 +27,7 @@ import java.io.IOException;
 
 public class StorageFacade {
     protected static final Logger logger = Initialize.logger(StorageFacade.class);
+    private static final String TRASH_PREFIX = "trash";
     private final S3Client s3;
     private final Configuration clientConfig;
 
@@ -60,12 +61,7 @@ public class StorageFacade {
                 .build();
         CopyObjectResponse copyRsp = s3.copyObject(copyReq);
         logger.debug("copy file: {}", copyRsp);
-        DeleteObjectRequest deleteReq = DeleteObjectRequest.builder()
-                .bucket(bucket)
-                .key(src)
-                .build();
-        DeleteObjectResponse deleteRsp = s3.deleteObject(deleteReq);
-        logger.debug("delete file: {}", deleteRsp);
+        trash(bucket, src);
     }
 
     public HadoopInputFile openFile(String path) {
@@ -86,5 +82,23 @@ public class StorageFacade {
         ParquetMetadata footer = reader.getFooter();
         MessageType parquetSchema = footer.getFileMetaData().getSchema();
         return AvroSchemaUtil.toIceberg(converter.convert(parquetSchema));
+    }
+
+    public void trash(String bucket, String key) {
+        logger.debug("trash file: {}/{}", bucket, key);
+        CopyObjectRequest copyReq = CopyObjectRequest.builder()
+                .sourceBucket(bucket)
+                .sourceKey(key)
+                .destinationBucket(bucket)
+                .destinationKey(String.format("%s/%s", TRASH_PREFIX, key))
+                .build();
+        CopyObjectResponse copyRsp = s3.copyObject(copyReq);
+        logger.debug("trash file: {}", copyRsp);
+        DeleteObjectRequest deleteReq = DeleteObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build();
+        DeleteObjectResponse deleteRsp = s3.deleteObject(deleteReq);
+        logger.debug("trash file: {}", deleteRsp);
     }
 }
