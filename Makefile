@@ -15,9 +15,13 @@ build:
 publish:
 	cd src/write/src/layer && make publish org=$(org)
 	cd src/write/src/function && make publish org=$(org)
+	cd src/prepare/src/layer && make publish org=$(org)
+	cd src/prepare/src/function && make publish org=$(org)
+	cd src/log && make publish org=$(org)
 	cd src/storage && make publish org=$(org)
 	cd src/pipeline && make publish org=$(org)
 	cd src/write && make publish org=$(org)
+	cd src/prepare && make publish org=$(org)
 	make build
 	sam package --output-template-file .aws-sam/packaged.yaml ;\
 	result=$$(sam publish --template .aws-sam/packaged.yaml) ;\
@@ -29,7 +33,9 @@ publish:
 		> /dev/null
 
 clean:
+	cd src/log && make clean
 	cd src/storage && make clean
 	cd src/pipeline && make clean
 	cd src/write && make clean
+	cd src/prepare && make clean
 	rm -rf .aws-sam

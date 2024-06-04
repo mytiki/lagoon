@@ -1,13 +1,13 @@
-WriteEventRule:
+PrepareEventRule:
   Type: AWS::Events::Rule
   Properties:
     Name: mytiki-lagoon-write
     State: ENABLED
     Targets:
-      - Arn: !GetAtt WriteQueue.Arn
-        Id: !GetAtt WriteQueue.QueueName
+      - Arn: !GetAtt PrepareQueue.Arn
+        Id: !GetAtt PrepareQueue.QueueName
         SqsParameters:
-          MessageGroupId: lagoon-write
+          MessageGroupId: lagoon-prepare
     EventPattern:
       source:
         - aws.s3
@@ -19,4 +19,4 @@ WriteEventRule:
             - !Ref StorageBucket
         object:
           key:
-            - wildcard: load/*
+            - wildcard: prepare/*

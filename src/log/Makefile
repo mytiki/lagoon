@@ -1,19 +1,20 @@
 .PHONY: clean semver
 
+RESOURCES = $(wildcard src/*.yml)
+
 semver:
-	xmlstarlet ed -L -u "_:project/_:version" -v "$(version)" pom.xml
-	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='prepare-layer']/_:version" -v "$(version)" pom.xml
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
-compile:
-	cd ../layer && make install
-	mvn compile
+compile: template.yml
+	@echo "YML files to merge: $(RESOURCES)"
+	mkdir -p out
+	cp template.yml out/template.yml
+	for res in $(RESOURCES); do \
+		echo "Processing: $$res"; \
+		yq eval '.Resources += load("'$$res'")' out/template.yml -i || exit 1; \
+	done
 
 build: compile
-	mvn package
-	mkdir -p target/lambda/
-	cp -r target/prepare-function-*.jar target/lambda/
-	mv target/lambda/prepare-function-*.jar target/lambda/prepare-function.jar
 	sam build
 	sam validate --lint
 
@@ -24,10 +25,9 @@ publish: build
 	arn_clean=$$(echo "$$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]') ;\
 	aws serverlessrepo put-application-policy \
 		--application-id $$arn_clean \
-		--statements Principals=*,PrincipalOrgIDs=$(org),Actions=Deploy,UnshareApplication \
+        --statements Principals=*,PrincipalOrgIDs=$(org),Actions=Deploy,UnshareApplication \
 		> /dev/null
 
 clean:
-	mvn clean
-	rm -rf target
+	rm -rf out
 	rm -rf .aws-sam

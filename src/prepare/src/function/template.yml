@@ -5,20 +5,17 @@ Parameters:
   StorageBucket:
     Type: String
     Description: The S3 bucket name for the Lagoon
-  PipelineWorkgroup:
-    Type: String
-    Description: The Athena workgroup for the Lagoon
-  WriteDependencies:
+  PrepareDependencies:
     Type: String
     Description: The ARN of the layer containing the library dependencies
-  WriteQueue:
+  PrepareQueue:
     Type: String
     Description: The ARN of the SQS queue for the S3 events
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: mytiki-lagoon-write-function
-    Description: Sub-component of the mytiki.com Lagoon application. Deploys a Lambda function for loading data into the Lagoon.
+    Name: mytiki-lagoon-prepare-function
+    Description: Sub-component of the mytiki.com Lagoon application. Deploys a Lambda function for preparing data for load into the Lagoon.
     Author: mytiki
     SpdxLicenseId: AGPL-3.0-or-later
     LicenseUrl: ../../../../LICENSE
@@ -32,20 +29,20 @@ Metadata:
       - component
 
 Resources:
-  WriteFunction:
+  PrepareFunction:
     Type: AWS::Serverless::Function
     Metadata:
       SkipBuild: True
     Properties:
-      Description: Writes raw data files to Iceberg compatible tables
-      FunctionName: mytiki-lagoon-write
-      CodeUri: ./target/lambda/write-function.jar
-      Handler: com.mytiki.lagoon.write.Handler::handleRequest
+      Description: Prepares data files for loading into Iceberg compatible tables
+      FunctionName: mytiki-lagoon-prepare
+      CodeUri: ./target/lambda/prepare-function.jar
+      Handler: com.mytiki.lagoon.prepare.Handler::handleRequest
       Runtime: java21
       Architectures:
         - x86_64
       MemorySize: 512
-      Timeout: 30
+      Timeout: 600
       Tracing: Active
       LoggingConfig:
         LogFormat: JSON
@@ -54,7 +51,7 @@ Resources:
       Environment:
         Variables:
           AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-sqs-handler
-          ICEBERG_WAREHOUSE: !Sub s3://${StorageBucket}
+          JAVA_TOOL_OPTIONS: --add-exports java.base/sun.nio.ch=ALL-UNNAMED
       ReservedConcurrentExecutions: 1
       PropagateTags: true
       Events:
@@ -65,7 +62,7 @@ Resources:
             FunctionResponseTypes:
               - ReportBatchItemFailures
             BatchSize: 10
-            Queue: !Ref WriteQueue
+            Queue: !Ref PrepareQueue
       Policies:
         - S3CrudPolicy:
             BucketName: !Ref StorageBucket
@@ -76,25 +73,6 @@ Resources:
                 - xray:PutTraceSegments
                 - xray:PutTelemetryRecords
               Resource: "*"
-        - Version: 2012-10-17
-          Statement:
-            - Effect: Allow
-              Action: athena:StartQueryExecution
-              Resource: !Sub arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${PipelineWorkgroup}
-            - Effect: Allow
-              Action:
-                - glue:GetTable
-                - glue:GetTables
-                - glue:CreateTable
-                - glue:UpdateTable
-                - glue:GetDatabase
-                - glue:GetDatabases
-                - glue:CreateDatabase
-                - glue:UpdateDatabase
-              Resource:
-                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
-                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
-                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
       Layers:
-        - !Ref WriteDependencies
+        - !Ref PrepareDependencies
         - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1

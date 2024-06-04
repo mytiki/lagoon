@@ -5,8 +5,8 @@ Transform: AWS::Serverless-2016-10-31
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: mytiki-lagoon-write
-    Description: Sub-component of the mytiki.com Lagoon application. Deploys the Lagoon writing component.
+    Name: mytiki-lagoon-log
+    Description: Sub-component of the mytiki.com Lagoon application. Deploys the Lagoon data log component.
     Author: mytiki
     SpdxLicenseId: AGPL-3.0-or-later
     LicenseUrl: ../../../LICENSE
@@ -19,15 +19,9 @@ Metadata:
       - mytiki
       - component
 
-Parameters:
-  StorageBucket:
-    Type: String
-    Description: The S3 bucket name for the Lagoon
-  PipelineWorkgroup:
-    Type: String
-    Description: The Athena workgroup for the Lagoon
-  LogQueue:
-    Type: String
-    Description: The ARN for the logging message queue
-
 Resources:
+
+Outputs:
+  LogQueue:
+    Description: The ARN for the logging message queue
+    Value: !Ref LogQueue
