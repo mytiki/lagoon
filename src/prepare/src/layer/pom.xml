@@ -70,6 +70,10 @@
             <version>${spark.version}</version>
             <exclusions>
                 <exclusion>
+                    <groupId>org.rocksdb</groupId>
+                    <artifactId>rocksdbjni</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.apache.hadoop</groupId>
                     <artifactId>hadoop-client-api</artifactId>
                 </exclusion>
