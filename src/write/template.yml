@@ -12,7 +12,7 @@ Metadata:
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../../README.md
     HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.2.7
+    SemanticVersion: 0.3.0
     SourceCodeUrl: https://github.com/mytiki/lagoon
     Labels:
       - lagoon
@@ -26,5 +26,8 @@ Parameters:
   PipelineWorkgroup:
     Type: String
     Description: The Athena workgroup for the Lagoon
+  LogQueue:
+    Type: String
+    Description: The ARN for the logging message queue
 
 Resources:

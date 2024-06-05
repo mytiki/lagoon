@@ -52,10 +52,18 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
                 try {
                     ScheduledEvent scheduledEvent = serializer.fromJson(msg.getBody());
                     WriteReq req = new WriteReq(scheduledEvent);
-                    try{ writeService.write(req); } catch (Exception ex){ reportFailure(msg, ex); }
-                }catch (Exception ex){ reportFailure(msg, ex); }
+                    try {
+                        writeService.write(req);
+                    } catch (Exception ex) {
+                        reportFailure(msg, ex);
+                    }
+                } catch (Exception ex) {
+                    reportFailure(msg, ex);
+                }
             });
-        } catch (Exception ex) {reportFailure(event, ex); }
+        } catch (Exception ex) {
+            reportFailure(event, ex);
+        }
         return SQSBatchResponse.builder()
                 .withBatchItemFailures(failures)
                 .build();

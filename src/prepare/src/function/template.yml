@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  StorageBucket:
+    Type: String
+    Description: The S3 bucket name for the Lagoon
+  PrepareDependenciesAws:
+    Type: String
+    Description: The ARN of the layer containing the AWS library dependencies
+  PrepareDependenciesSpark:
+    Type: String
+    Description: The ARN of the layer containing the Spark library dependencies
+  PrepareDependenciesHadoop:
+    Type: String
+    Description: The ARN of the layer containing the Hadoop library dependencies
+  PrepareQueue:
+    Type: String
+    Description: The ARN of the SQS queue for the S3 events
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mytiki-lagoon-prepare-function
+    Description: Sub-component of the mytiki.com Lagoon application. Deploys a Lambda function for preparing data for load into the Lagoon.
+    Author: mytiki
+    SpdxLicenseId: AGPL-3.0-or-later
+    LicenseUrl: ../../../../LICENSE
+    ReadmeUrl: ../../../../README.md
+    HomePageUrl: https://mytiki.com
+    SemanticVersion: 0.3.0
+    SourceCodeUrl: https://github.com/mytiki/lagoon
+    Labels:
+      - lagoon
+      - mytiki
+      - component
+
+Resources:
+  PrepareFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      SkipBuild: True
+    Properties:
+      Description: Prepares data files for loading into Iceberg compatible tables
+      FunctionName: mytiki-lagoon-prepare
+      CodeUri: ./target/lambda/prepare-function.jar
+      Handler: com.mytiki.lagoon.prepare.Handler::handleRequest
+      Runtime: java21
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Timeout: 600
+      Tracing: Active
+      LoggingConfig:
+        LogFormat: JSON
+        ApplicationLogLevel: TRACE
+        SystemLogLevel: DEBUG
+      Environment:
+        Variables:
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-sqs-handler
+          JAVA_TOOL_OPTIONS: --add-exports java.base/sun.nio.ch=ALL-UNNAMED
+      ReservedConcurrentExecutions: 1
+      PropagateTags: true
+      Events:
+        SQSEvent:
+          Type: SQS
+          Properties:
+            Enabled: true
+            FunctionResponseTypes:
+              - ReportBatchItemFailures
+            BatchSize: 10
+            Queue: !Ref PrepareQueue
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref StorageBucket
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - xray:PutTraceSegments
+                - xray:PutTelemetryRecords
+              Resource: "*"
+      Layers:
+        - !Ref PrepareDependenciesAws
+        - !Ref PrepareDependenciesSpark
+        - !Ref PrepareDependenciesHadoop
+        - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1

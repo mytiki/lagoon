@@ -4,9 +4,11 @@ RESOURCES = $(wildcard src/*.yml)
 
 semver:
 	cd src/function && make semver version=$(version)
-	cd src/layer && make semver version=$(version)
+	cd src/layer-aws && make semver version=$(version)
+	cd src/layer-iceberg && make semver version=$(version)
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-function.yml && rm src/write-function.yml.bak
-	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-layer.yml && rm src/write-layer.yml.bak
+	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-layer-aws.yml && rm src/write-layer-aws.yml.bak
+	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-layer-iceberg.yml && rm src/write-layer-iceberg.yml.bak
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
 compile: template.yml
@@ -23,7 +25,8 @@ build: compile
 	sam validate --lint
 
 publish:
-	cd src/layer && make publish org=$(org)
+	cd src/layer-aws && make publish org=$(org)
+	cd src/layer-iceberg && make publish org=$(org)
 	cd src/function && make publish org=$(org)
 	make build
 	sam package --output-template-file .aws-sam/packaged.yaml ;\
@@ -37,6 +40,7 @@ publish:
 
 clean:
 	cd src/function && make clean
-	cd src/layer && make clean
+	cd src/layer-aws && make clean
+	cd src/layer-iceberg && make clean
 	rm -rf out
 	rm -rf .aws-sam

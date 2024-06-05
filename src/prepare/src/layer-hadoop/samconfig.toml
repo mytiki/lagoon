@@ -1,0 +1,13 @@
+version = 0.1
+
+[default.global.parameters]
+stack_name = "lagoon-prepare-layer-hadoop"
+s3_bucket = "mytiki-artifacts-sar"
+s3_prefix = "lagoon/prepare/layer-hadoop"
+region = "us-east-2"
+
+[default.deploy.parameters]
+confirm_changeset = false
+capabilities = [
+    "CAPABILITY_AUTO_EXPAND"
+]

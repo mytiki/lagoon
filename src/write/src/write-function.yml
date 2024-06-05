@@ -3,9 +3,10 @@ WriteFunction:
   Properties:
     Location:
       ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-write-function
-      SemanticVersion: 0.2.7
+      SemanticVersion: 0.3.0
     Parameters:
       StorageBucket: !Ref StorageBucket
       PipelineWorkgroup: !Ref PipelineWorkgroup
-      WriteDependencies: !GetAtt WriteLayer.Outputs.WriteLayer
+      WriteDependenciesAws: !GetAtt WriteLayerAws.Outputs.WriteLayer
+      WriteDependenciesIceberg: !GetAtt WriteLayerIceberg.Outputs.WriteLayer
       WriteQueue: !GetAtt WriteQueue.Arn

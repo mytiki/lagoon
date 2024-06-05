@@ -7,7 +7,7 @@ WriteEventRule:
       - Arn: !GetAtt WriteQueue.Arn
         Id: !GetAtt WriteQueue.QueueName
         SqsParameters:
-          MessageGroupId: lagoon
+          MessageGroupId: lagoon-write
     EventPattern:
       source:
         - aws.s3

@@ -1,7 +1,7 @@
-WriteDlq:
+LogQueue:
   Type: AWS::SQS::Queue
   Properties:
-    QueueName: mytiki-lagoon-dlq.fifo
+    QueueName: mytiki-lagoon-log.fifo
     ContentBasedDeduplication: true
     DeduplicationScope: messageGroup
     FifoQueue: true
@@ -10,4 +10,5 @@ WriteDlq:
     RedriveAllowPolicy:
       redrivePermission: byQueue
       sourceQueueArns:
-        - !Sub arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:mytiki-lagoon.fifo
+        - !Sub arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:mytiki-lagoon-write.fifo
+        - !Sub arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:mytiki-lagoon-prepare.fifo

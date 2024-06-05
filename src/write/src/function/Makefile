@@ -6,7 +6,8 @@ semver:
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
 compile:
-	cd ../layer && make install
+	cd ../layer-aws && make install
+	cd ../layer-iceberg && make install
 	mvn compile
 
 build: compile

@@ -1,0 +1,12 @@
+PrepareQueue:
+  Type: AWS::SQS::Queue
+  Properties:
+    QueueName: mytiki-lagoon-prepare.fifo
+    ContentBasedDeduplication: true
+    DeduplicationScope: messageGroup
+    FifoQueue: true
+    FifoThroughputLimit: perMessageGroupId
+    MessageRetentionPeriod: 604800
+    RedrivePolicy:
+      deadLetterTargetArn: !Ref LogQueue
+      maxReceiveCount: 5

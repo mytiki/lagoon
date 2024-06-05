@@ -1,12 +1,12 @@
 WriteQueue:
   Type: AWS::SQS::Queue
   Properties:
-    QueueName: mytiki-lagoon.fifo
+    QueueName: mytiki-lagoon-write.fifo
     ContentBasedDeduplication: true
     DeduplicationScope: messageGroup
     FifoQueue: true
     FifoThroughputLimit: perMessageGroupId
     MessageRetentionPeriod: 604800
     RedrivePolicy:
-      deadLetterTargetArn: !GetAtt WriteDlq.Arn
+      deadLetterTargetArn: !Ref LogQueue
       maxReceiveCount: 5

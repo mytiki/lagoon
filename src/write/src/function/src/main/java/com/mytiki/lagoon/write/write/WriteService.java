@@ -32,7 +32,7 @@ public class WriteService {
 
     public void write(WriteReq req) {
         logger.debug("WriteReq: {}", req);
-        if(!req.getType().equals("parquet"))
+        if (!req.getType().equals("parquet"))
             throw new ApiExceptionBuilder(404)
                     .message("Bad Request")
                     .detail("Unsupported file type")
@@ -49,7 +49,7 @@ public class WriteService {
 
         HadoopInputFile file = storage.openFile(req.getPath());
         try (ParquetFileReader reader = ParquetFileReader.open(file)) {
-            if(!iceberg.tableExists(tableId)) {
+            if (!iceberg.tableExists(tableId)) {
                 logger.debug("creating table: {}", tableId);
                 Schema inferred = storage.readSchema(reader);
                 List<Types.NestedField> fields = new ArrayList<>(inferred.columns());
@@ -74,7 +74,7 @@ public class WriteService {
             transaction.newAppend().appendFile(dataFile).commit();
             transaction.commitTransaction();
             athena.setEtlLoadedAt(req);
-        }catch (IOException e) {
+        } catch (IOException e) {
             logger.error("failed to read file: {}", req.getPath());
             throw new ApiExceptionBuilder(403)
                     .message("Forbidden")

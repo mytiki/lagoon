@@ -12,9 +12,7 @@ import org.apache.parquet.hadoop.ParquetFileReader;
 import org.apache.parquet.hadoop.metadata.ParquetMetadata;
 import org.apache.parquet.hadoop.util.HadoopInputFile;
 import org.apache.parquet.schema.MessageType;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.providers.DefaultAwsRegionProviderChain;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -27,6 +25,7 @@ import java.io.IOException;
 
 public class StorageFacade {
     protected static final Logger logger = Initialize.logger(StorageFacade.class);
+    private static final String TRASH_PREFIX = "trash";
     private final S3Client s3;
     private final Configuration clientConfig;
 
@@ -60,19 +59,14 @@ public class StorageFacade {
                 .build();
         CopyObjectResponse copyRsp = s3.copyObject(copyReq);
         logger.debug("copy file: {}", copyRsp);
-        DeleteObjectRequest deleteReq = DeleteObjectRequest.builder()
-                .bucket(bucket)
-                .key(src)
-                .build();
-        DeleteObjectResponse deleteRsp = s3.deleteObject(deleteReq);
-        logger.debug("delete file: {}", deleteRsp);
+        trash(bucket, src);
     }
 
     public HadoopInputFile openFile(String path) {
         try {
             Path s3Path = new Path("s3a://" + path);
             return HadoopInputFile.fromPath(s3Path, clientConfig);
-        }catch (IOException e) {
+        } catch (IOException e) {
             logger.error("failed to open file: {}", path);
             throw new ApiExceptionBuilder(403)
                     .message("Forbidden")
@@ -86,5 +80,23 @@ public class StorageFacade {
         ParquetMetadata footer = reader.getFooter();
         MessageType parquetSchema = footer.getFileMetaData().getSchema();
         return AvroSchemaUtil.toIceberg(converter.convert(parquetSchema));
+    }
+
+    public void trash(String bucket, String key) {
+        logger.debug("trash file: {}/{}", bucket, key);
+        CopyObjectRequest copyReq = CopyObjectRequest.builder()
+                .sourceBucket(bucket)
+                .sourceKey(key)
+                .destinationBucket(bucket)
+                .destinationKey(String.format("%s/%s", TRASH_PREFIX, key))
+                .build();
+        CopyObjectResponse copyRsp = s3.copyObject(copyReq);
+        logger.debug("trash file: {}", copyRsp);
+        DeleteObjectRequest deleteReq = DeleteObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build();
+        DeleteObjectResponse deleteRsp = s3.deleteObject(deleteReq);
+        logger.debug("trash file: {}", deleteRsp);
     }
 }

@@ -1,0 +1,12 @@
+PrepareFunction:
+  Type: AWS::Serverless::Application
+  Properties:
+    Location:
+      ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-prepare-function
+      SemanticVersion: 0.3.0
+    Parameters:
+      StorageBucket: !Ref StorageBucket
+      PrepareDependenciesAws: !GetAtt PrepareLayerAws.Outputs.PrepareLayer
+      PrepareDependenciesSpark: !GetAtt PrepareLayerSpark.Outputs.PrepareLayer
+      PrepareDependenciesHadoop: !GetAtt PrepareLayerHadoop.Outputs.PrepareLayer
+      PrepareQueue: !GetAtt PrepareQueue.Arn
