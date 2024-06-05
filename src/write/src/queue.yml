@@ -8,5 +8,5 @@ WriteQueue:
     FifoThroughputLimit: perMessageGroupId
     MessageRetentionPeriod: 604800
     RedrivePolicy:
-      deadLetterTargetArn: !GetAtt LogQueue.Arn
+      deadLetterTargetArn: !Ref LogQueue
       maxReceiveCount: 5
