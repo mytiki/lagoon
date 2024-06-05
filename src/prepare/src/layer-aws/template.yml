@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: mytiki-lagoon-prepare-layer
+    Name: mytiki-lagoon-prepare-layer-aws
     Description: Sub-component of the mytiki.com Lagoon application. Deploys a Lambda dependency layer for the Lagoon Prepare function.
     Author: mytiki
     SpdxLicenseId: AGPL-3.0-or-later
@@ -21,7 +21,7 @@ Resources:
   PrepareLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: mytiki-lagoon-prepare-dependencies
+      LayerName: mytiki-lagoon-prepare-aws-dependencies
       Description: Dependencies for the prepare function
       ContentUri: ./target/lambda/layer-content.zip
       CompatibleRuntimes:

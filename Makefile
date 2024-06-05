@@ -15,10 +15,6 @@ build:
 	sam validate --lint
 
 publish:
-	cd src/write/src/layer && make publish org=$(org)
-	cd src/write/src/function && make publish org=$(org)
-	cd src/prepare/src/layer && make publish org=$(org)
-	cd src/prepare/src/function && make publish org=$(org)
 	cd src/log && make publish org=$(org)
 	cd src/storage && make publish org=$(org)
 	cd src/pipeline && make publish org=$(org)

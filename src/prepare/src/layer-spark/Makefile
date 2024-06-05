@@ -2,19 +2,15 @@
 
 semver:
 	xmlstarlet ed -L -u "_:project/_:version" -v "$(version)" pom.xml
-	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='prepare-layer']/_:version" -v "$(version)" pom.xml
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
-compile:
-	cd ../layer-aws && make install
-	cd ../layer-spark && make install
-	mvn compile
+install:
+	mvn install
 
-build: compile
-	mvn package
-	mkdir -p target/lambda/
-	cp -r target/prepare-function-*.jar target/lambda/
-	mv target/lambda/prepare-function-*.jar target/lambda/prepare-function.jar
+build: install
+	mkdir -p target/lambda/java/lib
+	cp -r target/prepare-layer-*.jar target/lambda/java/lib
+	cd target/lambda && zip -r layer-content.zip java
 	sam build
 	sam validate --lint
 
@@ -25,9 +21,8 @@ publish: build
 	arn_clean=$$(echo "$$arn" | sed 's/[\"'\'']//g' | tr -d '[:space:]') ;\
 	aws serverlessrepo put-application-policy \
 		--application-id $$arn_clean \
-		--statements Principals=*,PrincipalOrgIDs=$(org),Actions=Deploy,UnshareApplication \
+        --statements Principals=*,PrincipalOrgIDs=$(org),Actions=Deploy,UnshareApplication \
 		> /dev/null
-
 clean:
 	mvn clean
 	rm -rf target
