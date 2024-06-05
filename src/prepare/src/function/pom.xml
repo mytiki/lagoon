@@ -30,6 +30,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>com.mytiki.lagoon</groupId>
+      <artifactId>prepare-layer-hadoop</artifactId>
+      <version>0.3.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
       <version>5.10.2</version>
