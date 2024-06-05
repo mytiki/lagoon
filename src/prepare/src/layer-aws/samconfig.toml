@@ -1,7 +1,7 @@
 version = 0.1
 
 [default.global.parameters]
-stack_name = "lagoon-prepare-layer"
+stack_name = "lagoon-prepare-layer-aws"
 s3_bucket = "mytiki-artifacts-sar"
 s3_prefix = "lagoon/prepare/layer-aws"
 region = "us-east-2"
