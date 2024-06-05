@@ -24,4 +24,4 @@ Resources:
 Outputs:
   LogQueue:
     Description: The ARN for the logging message queue
-    Value: !Ref LogQueue
+    Value: !GetAtt LogQueue.Arn
