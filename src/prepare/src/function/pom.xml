@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mytiki.lagoon</groupId>
   <artifactId>prepare-function</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <packaging>jar</packaging>
   <name>Lagoon: Iceberg Prepare Function</name>
   <properties>
@@ -20,19 +20,19 @@
     <dependency>
       <groupId>com.mytiki.lagoon</groupId>
       <artifactId>prepare-layer-aws</artifactId>
-      <version>0.3.0</version>
+      <version>0.3.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.mytiki.lagoon</groupId>
       <artifactId>prepare-layer-spark</artifactId>
-      <version>0.3.0</version>
+      <version>0.3.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.mytiki.lagoon</groupId>
       <artifactId>prepare-layer-hadoop</artifactId>
-      <version>0.3.0</version>
+      <version>0.3.2</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
