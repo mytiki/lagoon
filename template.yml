@@ -32,6 +32,12 @@ Metadata:
       - tiki
 
 Resources:
+  Log:
+    Type: AWS::Serverless::Application
+    Properties:
+      Location:
+        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-log
+        SemanticVersion: 0.3.0
   Storage:
     Type: AWS::Serverless::Application
     Properties:
@@ -57,7 +63,7 @@ Resources:
       Parameters:
         StorageBucket: !GetAtt Storage.Outputs.StorageBucket
         PipelineWorkgroup: !GetAtt Pipeline.Outputs.PipelineWorkgroup
-        LogQueue: !GetAtt
+        LogQueue: !GetAtt Log.Outputs.LogQueue
   Prepare:
     Type: AWS::Serverless::Application
     Properties:
@@ -66,4 +72,4 @@ Resources:
         SemanticVersion: 0.3.0
       Parameters:
         StorageBucket: !GetAtt Storage.Outputs.StorageBucket
-        LogQueue: !GetAtt
+        LogQueue: !GetAtt Log.Outputs.LogQueue
