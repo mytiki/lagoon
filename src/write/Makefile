@@ -25,7 +25,8 @@ build: compile
 	sam validate --lint
 
 publish:
-	cd src/layer && make publish org=$(org)
+	cd src/layer-aws && make publish org=$(org)
+	cd src/layer-iceberg && make publish org=$(org)
 	cd src/function && make publish org=$(org)
 	make build
 	sam package --output-template-file .aws-sam/packaged.yaml ;\
