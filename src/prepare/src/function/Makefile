@@ -8,6 +8,7 @@ semver:
 compile:
 	cd ../layer-aws && make install
 	cd ../layer-spark && make install
+	cd ../layer-hadoop && make install
 	mvn compile
 
 build: compile

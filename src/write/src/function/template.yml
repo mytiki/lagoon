@@ -8,9 +8,12 @@ Parameters:
   PipelineWorkgroup:
     Type: String
     Description: The Athena workgroup for the Lagoon
-  WriteDependencies:
+  WriteDependenciesAws:
     Type: String
-    Description: The ARN of the layer containing the library dependencies
+    Description: The ARN of the layer containing the AWS library dependencies
+  WriteDependenciesIceberg:
+    Type: String
+    Description: The ARN of the layer containing the Iceberg library dependencies
   WriteQueue:
     Type: String
     Description: The ARN of the SQS queue for the S3 events
@@ -96,5 +99,6 @@ Resources:
                 - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
                 - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
       Layers:
-        - !Ref WriteDependencies
+        - !Ref WriteDependenciesAws
+        - !Ref WriteDependenciesIceberg
         - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1

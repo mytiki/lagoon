@@ -5,9 +5,15 @@ Parameters:
   StorageBucket:
     Type: String
     Description: The S3 bucket name for the Lagoon
-  PrepareDependencies:
+  PrepareDependenciesAws:
     Type: String
-    Description: The ARN of the layer containing the library dependencies
+    Description: The ARN of the layer containing the AWS library dependencies
+  PrepareDependenciesSpark:
+    Type: String
+    Description: The ARN of the layer containing the Spark library dependencies
+  PrepareDependenciesHadoop:
+    Type: String
+    Description: The ARN of the layer containing the Hadoop library dependencies
   PrepareQueue:
     Type: String
     Description: The ARN of the SQS queue for the S3 events
@@ -74,5 +80,7 @@ Resources:
                 - xray:PutTelemetryRecords
               Resource: "*"
       Layers:
-        - !Ref PrepareDependencies
+        - !Ref PrepareDependenciesAws
+        - !Ref PrepareDependenciesSpark
+        - !Ref PrepareDependenciesHadoop
         - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1

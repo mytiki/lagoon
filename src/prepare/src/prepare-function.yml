@@ -6,5 +6,7 @@ PrepareFunction:
       SemanticVersion: 0.3.0
     Parameters:
       StorageBucket: !Ref StorageBucket
-      PrepareDependencies: !GetAtt PrepareLayer.Outputs.PrepareLayer
+      PrepareDependenciesAws: !GetAtt PrepareLayerAws.Outputs.PrepareLayer
+      PrepareDependenciesSpark: !GetAtt PrepareLayerSpark.Outputs.PrepareLayer
+      PrepareDependenciesHadoop: !GetAtt PrepareLayerHadoop.Outputs.PrepareLayer
       PrepareQueue: !GetAtt PrepareQueue.Arn

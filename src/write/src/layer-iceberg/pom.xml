@@ -6,55 +6,78 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mytiki.lagoon</groupId>
-  <artifactId>prepare-layer-spark</artifactId>
+  <artifactId>write-layer-iceberg</artifactId>
   <version>0.3.0</version>
   <packaging>jar</packaging>
-  <name>Lagoon: Iceberg Prepare Layer Spark</name>
+  <name>Lagoon: Iceberg Writer Layer Iceberg</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
-    <spark.version>3.5.1</spark.version>
+    <iceberg.version>1.5.2</iceberg.version>
+    <parquet.version>1.14.0</parquet.version>
+    <hadoop.version>3.4.0</hadoop.version>
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-avro_2.13</artifactId>
-      <version>${spark.version}</version>
+      <groupId>org.apache.parquet</groupId>
+      <artifactId>parquet-avro</artifactId>
+      <version>${parquet.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.parquet</groupId>
+      <artifactId>parquet-hadoop</artifactId>
+      <version>${parquet.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>${hadoop.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-client-api</artifactId>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-api</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-client-runtime</artifactId>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-reload4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.13</artifactId>
-      <version>${spark.version}</version>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-mapreduce-client-core</artifactId>
+      <version>${hadoop.version}</version>
       <exclusions>
         <exclusion>
-          <groupId>org.rocksdb</groupId>
-          <artifactId>rocksdbjni</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-client-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-client-runtime</artifactId>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-reload4j</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-aws</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>software.amazon.awssdk</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+      <version>${hadoop.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.15.2</version>
+      <artifactId>jackson-core</artifactId>
+      <version>2.17.1</version>
     </dependency>
   </dependencies>
   <build>

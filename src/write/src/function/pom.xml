@@ -19,7 +19,13 @@
   <dependencies>
     <dependency>
       <groupId>com.mytiki.lagoon</groupId>
-      <artifactId>write-layer</artifactId>
+      <artifactId>write-layer-aws</artifactId>
+      <version>0.3.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.mytiki.lagoon</groupId>
+      <artifactId>write-layer-iceberg</artifactId>
       <version>0.3.0</version>
       <scope>provided</scope>
     </dependency>

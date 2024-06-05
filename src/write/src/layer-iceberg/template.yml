@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 
 Metadata:
   AWS::ServerlessRepo::Application:
-    Name: mytiki-lagoon-write-layer
+    Name: mytiki-lagoon-write-layer-iceberg
     Description: Sub-component of the mytiki.com Lagoon application. Deploys a Lambda dependency layer for the Lagoon Write function.
     Author: mytiki
     SpdxLicenseId: AGPL-3.0-or-later
@@ -21,7 +21,7 @@ Resources:
   WriteLayer:
     Type: AWS::Serverless::LayerVersion
     Properties:
-      LayerName: mytiki-lagoon-write-dependencies
+      LayerName: mytiki-lagoon-write-dependencies-iceberg
       Description: Dependencies for the write function
       ContentUri: ./target/lambda/layer-content.zip
       CompatibleRuntimes:
