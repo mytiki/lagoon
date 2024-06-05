@@ -2,7 +2,8 @@
 
 semver:
 	xmlstarlet ed -L -u "_:project/_:version" -v "$(version)" pom.xml
-	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='write-layer']/_:version" -v "$(version)" pom.xml
+	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='write-layer-aws']/_:version" -v "$(version)" pom.xml
+	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='write-layer-iceberg']/_:version" -v "$(version)" pom.xml
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
 compile:
