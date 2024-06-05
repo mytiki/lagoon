@@ -10,7 +10,7 @@ semver:
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/prepare-function.yml && rm src/prepare-function.yml.bak
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/prepare-layer-aws.yml && rm src/prepare-layer-aws.yml.bak
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/prepare-layer-spark.yml && rm src/prepare-layer-spark.yml.bak
-	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/prepare-layer-spark.yml && rm src/prepare-layer-hadoop.yml.bak
+	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/prepare-layer-hadoop.yml && rm src/prepare-layer-hadoop.yml.bak
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
 compile: template.yml

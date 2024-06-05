@@ -7,8 +7,8 @@ semver:
 	cd src/layer-aws && make semver version=$(version)
 	cd src/layer-iceberg && make semver version=$(version)
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-function.yml && rm src/write-function.yml.bak
-	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-layer.yml && rm src/write-layer-aws.yml.bak
-	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-layer.yml && rm src/write-layer-iceberg.yml.bak
+	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-layer-aws.yml && rm src/write-layer-aws.yml.bak
+	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' src/write-layer-iceberg.yml && rm src/write-layer-iceberg.yml.bak
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
 compile: template.yml
