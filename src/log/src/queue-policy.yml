@@ -7,6 +7,6 @@ LogQueuePolicy:
       Statement:
         - Effect: Allow
           Principal:
-            AWS: !Sub arn:aws:sts:${AWS::Region}:${AWS::AccountId}:assumed-role/mytiki-lagoon-prepare*
+            AWS: !Sub arn:aws:iam::${AWS::AccountId}:root
           Action: SQS:SendMessage
           Resource: !GetAtt LogQueue.Arn
