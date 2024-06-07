@@ -2,7 +2,8 @@ version = 0.1
 
 [default.global.parameters]
 stack_name = "lagoon-log"
-s3_bucket = "mytiki-artifacts-sar"
+#s3_bucket = "mytiki-artifacts-sar"
+s3_bucket = "mytiki-sam-deploy-sandbox-mike-us-east-2"
 s3_prefix = "lagoon/log"
 region = "us-east-2"
 template_file = "out/template.yml"

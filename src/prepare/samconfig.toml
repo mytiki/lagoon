@@ -2,11 +2,16 @@ version = 0.1
 
 [default.global.parameters]
 stack_name = "lagoon-prepare"
-s3_bucket = "mytiki-artifacts-sar"
+#s3_bucket = "mytiki-artifacts-sar"
+s3_bucket = "mytiki-sam-deploy-sandbox-mike-us-east-2"
 s3_prefix = "lagoon/prepare"
 region = "us-east-2"
 template_file = "out/template.yml"
 
 [default.deploy.parameters]
 confirm_changeset = false
-capabilities = [ "CAPABILITY_AUTO_EXPAND" ]
+capabilities = [ "CAPABILITY_AUTO_EXPAND", "CAPABILITY_NAMED_IAM" ]
+parameter_overrides = [
+  "StorageBucket=mytiki-mike-dummy",
+  "LogQueue=arn:aws:sqs:us-east-2:590184107666:mytiki-lagoon-log.fifo"
+]
