@@ -1,0 +1,12 @@
+LogQueuePolicy:
+  Type: AWS::SQS::QueuePolicy
+  Properties:
+    Queues:
+      - !Ref LogQueue
+    PolicyDocument:
+      Statement:
+        - Effect: Allow
+          Principal:
+            AWS: !Sub arn:aws:sts:${AWS::Region}:${AWS::AccountId}:assumed-role/mytiki-lagoon-prepare*
+          Action: SQS:SendMessage
+          Resource: !GetAtt LogQueue.Arn

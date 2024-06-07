@@ -4,10 +4,9 @@ PrepareEventRule:
     Name: mytiki-lagoon-prepare
     State: ENABLED
     Targets:
-      - Arn: !GetAtt PrepareQueue.Arn
-        Id: !GetAtt PrepareQueue.QueueName
-        SqsParameters:
-          MessageGroupId: lagoon-prepare
+      - Arn: !Ref PrepareStepFunction
+        Id: !GetAtt PrepareStepFunction.Name
+        RoleArn: !GetAtt EventRole.Arn
     EventPattern:
       source:
         - aws.s3
