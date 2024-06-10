@@ -10,8 +10,9 @@ build:
 	sam build
 	sam validate --lint
 
-publish: build
+publish:
 	cd src/s3-objects && make publish org=$(org)
+	make build
 	sam package --output-template-file .aws-sam/packaged.yaml ;\
 	result=$$(sam publish --template .aws-sam/packaged.yaml) ;\
 	arn=$$(echo "$$result" | egrep -o 'arn:aws:serverlessrepo:[^ ]+' | head -n 1) ;\
