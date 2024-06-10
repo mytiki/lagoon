@@ -34,7 +34,7 @@ Resources:
           - LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED
     Properties:
       Runtime: python3.12
-      CodeUri: lambda
+      CodeUri: src
       Handler: macro.handler
       Policies: AmazonS3FullAccess
       Environment:
