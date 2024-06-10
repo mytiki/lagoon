@@ -3,6 +3,7 @@
 RESOURCES = $(wildcard src/*.yml src/*/*.yml src/*/*/*.yml)
 
 semver:
+	cd src/macro && make semver version=$(version)
 	cd src/log && make semver version=$(version)
 	cd src/storage && make semver version=$(version)
 	cd src/pipeline && make semver version=$(version)
@@ -15,6 +16,7 @@ build:
 	sam validate --lint
 
 publish:
+	cd src/macro && make publish org=$(org)
 	cd src/log && make publish org=$(org)
 	cd src/storage && make publish org=$(org)
 	cd src/pipeline && make publish org=$(org)
@@ -31,6 +33,7 @@ publish:
 		> /dev/null
 
 clean:
+	cd src/macro && make clean
 	cd src/log && make clean
 	cd src/storage && make clean
 	cd src/pipeline && make clean

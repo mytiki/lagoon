@@ -9,3 +9,8 @@
 out
 target
 .aws-sam
+
+# Python
+venv
+
+

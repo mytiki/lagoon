@@ -1,0 +1,48 @@
+Transform: AWS::Serverless-2016-10-31
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: mytiki-lagoon-macro-s3-objects
+    Description: Sub-component of the mytiki.com Lagoon application. Deploys the a macro for uploading s3 objects.
+    Author: mytiki
+    SpdxLicenseId: Apache-2.0
+    LicenseUrl: ../../../../LICENSE
+    ReadmeUrl: ../../../../README.md
+    HomePageUrl: https://mytiki.com
+    SemanticVersion: 0.3.7
+    SourceCodeUrl: https://github.com/mytiki/lagoon
+    Labels:
+      - lagoon
+      - mytiki
+      - component
+
+Resources:
+  ResourceFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.11
+      CodeUri: src
+      Handler: resource.handler
+      Policies: AmazonS3FullAccess
+
+  MacroFunction:
+    Type: AWS::Serverless::Function
+    Metadata:
+      guard:
+        SuppressedRules:
+          - LAMBDA_INSIDE_VPC
+          - LAMBDA_FUNCTION_PUBLIC_ACCESS_PROHIBITED
+    Properties:
+      Runtime: python3.11
+      CodeUri: lambda
+      Handler: macro.handler
+      Policies: AmazonS3FullAccess
+      Environment:
+        Variables:
+          LAMBDA_ARN: !GetAtt ResourceFunction.Arn
+
+  Macro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: S3Objects
+      FunctionName: !GetAtt MacroFunction.Arn
