@@ -3,7 +3,7 @@
 RESOURCES = $(wildcard src/*.yml)
 
 semver:
-	cd s3_objects && make semver version=$(version)
+	cd s3-objects && make semver version=$(version)
 	sed -i.bak 's/SemanticVersion: [0-9]*\.[0-9]*\.[0-9]*/SemanticVersion: $(version)/' template.yml && rm template.yml.bak
 
 build:
