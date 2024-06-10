@@ -9,8 +9,8 @@ Metadata:
     Description: Sub-component of the mytiki.com Lagoon application. Deploys the CloudFormation macros.
     Author: mytiki
     SpdxLicenseId: AGPL-3.0-or-later
-    LicenseUrl: ../../../LICENSE
-    ReadmeUrl: ../../../README.md
+    LicenseUrl: ../../LICENSE
+    ReadmeUrl: ../../README.md
     HomePageUrl: https://mytiki.com
     SemanticVersion: 0.3.8
     SourceCodeUrl: https://github.com/mytiki/lagoon

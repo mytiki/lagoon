@@ -6,8 +6,8 @@ Metadata:
     Description: Sub-component of the mytiki.com Lagoon application. Deploys the a macro for uploading s3 objects.
     Author: mytiki
     SpdxLicenseId: Apache-2.0
-    LicenseUrl: ../../../../LICENSE
-    ReadmeUrl: ../../../../README.md
+    LicenseUrl: ../../../LICENSE
+    ReadmeUrl: ../../../README.md
     HomePageUrl: https://mytiki.com
     SemanticVersion: 0.3.8
     SourceCodeUrl: https://github.com/mytiki/lagoon
