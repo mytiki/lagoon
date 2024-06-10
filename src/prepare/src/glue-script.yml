@@ -1,0 +1,9 @@
+GlueScript:
+  Type: AWS::S3::Object
+  Properties:
+    Target:
+      Bucket: !Ref StorageBucket
+      Key: assets/scripts/prepare/script.py
+      ContentType: text/x-python
+    Body: Hello, World!
+
