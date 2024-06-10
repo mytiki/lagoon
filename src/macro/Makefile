@@ -11,7 +11,7 @@ build:
 	sam validate --lint
 
 publish:
-	cd src/s3-objects && make publish org=$(org)
+	cd s3-objects && make publish org=$(org)
 	make build
 	sam package --output-template-file .aws-sam/packaged.yaml ;\
 	result=$$(sam publish --template .aws-sam/packaged.yaml) ;\
