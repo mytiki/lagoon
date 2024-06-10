@@ -40,12 +40,14 @@ Resources:
         SemanticVersion: 0.3.8
   Log:
     Type: AWS::Serverless::Application
+    DependsOn: Macro
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-log
         SemanticVersion: 0.3.8
   Storage:
     Type: AWS::Serverless::Application
+    DependsOn: Macro
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-storage
