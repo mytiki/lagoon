@@ -20,7 +20,7 @@ Resources:
   ResourceFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Runtime: python3.11
+      Runtime: python3.12
       CodeUri: src
       Handler: resource.handler
       Policies: AmazonS3FullAccess
