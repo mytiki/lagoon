@@ -1,7 +1,9 @@
 #file: noinspection YamlFormatViolation
 
 AWSTemplateFormatVersion: 2010-09-09
-Transform: AWS::Serverless-2016-10-31
+Transform:
+  - AWS::Serverless-2016-10-31
+  - S3Objects
 
 Metadata:
   AWS::ServerlessRepo::Application:
