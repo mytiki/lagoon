@@ -32,22 +32,14 @@ Metadata:
       - tiki
 
 Resources:
-  Macro:
-    Type: AWS::Serverless::Application
-    Properties:
-      Location:
-        ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-macro
-        SemanticVersion: 0.3.11
   Log:
     Type: AWS::Serverless::Application
-    DependsOn: Macro
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-log
         SemanticVersion: 0.3.11
   Storage:
     Type: AWS::Serverless::Application
-    DependsOn: Macro
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-storage
