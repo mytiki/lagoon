@@ -81,3 +81,8 @@ Resources:
       Parameters:
         StorageBucket: !GetAtt Storage.Outputs.StorageBucket
         LogQueue: !GetAtt Log.Outputs.LogQueue
+
+Outputs:
+  Location:
+    Description: The location of your Lagoon
+    Value: !Sub s3://{Storage.Outputs.StorageBucket}
