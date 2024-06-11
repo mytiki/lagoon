@@ -17,7 +17,7 @@ Metadata:
     LicenseUrl: LICENSE
     ReadmeUrl: README.md
     HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.3.9
+    SemanticVersion: 0.3.10
     SourceCodeUrl: https://github.com/mytiki/lagoon
     Labels:
       - lagoon
@@ -37,21 +37,21 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-macro
-        SemanticVersion: 0.3.9
+        SemanticVersion: 0.3.10
   Log:
     Type: AWS::Serverless::Application
     DependsOn: Macro
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-log
-        SemanticVersion: 0.3.9
+        SemanticVersion: 0.3.10
   Storage:
     Type: AWS::Serverless::Application
     DependsOn: Macro
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-storage
-        SemanticVersion: 0.3.9
+        SemanticVersion: 0.3.10
       Parameters:
         AccessRole: !Ref AccessRole
   Pipeline:
@@ -59,7 +59,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-pipeline
-        SemanticVersion: 0.3.9
+        SemanticVersion: 0.3.10
       Parameters:
         StorageBucket: !GetAtt Storage.Outputs.StorageBucket
   Write:
@@ -67,7 +67,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-write
-        SemanticVersion: 0.3.9
+        SemanticVersion: 0.3.10
       Parameters:
         StorageBucket: !GetAtt Storage.Outputs.StorageBucket
         PipelineWorkgroup: !GetAtt Pipeline.Outputs.PipelineWorkgroup
@@ -77,7 +77,7 @@ Resources:
     Properties:
       Location:
         ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-prepare
-        SemanticVersion: 0.3.9
+        SemanticVersion: 0.3.10
       Parameters:
         StorageBucket: !GetAtt Storage.Outputs.StorageBucket
         LogQueue: !GetAtt Log.Outputs.LogQueue
