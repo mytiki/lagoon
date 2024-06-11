@@ -1,9 +1,7 @@
 #file: noinspection YamlFormatViolation
 
 AWSTemplateFormatVersion: 2010-09-09
-Transform:
-  - AWS::Serverless-2016-10-31
-  - S3Objects
+Transform: AWS::Serverless-2016-10-31
 
 Metadata:
   AWS::ServerlessRepo::Application:
@@ -14,7 +12,7 @@ Metadata:
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../../README.md
     HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.3.10
+    SemanticVersion: 0.3.11
     SourceCodeUrl: https://github.com/mytiki/lagoon
     Labels:
       - lagoon
