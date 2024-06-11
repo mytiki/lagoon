@@ -9,6 +9,7 @@
 out
 target
 .aws-sam
+tmp
 
 # Python
 venv
