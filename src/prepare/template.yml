@@ -12,7 +12,7 @@ Metadata:
     LicenseUrl: ../../../LICENSE
     ReadmeUrl: ../../../README.md
     HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.3.10
+    SemanticVersion: 0.3.11
     SourceCodeUrl: https://github.com/mytiki/lagoon
     Labels:
       - lagoon
