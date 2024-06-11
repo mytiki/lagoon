@@ -77,4 +77,4 @@ Resources:
 Outputs:
   Location:
     Description: The location of your Lagoon
-    Value: !Sub s3://{Storage.Outputs.StorageBucket}
+    Value: !Sub s3://${Storage.Outputs.StorageBucket}
