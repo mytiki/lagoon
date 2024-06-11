@@ -16,13 +16,14 @@ Create consumption-ready data. Aggregate raw application data in an Iceberg data
 [![docs](https://img.shields.io/badge/GET%20STARTED-DOCS-FFE68F?style=for-the-badge&logo=readme&logoColor=white)](https://docs.mytiki.com/docs/productization-overview)
 
 ### Quick Start
-
-This guide is for self-hosting a Lagoon in your own AWS account. For our managed service, just book a [call with our team](https://cal.com/team/tiki/beta).
+This guide is for self-hosting a Lagoon in your own AWS account. For our managed service, just book a [call with our team](https://cal.com/team/tiki/beta). Install the [AWS CLI](https://aws.amazon.com/cli/) before beginning. Requires a profile with permissions to create S3, Glue, SQS, EventBridge, Athena, Lambda, and IAM resources.
 
 1. **[Request an Access Role](https://cal.com/team/tiki/beta)** for **free** from our team. 
-2. **[Open the SAR application](https://us-east-2.console.aws.amazon.com/lambda/home#/create/app?applicationId=arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon)** in your AWS account. 
-3. Enter the Access Role ARN in the `AccessRole` field and click **Deploy**.
-
+2. Run the following command in a terminal with the AWS CLI installed:
+    ```shell
+    bash <(curl -s https://raw.githubusercontent.com/mytiki/lagoon/main/deploy.sh)
+    ```
+   
 Done! Look for the `serverlessrepo-mytiki-lagoon` stack in your CloudFormation console. The main entry point for interacting with your Lagoon is the S3 bucket named `mytiki-lagoon-<account-id>-<region>`.
 
 ## About
