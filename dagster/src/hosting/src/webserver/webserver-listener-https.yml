@@ -1,0 +1,11 @@
+WebserverListenerHttps:
+  Type: AWS::ElasticLoadBalancingV2::Listener
+  Properties:
+    DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref WebserverTarget
+    LoadBalancerArn: !Ref WebserverALB
+    Port: 443
+    Protocol: HTTPS
+    Certificates:
+      - CertificateArn: !Ref WebserverSSLCertificate

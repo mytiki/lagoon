@@ -1,0 +1,11 @@
+DaemonNLB:
+  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  Properties:
+    Type: network
+    Name: dagster-daemon
+    Scheme: internal
+    Subnets:
+      - !Ref VPCSubnetA
+      - !Ref VPCSubnetB
+    SecurityGroups:
+      - !Ref ClusterSG

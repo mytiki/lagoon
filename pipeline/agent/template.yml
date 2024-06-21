@@ -1,0 +1,6 @@
+#file: noinspection YamlFormatViolation
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Cluster hosting and compute for Lagoon pipelines
+
+Resources:

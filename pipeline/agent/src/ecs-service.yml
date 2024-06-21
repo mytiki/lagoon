@@ -1,0 +1,26 @@
+PipelineService:
+  Type: AWS::ECS::Service
+  DependsOn: PipelineNLB
+  Properties:
+    Cluster: !GetAtt PipelineCluster.Arn
+    DeploymentConfiguration:
+      MinimumHealthyPercent: 50
+    DeploymentController:
+      Type: ECS
+    DesiredCount: 1
+    HealthCheckGracePeriodSeconds: 30
+    LaunchType: FARGATE
+    LoadBalancers:
+      - ContainerName: mytiki-lagoon-pipeline
+        ContainerPort: 8454
+        TargetGroupArn: !Ref PipelineTarget
+    NetworkConfiguration:
+      AwsvpcConfiguration:
+        AssignPublicIp: ENABLED
+        SecurityGroups:
+          - !GetAtt PipelineSG.GroupId
+        Subnets:
+          - !Ref PipelineSubnet
+    PlatformVersion: LATEST
+    ServiceName: mytiki-lagoon-pipeline
+    TaskDefinition: !GetAtt PipelineTask.TaskDefinitionArn

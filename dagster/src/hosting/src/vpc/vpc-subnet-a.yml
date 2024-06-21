@@ -1,0 +1,9 @@
+VPCSubnetA:
+  Type: AWS::EC2::Subnet
+  Properties:
+    VpcId: !Ref VPC
+    CidrBlock: 10.0.1.0/24
+    AvailabilityZone: !Sub ${AWS::Region}a
+    Tags:
+      - Key: Name
+        Value: SubnetA

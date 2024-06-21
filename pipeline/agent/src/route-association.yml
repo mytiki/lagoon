@@ -1,0 +1,5 @@
+PipelineAssociation:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+    RouteTableId: !Ref PipelineRouteTable
+    SubnetId: !Ref PipelineSubnet

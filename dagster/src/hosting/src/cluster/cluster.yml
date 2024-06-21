@@ -1,0 +1,4 @@
+Cluster:
+  Type: AWS::ECS::Cluster
+  Properties:
+    ClusterName: dagster

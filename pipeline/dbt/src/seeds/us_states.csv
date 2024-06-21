@@ -1,0 +1,66 @@
+type,name,abbreviation,capital_city,largest_city,pop_2020,area_sq_mi
+state,Alabama,AL,Montgomery,Huntsville,5024279,52420
+state,Alaska,AK,Juneau,Anchorage,733391,665384
+state,Arizona,AZ,Phoenix,Phoenix,7151502,113990
+state,Arkansas,AR,Little Rock,Little Rock,3011524,53179
+state,California,CA,Sacramento,Los Angeles,39538223,163695
+state,Colorado,CO,Denver,Denver,39538223,104094
+state,Connecticut,CT,Hartford,Bridgeport,3605944,5543
+state,Delaware,DE,Dover,Wilmington,989948,2489
+state,Florida,FL,Tallahassee,Jacksonville,21538187,65758
+state,Georgia,GA,Atlanta,Atlanta,10711908,59425
+state,Hawaii,HI,Honolulu,Honolulu,1455271,10932
+state,Idaho,ID,Boise,Boise,1839106,83569
+state,Illinois,IL,Springfield,Chicago,12812508,57914
+state,Indiana,IN,Indianapolis,Indianapolis,6785528,36420
+state,Iowa,IA,Des Moines,Des Moines,3190369,56273
+state,Kansas,KS,Topeka,Wichita,2937880,82278
+state,Kentucky,KY,Frankfort,Louisville,4505836,40408
+state,Louisiana,LA,Baton Rouge,New Orleans,4657757,52378
+state,Maine,ME,Augusta,Portland,1362359,35380
+state,Maryland,MD,Annapolis,Baltimore,6177224,12406
+state,Massachusetts,MA,Boston,Boston,7029917,10554
+state,Michigan,MI,Lansing,Detroit,10077331,96714
+state,Minnesota,MN,St. Paul,Minneapolis,5706494,86936
+state,Mississippi,MS,Jackson,Jackson,2961279,48432
+state,Missouri,MO,Jefferson City,Kansas City,6154913,69707
+state,Montana,MT,Helena,Billings,1084225,147040
+state,Nebraska,NE,Lincoln,Omaha,1961504,77348
+state,Nevada,NV,Carson City,Las Vegas,3104614,110572
+state,New Hampshire,NH,Concord,Manchester,1377529,9349
+state,New Jersey,NJ,Trenton,Newark,9288994,8723
+state,New Mexico,NM,Santa Fe,Albuquerque,2117522,121590
+state,New York,NY,Albany,New York City,20201249,54555
+state,North Carolina,NC,Raleigh,Charlotte,10439388,53819
+state,North Dakota,ND,Bismarck,Fargo,779094,70698
+state,Ohio,OH,Columbus,Columbus,11799448,44826
+state,Oklahoma,OK,Oklahoma City,Oklahoma City,3959353,69899
+state,Oregon,OR,Salem,Portland,4237256,98379
+state,Pennsylvania,PA,Harrisburg,Philadelphia,13002700,46054
+state,Rhode Island,RI,Providence,Providence,1097379,1545
+state,South Carolina,SC,Columbia,Charleston,5118425,32020
+state,South Dakota,SD,Pierre,Sioux Falls,5118425,77116
+state,Tennessee,TN,Nashville,Nashville,6910840,42144
+state,Texas,TX,Austin,Houston,29145505,268596
+state,Utah,UT,Salt Lake City,Salt Lake City,3271616,84897
+state,Vermont,VT,Montpelier,Burlington,643077,9616
+state,Virginia,VA,Richmond,Virginia Beach,8631393,42775
+state,Washington,WA,Olympia,Seattle,7705281,71298
+state,West Virginia,WV,Charleston,Charleston,1793716,24230
+state,Wisconsin,WI,Madison,Milwaukee,5893718,65496
+state,Wyoming,WY,Cheyenne,Cheyenne,576851,97813
+federal district,District of Columbia,DC,,,689545,68
+territory,American Samoa,AS,Pago Pago,,49710,581
+territory,Guam,GU,HagÃ¥tÃ±a,,153836,571
+territory,Northern Mariana Islands,MP,Saipan,,47329,1976
+territory,Puerto Rico,PR,San Juan,,3285874,5325
+territory,U.S. Virgin Islands,VI,Charlotte Amalie,,87146,733
+territory,Baker Island,,,,,0.9
+territory,Howland Island,,,,,0.6
+territory,Jarvis Island,,,,,2.2
+territory,Johnston Atoll,,,,,1
+territory,Kingman Reef,,,,,0.005
+territory,Midway Atoll,,,,,3
+territory,Navassa Island,,,,,3
+territory,Palmyra Atoll,,,,,1.5
+territory,Wake Island,,,,,2.5

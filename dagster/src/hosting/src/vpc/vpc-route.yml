@@ -1,0 +1,7 @@
+VPCRoute:
+  Type: AWS::EC2::Route
+  DependsOn: AttachGateway
+  Properties:
+    RouteTableId: !Ref VPCRouteTable
+    DestinationCidrBlock: 0.0.0.0/0
+    GatewayId: !Ref VPCGateway

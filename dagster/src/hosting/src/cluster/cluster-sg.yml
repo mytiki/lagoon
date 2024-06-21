@@ -1,0 +1,13 @@
+ClusterSG:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    VpcId: !Ref VPC
+    GroupDescription: Security group for the dagster service
+    Tags:
+      - Key: Name
+        Value: dagster
+    SecurityGroupEgress:
+      - IpProtocol: TCP
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0

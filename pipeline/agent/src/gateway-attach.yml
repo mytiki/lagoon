@@ -1,0 +1,5 @@
+AttachGateway:
+  Type: AWS::EC2::VPCGatewayAttachment
+  Properties:
+    VpcId: !Ref PipelineVPC
+    InternetGatewayId: !Ref PipelineGateway

@@ -1,0 +1,4 @@
+PipelineCluster:
+  Type: AWS::ECS::Cluster
+  Properties:
+    ClusterName: mytiki-lagoon-pipeline

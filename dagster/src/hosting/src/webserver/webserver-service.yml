@@ -1,0 +1,27 @@
+WebserverService:
+  Type: AWS::ECS::Service
+  DependsOn: WebserverListenerHttps
+  Properties:
+    Cluster: !GetAtt Cluster.Arn
+    DeploymentConfiguration:
+      MinimumHealthyPercent: 50
+    DeploymentController:
+      Type: ECS
+    DesiredCount: 2
+    HealthCheckGracePeriodSeconds: 30
+    LaunchType: FARGATE
+    LoadBalancers:
+      - ContainerName: dagster-webserver
+        ContainerPort: 3000
+        TargetGroupArn: !Ref WebserverTarget
+    NetworkConfiguration:
+      AwsvpcConfiguration:
+        AssignPublicIp: ENABLED
+        SecurityGroups:
+          - !GetAtt ClusterSG.GroupId
+        Subnets:
+          - !Ref VPCSubnetA
+          - !Ref VPCSubnetB
+    PlatformVersion: LATEST
+    ServiceName: dagster-webserver
+    TaskDefinition: !GetAtt WebserverTask.TaskDefinitionArn

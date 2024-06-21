@@ -1,0 +1,11 @@
+DagsterSG:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    VpcId: !Ref NetworkVPC
+    GroupName: mytiki-lagoon-pipeline-dagster
+    GroupDescription: Security group for the mytiki-lagoon pipeline dagster service
+    SecurityGroupEgress:
+      - IpProtocol: TCP
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
