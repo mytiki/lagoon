@@ -8,10 +8,10 @@
 # Build Files
 out
 target
-.aws-sam
 tmp
 
 # Python
 venv
 
-
+# AWS
+.aws-sam
