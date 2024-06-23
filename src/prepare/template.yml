@@ -1,0 +1,11 @@
+#file: noinspection YamlFormatViolation
+
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  StorageBucket:
+    Type: String
+    Description: The S3 bucket name for the Lagoon
+
+Resources:

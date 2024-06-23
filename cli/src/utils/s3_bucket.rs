@@ -1,4 +1,6 @@
 use std::error::Error;
+use std::fs;
+use std::path::PathBuf;
 
 use aws_config::Region;
 use aws_sdk_s3::{
@@ -8,6 +10,7 @@ use aws_sdk_s3::{
         ServerSideEncryptionByDefault, ServerSideEncryptionConfiguration, ServerSideEncryptionRule,
     },
 };
+use aws_sdk_s3::primitives::ByteStream;
 
 pub struct S3Bucket {
     client: Client,
@@ -28,6 +31,35 @@ impl S3Bucket {
             client,
             name: name.to_string(),
         })
+    }
+
+    pub async fn upload_bytes(&self, key: &str, body: ByteStream) -> Result<(), Box<dyn Error>> {
+        self.client
+            .put_object()
+            .bucket(&self.name)
+            .key(key)
+            .body(body)
+            .send()
+            .await?;
+        Ok(())
+    }
+
+    pub async fn upload_file(&self, key: &str, path: &str) -> Result<(), Box<dyn Error>> {
+        let body = ByteStream::from(fs::read(path)?);
+        self.upload_bytes(key, body).await
+    }
+
+    pub async fn upload_dir(&self, prefix: &str, dir: &str) -> Result<(), Box<dyn Error>> {
+        let files = Self::list_files(dir)?;
+        for file in files {
+            let key = format!("{}{}", prefix, file.replace(dir, ""));
+            self.upload_file(&key, &file).await?;
+        }
+        Ok(())
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
     }
 
     async fn create_if_not_exists(
@@ -76,5 +108,24 @@ impl S3Bucket {
                 Ok(())
             }
         }
+    }
+
+    fn list_files(dir: &str) -> Result<Vec<String>, Box<dyn Error>> {
+        let dir = PathBuf::from(dir);
+        let mut files: Vec<String> = Vec::new();
+        if dir.is_dir() {
+            for entry_result in fs::read_dir(dir)? {
+                let entry = entry_result?;
+                let path = entry.path();
+                let path_str = path.to_str().ok_or("Invalid path")?;
+                if path.is_file() {
+                    files.push(path_str.to_string());
+                } else if path.is_dir() {
+                    let mut sub_files = Self::list_files(path_str)?;
+                    files.append(&mut sub_files);
+                }
+            }
+        }
+        Ok(files)
     }
 }

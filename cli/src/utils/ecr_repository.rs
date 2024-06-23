@@ -1,6 +1,5 @@
 use std::error::Error;
 
-use aws_config::Region;
 use aws_sdk_ecr::{Client, types::ImageTagMutability};
 
 use super::super::utils::StsAccount;

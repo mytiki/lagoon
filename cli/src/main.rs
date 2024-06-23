@@ -2,28 +2,20 @@ use std::error::Error;
 
 use clap::Parser;
 
-use command::{Command, initialize};
+use cli::Cli;
+use command::{Command, deploy, initialize};
 
+mod cli;
 mod command;
 mod utils;
-
-#[derive(Parser, Debug)]
-#[command(name = "MyApp")]
-#[command(version, about, long_about = None)]
-pub struct Cli {
-    #[command(subcommand)]
-    pub command: Command,
-}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     let cli = Cli::parse();
-
-    match &cli.command {
-        Command::Initialize(cli) => {
-            initialize::execute(cli).await?;
-        }
+    let profile = cli.profile();
+    match &cli.command() {
+        Command::Initialize(cli) => initialize::execute(profile, cli).await?,
+        Command::Deploy(cli) => deploy::execute(profile, cli).await?,
     }
-
     Ok(())
 }

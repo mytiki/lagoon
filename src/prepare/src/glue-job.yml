@@ -1,0 +1,20 @@
+PrepareGlueJob:
+  Type: AWS::Glue::Job
+  Properties:
+    Name: mytiki-lagoon-prepare
+    Description: Prepare data files for ingestion into the Lagoon Iceberg data lake
+    Timeout: 900
+    GlueVersion: 4.0
+    WorkerType: G.1X
+    NumberOfWorkers: 10
+    MaxRetries: 0
+    ExecutionProperty:
+      MaxConcurrentRuns: 10
+    Command:
+      Name: glueetl
+      ScriptLocation: !Sub s3://${StorageBucket}/assets/deploy/prepare/glue-job.py
+    DefaultArguments:
+      "--TempDir": !Sub s3://${StorageBucket}/tmp/prepare
+    Role: !GetAtt PrepareGlueRole.Arn
+    ExecutionClass: FLEX
+

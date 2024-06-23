@@ -1,0 +1,21 @@
+PrepareEventRule:
+  Type: AWS::Events::Rule
+  Properties:
+    Name: mytiki-lagoon-prepare
+    State: ENABLED
+    Targets:
+      - Arn: !Ref PrepareStepFunction
+        Id: !GetAtt PrepareStepFunction.Name
+        RoleArn: !GetAtt EventRole.Arn
+    EventPattern:
+      source:
+        - aws.s3
+      detail-type:
+        - Object Created
+      detail:
+        bucket:
+          name:
+            - !Ref StorageBucket
+        object:
+          key:
+            - wildcard: prepare/*
