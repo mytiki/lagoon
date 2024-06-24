@@ -1,0 +1,67 @@
+WriteRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: mytiki-lagoon-write
+    AssumeRolePolicyDocument:
+      Version: 2012-10-17
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+    Policies:
+      - PolicyName: S3
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:ListBucket
+                - s3:GetBucketLocation
+                - s3:GetObjectVersion
+                - s3:PutObject
+                - s3:PutObjectAcl
+                - s3:GetLifecycleConfiguration
+                - s3:PutLifecycleConfiguration
+                - s3:DeleteObject
+              Resource:
+                - !Sub arn:aws:s3:::${StorageBucket}
+                - !Sub arn:aws:s3:::${StorageBucket}/*
+      - PolicyName: Athena
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: athena:StartQueryExecution
+              Resource: !Sub
+                - arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${PipelineWorkgroup}
+                - PipelineWorkgroup: !ImportValue mytiki-lagoon-pipeline-athena
+      - PolicyName: Glue
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - glue:GetTable
+                - glue:GetTables
+                - glue:CreateTable
+                - glue:UpdateTable
+                - glue:GetDatabase
+                - glue:GetDatabases
+                - glue:CreateDatabase
+                - glue:UpdateDatabase
+              Resource:
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
+      - PolicyName: SQS
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - sqs:ReceiveMessage
+                - sqs:DeleteMessage
+                - sqs:GetQueueAttributes
+              Resource: !GetAtt WriteQueue.Arn

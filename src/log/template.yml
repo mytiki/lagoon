@@ -10,4 +10,4 @@ Outputs:
     Description: The ARN for the logging message queue
     Value: !GetAtt LogQueue.Arn
     Export:
-      Name: !Sub "mytiki-lagoon-log-queue"
+      Name: mytiki-lagoon-log-queue

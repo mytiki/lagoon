@@ -19,5 +19,4 @@ build: compile
 	sam validate --lint --template $(DIST)/templates/$(MODULE).yml
 
 clean:
-	rm -rf $(DIST)/templates/$(MODULE).yml
-	rm -rf .aws-sam
+	rm -rf $(DIST)/templates/$(MODULE).yml .aws-sam

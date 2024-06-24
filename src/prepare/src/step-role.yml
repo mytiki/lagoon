@@ -1,7 +1,7 @@
 StepFunctionRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: mytiki-lagoon-prepare-step-role
+    RoleName: mytiki-lagoon-prepare-step
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

@@ -4,3 +4,4 @@ dist
 *.iml
 .DS_Store
 venv
+target

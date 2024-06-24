@@ -2,7 +2,7 @@
 
 RESOURCES = $(wildcard src/*.yml)
 DIST = ../../dist
-MODULE = log
+MODULE = pipeline
 
 compile: template.yml
 	@echo "YML files to merge: $(RESOURCES)"
@@ -18,4 +18,4 @@ build: compile
 	sam validate --lint --template $(DIST)/templates/$(MODULE).yml
 
 clean:
-	rm -rf $(DIST)/templates/$(MODULE).yml .aws-sam
+	rm -rf $(DIST)/templates/$(MODULE).yml -rf .aws-sam

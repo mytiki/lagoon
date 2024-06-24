@@ -1,0 +1,13 @@
+WriteLayerAws:
+  Type: AWS::Lambda::LayerVersion
+  Properties:
+    CompatibleArchitectures:
+      - x86_64
+    CompatibleRuntimes:
+      - java21
+    Description: "Lagoon: Write Layer - AWS"
+    LayerName: mytiki-lagoon-write-layer-aws
+    LicenseInfo: AGPL-3.0-or-later
+    Content:
+      S3Bucket: !Ref StorageBucket
+      S3Key: assets/deploy/write/layer-aws.zip
