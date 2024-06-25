@@ -38,16 +38,21 @@ jobs:
       - name: Assume Artifacts Role
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubSarPublish
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubEcrPublish
           aws-region: ${{ env.AWS_REGION }}
           mask-aws-account-id: true
           role-chaining: true
 
+      - name: Get Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
       - name: Publish Application
         run: |
-          make publish org=${{ secrets.AWS_ORG_ID }}
-        env:
-          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+          make publish version=${{ steps.semver.outputs.nextStrict }} account=${{ secrets.AWS_ACCOUNT_ID }} region=${{ env.AWS_REGION }}
 
   Release:
     needs: Publish
