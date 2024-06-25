@@ -2,7 +2,7 @@ name: "Publish"
 
 on:
   push:
-#    branches: [ "main" ]
+    branches: [ "main" ]
 
 env:
   AWS_REGION: "us-east-1"
@@ -49,8 +49,7 @@ jobs:
         uses: ietf-tools/semver-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: fix/restructure-deployment
-      #          branch: main
+          branch: main
 
       - name: ECR Login
         id: login-ecr
