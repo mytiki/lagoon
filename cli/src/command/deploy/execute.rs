@@ -9,6 +9,7 @@ use super::{
 const STACK_PREFIX: &str = "mytiki-lagoon";
 
 pub async fn execute(profile: &str, cli: &Cli) -> Result<(), Box<dyn Error>> {
+    log::info!("Deploying mytiki-lagoon modules...");
     let dist = cli.dist();
     let account = StsAccount::connect(profile).await?;
     let name = resource_name::from_account(&account);
@@ -27,17 +28,19 @@ pub async fn execute(profile: &str, cli: &Cli) -> Result<(), Box<dyn Error>> {
             Module::Write => execute_write(profile, dist, &bucket).await?,
         }
     }
+    log::info!("Deployment complete.");
     Ok(())
 }
 
 async fn execute_log(profile: &str, dist: &str) -> Result<(), Box<dyn Error>> {
+    log::info!("Deploying `log` module...");
     let stack = format!("{}-log", STACK_PREFIX);
     CfDeploy::connect(profile, &stack, &format!("{}/templates/log.yml", dist))
         .await?
         .capability("CAPABILITY_AUTO_EXPAND")?
         .deploy()
         .await?;
-    println!("`log` module deployed.");
+    log::info!("`log` module deployed.");
     Ok(())
 }
 
@@ -46,9 +49,11 @@ async fn execute_prepare(
     dist: &str,
     bucket: &S3Bucket,
 ) -> Result<(), Box<dyn Error>> {
+    log::info!("Deploying `prepare` module...");
     bucket
         .upload_dir("assets/deploy/prepare", "../dist/assets/deploy/prepare")
         .await?;
+    log::info!("`prepare` assets created.");
     let stack = format!("{}-prepare", STACK_PREFIX);
     CfDeploy::connect(profile, &stack, &format!("{}/templates/prepare.yml", dist))
         .await?
@@ -57,7 +62,7 @@ async fn execute_prepare(
         .parameter("StorageBucket", &bucket.name())
         .deploy()
         .await?;
-    println!("`prepare` module deployed.");
+    log::info!("`prepare` module deployed.");
     Ok(())
 }
 
@@ -66,6 +71,7 @@ async fn execute_pipeline(
     dist: &str,
     bucket_name: &str,
 ) -> Result<(), Box<dyn Error>> {
+    log::info!("Deploying `pipeline` module...");
     let stack = format!("{}-pipeline", STACK_PREFIX);
     CfDeploy::connect(profile, &stack, &format!("{}/templates/pipeline.yml", dist))
         .await?
@@ -73,14 +79,16 @@ async fn execute_pipeline(
         .parameter("StorageBucket", bucket_name)
         .deploy()
         .await?;
-    println!("`pipeline` module deployed.");
+    log::info!("`pipeline` module deployed.");
     Ok(())
 }
 
 async fn execute_write(profile: &str, dist: &str, bucket: &S3Bucket) -> Result<(), Box<dyn Error>> {
+    log::info!("Deploying `write` module...");
     bucket
         .upload_dir("assets/deploy/write", "../dist/assets/deploy/write")
         .await?;
+    log::info!("`write` assets created.");
     let stack = format!("{}-write", STACK_PREFIX);
     CfDeploy::connect(profile, &stack, &format!("{}/templates/write.yml", dist))
         .await?
@@ -89,6 +97,6 @@ async fn execute_write(profile: &str, dist: &str, bucket: &S3Bucket) -> Result<(
         .parameter("StorageBucket", bucket.name())
         .deploy()
         .await?;
-    println!("`write` module deployed.");
+    log::info!("`write` module deployed.");
     Ok(())
 }

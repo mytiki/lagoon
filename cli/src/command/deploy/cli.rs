@@ -9,7 +9,7 @@ pub struct Cli {
     module: Option<Module>,
 
     /// Path to the dist folder containing the submodule deployment templates.
-    #[arg(short, long, default_value = "../dist")]
+    #[arg(short, long, default_value = ".")]
     dist: String,
 }
 

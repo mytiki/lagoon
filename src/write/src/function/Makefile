@@ -16,9 +16,7 @@ build: compile
 	mvn package
 	mkdir -p target/lambda/
 	mkdir -p $(DIST)/assets/deploy/$(MODULE)
-	cp -r target/write-function-*.jar target/lambda/
-	mv target/lambda/write-function-*.jar target/lambda/write-function.jar
-	cp target/lambda/write-function.jar $(DIST)/assets/deploy/$(MODULE)/$(PACKAGE).jar
+	cp target/write-function-*.jar $(DIST)/assets/deploy/$(MODULE)/$(PACKAGE).jar
 
 clean:
 	mvn clean
