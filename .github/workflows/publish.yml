@@ -55,7 +55,7 @@ jobs:
 
       - name: Publish Application
         run: |
-          make publish version=${{ steps.semver.outputs.nextStrict }} repository=${{ env.AWS_ECR_REPOSITORY }}
+          make publish version=${{ steps.semver.outputs.nextStrict }} repository=${{ env.AWS_ECR_REPOSITORY }} region=${{ env.AWS_REGION }}
 
   Release:
     needs: Publish
