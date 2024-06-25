@@ -1,0 +1,11 @@
+version = 0.1
+
+[default.global.parameters]
+stack_name = "mytiki-dagster-image"
+s3_bucket = "mytiki-sam-deploy-sandbox-mike-us-east-2"
+s3_prefix = "dagster"
+region = "us-east-2"
+
+[default.deploy.parameters]
+confirm_changeset = false
+capabilities = [ "CAPABILITY_AUTO_EXPAND" ]

@@ -1,0 +1,19 @@
+version = 0.1
+
+[default.global.parameters]
+stack_name = "lagoon-pipeline-tmp"
+s3_bucket = "mytiki-sam-deploy-sandbox-mike-us-east-2"
+s3_prefix = "lagoon/pipeline"
+region = "us-east-2"
+template_file = "out/template.yml"
+
+[default.deploy.parameters]
+confirm_changeset = false
+capabilities = [
+    "CAPABILITY_AUTO_EXPAND",
+    "CAPABILITY_NAMED_IAM"
+]
+parameter_overrides = [
+    "SSLCertificate=arn:aws:acm:us-east-2:590184107666:certificate/0cc7d28c-6967-4a03-b25a-0e2a0f855cad",
+    "Password=Postgres12345"
+]

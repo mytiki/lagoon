@@ -1,0 +1,26 @@
+DagsterTask:
+  Type: AWS::ECS::TaskDefinition
+  Properties:
+    ContainerDefinitions:
+      - Name: mytiki-lagoon-pipeline-dagster
+        Essential: true
+        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/mytiki-lagoon-pipeline:dagster-0.0.1
+        PortMappings:
+          - ContainerPort: 3000
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-region: !Ref AWS::Region
+            awslogs-group: /ecs/mytiki-laogon-pipeline-dagster
+            awslogs-create-group: true
+            awslogs-stream-prefix: ecs
+    Cpu: 512
+    Memory: 2048
+    NetworkMode: awsvpc
+    RequiresCompatibilities:
+      - FARGATE
+    ExecutionRoleArn: !GetAtt ClusterRole.Arn
+    TaskRoleArn: !GetAtt DagsterRole.Arn
+    RuntimePlatform:
+      CpuArchitecture: X86_64
+      OperatingSystemFamily: LINUX

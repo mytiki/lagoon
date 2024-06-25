@@ -1,0 +1,7 @@
+DatabaseSubnet:
+  Type: AWS::RDS::DBSubnetGroup
+  Properties:
+    DBSubnetGroupDescription: Subnet group for the pipeline database
+    SubnetIds:
+      - !Ref VPCSubnetA
+      - !Ref VPCSubnetB

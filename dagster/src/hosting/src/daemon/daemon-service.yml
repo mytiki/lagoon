@@ -1,0 +1,27 @@
+DaemonService:
+  Type: AWS::ECS::Service
+  DependsOn: DaemonListener
+  Properties:
+    Cluster: !GetAtt Cluster.Arn
+    DeploymentConfiguration:
+      MinimumHealthyPercent: 50
+    DeploymentController:
+      Type: ECS
+    DesiredCount: 1
+    HealthCheckGracePeriodSeconds: 30
+    LaunchType: FARGATE
+    LoadBalancers:
+      - ContainerName: dagster-daemon
+        ContainerPort: 4000
+        TargetGroupArn: !Ref DaemonTarget
+    NetworkConfiguration:
+      AwsvpcConfiguration:
+        AssignPublicIp: ENABLED
+        SecurityGroups:
+          - !GetAtt ClusterSG.GroupId
+        Subnets:
+          - !Ref VPCSubnetA
+          - !Ref VPCSubnetB
+    PlatformVersion: LATEST
+    ServiceName: dagster-daemon
+    TaskDefinition: !GetAtt DaemonTask.TaskDefinitionArn

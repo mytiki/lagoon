@@ -1,0 +1,33 @@
+ClusterALBSG:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    VpcId: !Ref NetworkVPC
+    GroupName: mytiki-lagoon-pipeline-public
+    GroupDescription: Security group for the pipeline application load balancer
+    SecurityGroupEgress:
+      - IpProtocol: TCP
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
+        Description: public HTTPS traffic
+      - IpProtocol: TCP
+        FromPort: 3000
+        ToPort: 3000
+        DestinationSecurityGroupId: !Ref DagsterSG
+        Description: mytiki-lagoon-pipeline-dagster
+    SecurityGroupIngress:
+      - IpProtocol: TCP
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+        Description: public HTTP traffic
+      - IpProtocol: TCP
+        FromPort: 443
+        ToPort: 443
+        CidrIp: 0.0.0.0/0
+        Description: public HTTPS traffic
+      - IpProtocol: TCP
+        FromPort: 3000
+        ToPort: 3000
+        SourceSecurityGroupId: !Ref DagsterSG
+        Description: mytiki-lagoon-pipeline-dagster

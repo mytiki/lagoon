@@ -1,0 +1,12 @@
+#file: noinspection YamlFormatViolation
+
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  Password:
+    Type: String
+    Description: The password for the pipeline database. Please randomly generate this.
+    NoEcho: true
+
+Resources:

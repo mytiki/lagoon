@@ -1,0 +1,8 @@
+WebserverSGIngress:
+  Type: AWS::EC2::SecurityGroupIngress
+  Properties:
+    IpProtocol: tcp
+    FromPort: 3000
+    ToPort: 3000
+    GroupId: !Ref ClusterSG
+    SourceSecurityGroupId: !Ref ClusterSG

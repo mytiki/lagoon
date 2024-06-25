@@ -1,0 +1,26 @@
+DbtTask:
+  Type: AWS::ECS::TaskDefinition
+  Properties:
+    ContainerDefinitions:
+      - Name: mytiki-lagoon-pipeline-dbt
+        Essential: true
+        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/mytiki-lagoon-pipeline:dbt-default
+        PortMappings:
+          - ContainerPort: 4000
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-region: !Ref AWS::Region
+            awslogs-group: /ecs/mytiki-lagoon-pipeline-dbt
+            awslogs-create-group: true
+            awslogs-stream-prefix: ecs
+    Cpu: 512
+    Memory: 2048
+    NetworkMode: awsvpc
+    RequiresCompatibilities:
+      - FARGATE
+    ExecutionRoleArn: !GetAtt ClusterRole.Arn
+    TaskRoleArn: !GetAtt DbtRole.Arn
+    RuntimePlatform:
+      CpuArchitecture: X86_64
+      OperatingSystemFamily: LINUX

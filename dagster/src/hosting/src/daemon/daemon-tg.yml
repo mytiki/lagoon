@@ -1,0 +1,10 @@
+DaemonTarget:
+  Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  Properties:
+    Port: 4000
+    Protocol: TCP
+    VpcId: !Ref VPC
+    TargetType: ip
+    HealthCheckProtocol: HTTP
+    HealthCheckPort: 4001
+    HealthCheckPath: /healthcheck

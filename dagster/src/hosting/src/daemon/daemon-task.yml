@@ -1,0 +1,35 @@
+DaemonTask:
+  Type: AWS::ECS::TaskDefinition
+  Properties:
+    ContainerDefinitions:
+      - Name: dagster-daemon
+        Essential: true
+        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/dagster:latest-daemon
+        PortMappings:
+          - ContainerPort: 4000
+          - ContainerPort: 4001
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-region: !Ref AWS::Region
+            awslogs-group: /ecs/dagster-daemon
+            awslogs-create-group: true
+            awslogs-stream-prefix: ecs
+        HealthCheck:
+          Command:
+            - CMD-SHELL
+            - dagster-daemon liveness-check || exit 1
+          Interval: 30
+          Timeout: 5
+          Retries: 3
+          StartPeriod: 120
+    Cpu: 512
+    Memory: 2048
+    NetworkMode: awsvpc
+    RequiresCompatibilities:
+      - FARGATE
+    ExecutionRoleArn: !GetAtt ClusterExecutionRole.Arn
+    TaskRoleArn: !GetAtt DaemonRole.Arn
+    RuntimePlatform:
+      CpuArchitecture: X86_64
+      OperatingSystemFamily: LINUX

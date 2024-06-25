@@ -1,0 +1,9 @@
+PipelineListener:
+  Type: AWS::ElasticLoadBalancingV2::Listener
+  Properties:
+    DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref PipelineTarget
+    LoadBalancerArn: !Ref PipelineNLB
+    Port: 8454
+    Protocol: TCP

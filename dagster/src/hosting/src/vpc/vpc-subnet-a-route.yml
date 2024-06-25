@@ -1,0 +1,5 @@
+VPCSubnetARoute:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+    RouteTableId: !Ref VPCRouteTable
+    SubnetId: !Ref VPCSubnetA

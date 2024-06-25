@@ -1,0 +1,9 @@
+DaemonListener:
+  Type: AWS::ElasticLoadBalancingV2::Listener
+  Properties:
+    DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref DaemonTarget
+    LoadBalancerArn: !Ref DaemonNLB
+    Port: 4000
+    Protocol: TCP
