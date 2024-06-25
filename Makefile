@@ -16,9 +16,9 @@ build: compile
 publish: clean
 	make semver version=$(version)
 	make build
-	docker tag mytiki-lagoon $(account).dkr.ecr.$(region).amazonaws.com/mytiki-lagoon:$(version)
-	aws ecr get-login-password --region $(region) | docker login --username AWS --password-stdin $(account).dkr.ecr.$(region).amazonaws.com
-	docker push $(account).dkr.ecr.$(region).amazonaws.com/mytiki-lagoon:$(version)
+	docker tag mytiki-lagoon $(repository):$(version)
+	aws ecr get-login-password --region $(region) | docker login --username AWS --password-stdin $(repository)
+	docker push $(repository):$(version)
 
 clean:
 	cd src/log && make clean

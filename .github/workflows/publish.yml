@@ -6,6 +6,7 @@ on:
 
 env:
   AWS_REGION: "us-east-2"
+  AWS_ECR_REPOSITORY: "public.ecr.aws/h8w5d6c4/mytiki-lagoon"
 
 jobs:
   Publish:
@@ -54,7 +55,7 @@ jobs:
 
       - name: Publish Application
         run: |
-          make publish version=${{ steps.semver.outputs.nextStrict }} account=${{ secrets.AWS_ACCOUNT_ID }} region=${{ env.AWS_REGION }}
+          make publish version=${{ steps.semver.outputs.nextStrict }} repository=${{ env.AWS_ECR_REPOSITORY }}
 
   Release:
     needs: Publish
