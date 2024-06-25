@@ -6,7 +6,6 @@ on:
 
 env:
   AWS_REGION: "us-east-2"
-  AWS_ECR_REPOSITORY: "public.ecr.aws/h8w5d6c4/mytiki-lagoon"
 
 jobs:
   Publish:
@@ -53,9 +52,20 @@ jobs:
           branch: fix/restructure-deployment
       #          branch: main
 
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
+
       - name: Publish Application
+        env:
+          REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+          REGISTRY_ALIAS: h8w5d6c4
+          REPOSITORY: mytiki-lagoon
+          IMAGE_TAG: ${{ steps.semver.outputs.nextStrict}}
         run: |
-          make publish version=${{ steps.semver.outputs.nextStrict }} repository=${{ env.AWS_ECR_REPOSITORY }} region=${{ env.AWS_REGION }}
+          make publish version=$IMAGE_TAG repository=$REGISTRY/$REGISTRY_ALIAS/$REPOSITORY
 
   Release:
     needs: Publish

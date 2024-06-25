@@ -17,7 +17,6 @@ publish: clean
 	make semver version=$(version)
 	make build
 	docker tag mytiki-lagoon $(repository):$(version)
-	aws ecr get-login-password --region $(region) | docker login --username AWS --password-stdin $(repository)
 	docker push $(repository):$(version)
 
 clean:
