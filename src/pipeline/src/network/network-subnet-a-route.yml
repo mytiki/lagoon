@@ -1,0 +1,5 @@
+NetworkSubnetARoute:
+  Type: AWS::EC2::SubnetRouteTableAssociation
+  Properties:
+    RouteTableId: !Ref NetworkRouteTable
+    SubnetId: !Ref NetworkSubnetA

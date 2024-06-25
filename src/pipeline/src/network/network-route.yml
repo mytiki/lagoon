@@ -1,0 +1,7 @@
+NetworkRoute:
+  Type: AWS::EC2::Route
+  DependsOn: NetworkGatewayAttach
+  Properties:
+    RouteTableId: !Ref NetworkRouteTable
+    DestinationCidrBlock: 0.0.0.0/0
+    GatewayId: !Ref NetworkGateway

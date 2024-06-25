@@ -7,6 +7,7 @@ pub struct StsAccount {
     client: StsClient,
     account_id: String,
     region: Region,
+    profile: String,
 }
 
 impl StsAccount {
@@ -24,6 +25,7 @@ impl StsAccount {
             client,
             account_id,
             region: region.clone(),
+            profile: profile.to_string(),
         })
     }
 
@@ -33,5 +35,9 @@ impl StsAccount {
 
     pub fn region(&self) -> &Region {
         &self.region
+    }
+
+    pub fn profile(&self) -> &str {
+        &self.profile
     }
 }

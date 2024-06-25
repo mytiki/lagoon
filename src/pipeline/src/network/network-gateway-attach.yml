@@ -1,0 +1,5 @@
+NetworkGatewayAttach:
+  Type: AWS::EC2::VPCGatewayAttachment
+  Properties:
+    VpcId: !Ref NetworkVPC
+    InternetGatewayId: !Ref NetworkGateway

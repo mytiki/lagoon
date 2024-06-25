@@ -1,0 +1,12 @@
+DagsterRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: mytiki-lagoon-pipeline-dagster
+    Description: ECS role assumed by dagster tasks
+    AssumeRolePolicyDocument:
+      Version: 2008-10-17
+      Statement:
+        - Effect: Allow
+          Action: sts:AssumeRole
+          Principal:
+            Service: ecs-tasks.amazonaws.com
