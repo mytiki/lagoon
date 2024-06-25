@@ -5,7 +5,7 @@ on:
 #    branches: [ "main" ]
 
 env:
-  AWS_REGION: "us-east-2"
+  AWS_REGION: "us-east-1"
 
 jobs:
   Publish:
@@ -52,7 +52,7 @@ jobs:
           branch: fix/restructure-deployment
       #          branch: main
 
-      - name: Login to Amazon ECR
+      - name: ECR Login
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
