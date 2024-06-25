@@ -60,7 +60,7 @@ jobs:
 
       - name: Publish Application
         env:
-          REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REGISTRY_ALIAS: h8w5d6c4
           REPOSITORY: mytiki-lagoon
           IMAGE_TAG: ${{ steps.semver.outputs.nextStrict}}
