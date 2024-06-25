@@ -17,19 +17,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install xmlstarlet
-        run: sudo apt-get update && sudo apt-get install -y xmlstarlet
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y xmlstarlet
+          cargo install cargo-zigbuild
 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
 
       - name: Assume OIDC Role
         uses: aws-actions/configure-aws-credentials@v4
