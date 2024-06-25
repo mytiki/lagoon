@@ -16,17 +16,6 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Checkout PR
-        id: getpr
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr checkout ${{ github.event.pull_request.number }}
-          export PR_BRANCH=$(git branch --show-current)
-          echo "branch=$PR_BRANCH" >> $GITHUB_OUTPUT
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -59,7 +48,8 @@ jobs:
         uses: ietf-tools/semver-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          branch: fix/restructure-deployment
+      #          branch: main
 
       - name: Publish Application
         run: |
