@@ -19,6 +19,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Checkout PR
+        id: getpr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr checkout ${{ github.event.pull_request.number }}
+          export PR_BRANCH=$(git branch --show-current)
+          echo "branch=$PR_BRANCH" >> $GITHUB_OUTPUT
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
