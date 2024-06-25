@@ -3,22 +3,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
-Metadata:
-  AWS::ServerlessRepo::Application:
-    Name: mytiki-lagoon-pipeline
-    Description: Sub-component of the mytiki.com Lagoon application. Deploys the Lagoon data pipeline component.
-    Author: mytiki
-    SpdxLicenseId: AGPL-3.0-or-later
-    LicenseUrl: ../../../LICENSE
-    ReadmeUrl: ../../../README.md
-    HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.3.14
-    SourceCodeUrl: https://github.com/mytiki/lagoon
-    Labels:
-      - lagoon
-      - mytiki
-      - component
-
 Parameters:
   StorageBucket:
     Type: String
@@ -30,3 +14,5 @@ Outputs:
   PipelineWorkgroup:
     Description: The Athena workgroup for the Lagoon
     Value: !Ref PipelineAthenaWorkgroup
+    Export:
+      Name: mytiki-lagoon-pipeline-athena

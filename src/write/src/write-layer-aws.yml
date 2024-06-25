@@ -1,6 +1,13 @@
 WriteLayerAws:
-  Type: AWS::Serverless::Application
+  Type: AWS::Lambda::LayerVersion
   Properties:
-    Location:
-      ApplicationId: arn:aws:serverlessrepo:us-east-2:992382831795:applications/mytiki-lagoon-write-layer-aws
-      SemanticVersion: 0.3.14
+    CompatibleArchitectures:
+      - x86_64
+    CompatibleRuntimes:
+      - java21
+    Description: "Lagoon: Write Layer - AWS"
+    LayerName: mytiki-lagoon-write-layer-aws
+    LicenseInfo: AGPL-3.0-or-later
+    Content:
+      S3Bucket: !Ref StorageBucket
+      S3Key: assets/deploy/write/layer-aws.zip

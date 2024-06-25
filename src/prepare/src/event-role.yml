@@ -1,7 +1,7 @@
 EventRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: mytiki-lagoon-prepare-event-role
+    RoleName: mytiki-lagoon-prepare-event
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

@@ -3,31 +3,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
-Metadata:
-  AWS::ServerlessRepo::Application:
-    Name: mytiki-lagoon-write
-    Description: Sub-component of the mytiki.com Lagoon application. Deploys the Lagoon writing component.
-    Author: mytiki
-    SpdxLicenseId: AGPL-3.0-or-later
-    LicenseUrl: ../../../LICENSE
-    ReadmeUrl: ../../../README.md
-    HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.3.14
-    SourceCodeUrl: https://github.com/mytiki/lagoon
-    Labels:
-      - lagoon
-      - mytiki
-      - component
-
 Parameters:
   StorageBucket:
     Type: String
     Description: The S3 bucket name for the Lagoon
-  PipelineWorkgroup:
-    Type: String
-    Description: The Athena workgroup for the Lagoon
-  LogQueue:
-    Type: String
-    Description: The ARN for the logging message queue
 
 Resources:

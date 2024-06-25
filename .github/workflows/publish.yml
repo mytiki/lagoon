@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  AWS_REGION: "us-east-2"
+  AWS_REGION: "us-east-1"
 
 jobs:
   Publish:
@@ -16,17 +16,18 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - uses: goto-bus-stop/setup-zig@v2
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y xmlstarlet
+          cargo install cargo-zigbuild
+          rustup target add x86_64-unknown-linux-musl
 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
 
       - name: Assume OIDC Role
         uses: aws-actions/configure-aws-credentials@v4
@@ -38,16 +39,32 @@ jobs:
       - name: Assume Artifacts Role
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubSarPublish
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ARTIFACTS_ID }}:role/GitHubEcrPublish
           aws-region: ${{ env.AWS_REGION }}
           mask-aws-account-id: true
           role-chaining: true
 
+      - name: Get Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+
+      - name: ECR Login
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          registry-type: public
+
       - name: Publish Application
-        run: |
-          make publish org=${{ secrets.AWS_ORG_ID }}
         env:
-          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REGISTRY_ALIAS: h8w5d6c4
+          REPOSITORY: mytiki-lagoon
+          IMAGE_TAG: ${{ steps.semver.outputs.nextStrict}}
+        run: |
+          make publish version=$IMAGE_TAG repository=$REGISTRY/$REGISTRY_ALIAS/$REPOSITORY
 
   Release:
     needs: Publish

@@ -3,25 +3,11 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 
-Metadata:
-  AWS::ServerlessRepo::Application:
-    Name: mytiki-lagoon-log
-    Description: Sub-component of the mytiki.com Lagoon application. Deploys the Lagoon log component.
-    Author: mytiki
-    SpdxLicenseId: AGPL-3.0-or-later
-    LicenseUrl: ../../../LICENSE
-    ReadmeUrl: ../../../README.md
-    HomePageUrl: https://mytiki.com
-    SemanticVersion: 0.3.14
-    SourceCodeUrl: https://github.com/mytiki/lagoon
-    Labels:
-      - lagoon
-      - mytiki
-      - component
-
 Resources:
 
 Outputs:
   LogQueue:
     Description: The ARN for the logging message queue
     Value: !GetAtt LogQueue.Arn
+    Export:
+      Name: mytiki-lagoon-log-queue

@@ -1,7 +1,7 @@
 StepFunctionRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: mytiki-lagoon-prepare-step-role
+    RoleName: mytiki-lagoon-prepare-step
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -27,7 +27,7 @@ StepFunctionRole:
           Statement:
             - Effect: Allow
               Action: sqs:SendMessage
-              Resource: !Ref LogQueue
+              Resource: !ImportValue mytiki-lagoon-log-queue
       - PolicyName: s3
         PolicyDocument:
           Version: '2012-10-17'

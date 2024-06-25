@@ -1,0 +1,9 @@
+WriteEvent:
+  Type: AWS::Lambda::EventSourceMapping
+  Properties:
+    BatchSize: 10
+    Enabled: true
+    EventSourceArn: !GetAtt WriteQueue.Arn
+    FunctionName: !Ref WriteFunction
+    FunctionResponseTypes:
+      - ReportBatchItemFailures

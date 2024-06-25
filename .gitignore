@@ -1,17 +1,8 @@
-# IntelliJ
+.aws-sam
+dist
 .idea
 *.iml
-
-# Fuckin' Macs
 .DS_Store
-
-# Build Files
-out
-target
-.aws-sam
-tmp
-
-# Python
 venv
-
-
+target
+*.tar.gz
