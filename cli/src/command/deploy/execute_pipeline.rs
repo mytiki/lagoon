@@ -57,7 +57,7 @@ async fn deploy_template(
     cli: &Cli,
     name: &str,
 ) -> Result<(), Box<dyn Error>> {
-    log::info!("Deploying `pipeline` template...");
+    log::info!("Deploying `pipeline` module...");
     let stack = format!("{}-pipeline", STACK_PREFIX);
     CfDeploy::connect(
         account.profile(),
@@ -72,6 +72,6 @@ async fn deploy_template(
     .parameter("Password", cli.password())
     .deploy()
     .await?;
-    log::info!("`pipeline` template deployed.");
+    log::info!("`pipeline` module deployed.");
     Ok(())
 }

@@ -7,7 +7,7 @@ use aws_sdk_cloudformation::{
 };
 use aws_sdk_cloudformation::client::Waiters;
 
-const TIMEOUT: Duration = Duration::from_secs(600);
+const TIMEOUT: Duration = Duration::from_secs(1800);
 
 pub struct CfDeploy {
     client: Client,

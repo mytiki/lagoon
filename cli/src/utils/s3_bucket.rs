@@ -5,12 +5,13 @@ use std::path::PathBuf;
 use aws_config::Region;
 use aws_sdk_s3::{
     Client,
+    primitives::ByteStream,
     types::{
-        BucketLocationConstraint, CreateBucketConfiguration, ServerSideEncryption,
-        ServerSideEncryptionByDefault, ServerSideEncryptionConfiguration, ServerSideEncryptionRule,
+        BucketLocationConstraint, CreateBucketConfiguration, EventBridgeConfiguration,
+        NotificationConfiguration, ServerSideEncryption, ServerSideEncryptionByDefault,
+        ServerSideEncryptionConfiguration, ServerSideEncryptionRule,
     },
 };
-use aws_sdk_s3::primitives::ByteStream;
 
 pub struct S3Bucket {
     client: Client,
@@ -103,6 +104,15 @@ impl S3Bucket {
                     .put_bucket_encryption()
                     .bucket(name)
                     .server_side_encryption_configuration(encryption_config)
+                    .send()
+                    .await?;
+                let notification_config = NotificationConfiguration::builder()
+                    .event_bridge_configuration(EventBridgeConfiguration::builder().build())
+                    .build();
+                client
+                    .put_bucket_notification_configuration()
+                    .bucket(name)
+                    .notification_configuration(notification_config)
                     .send()
                     .await?;
                 Ok(())
