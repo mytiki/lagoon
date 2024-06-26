@@ -1,0 +1,19 @@
+# AWS
+.aws-sam
+Makefile
+template.yml
+samconfig.toml
+
+# Docker
+Dockerfile
+.dockerignore
+
+# dbt
+logs
+target
+
+# git
+.gitignore
+
+# IDE
+*.iml

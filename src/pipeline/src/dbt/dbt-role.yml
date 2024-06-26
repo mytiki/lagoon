@@ -1,0 +1,63 @@
+DbtRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: mytiki-lagoon-pipeline-dbt
+    Description: Lagoon ECS role assumed by dbt tasks
+    AssumeRolePolicyDocument:
+      Version: 2008-10-17
+      Statement:
+        - Effect: Allow
+          Action: sts:AssumeRole
+          Principal:
+            Service: ecs-tasks.amazonaws.com
+    Policies:
+      - PolicyName: S3
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:ListBucket
+                - s3:GetBucketLocation
+                - s3:GetObjectVersion
+                - s3:PutObject
+                - s3:PutObjectAcl
+                - s3:GetLifecycleConfiguration
+                - s3:PutLifecycleConfiguration
+                - s3:DeleteObject
+              Resource:
+                - !Sub arn:aws:s3:::${StorageBucket}
+                - !Sub arn:aws:s3:::${StorageBucket}/*
+      - PolicyName: Athena
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - athena:StartQueryExecution
+                - athena:GetQueryExecution
+                - athena:GetQueryResults
+                - athena:CancelQueryExecution
+                - athena:GetWorkGroup
+              Resource: !Sub arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${PipelineAthenaWorkgroup}
+      - PolicyName: Glue
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - glue:GetTable
+                - glue:GetTables
+                - glue:CreateTable
+                - glue:UpdateTable
+                - glue:DeleteTable
+                - glue:GetDatabase
+                - glue:GetDatabases
+                - glue:CreateDatabase
+                - glue:UpdateDatabase
+                - glue:DeleteDatabase
+              Resource:
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*

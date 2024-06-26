@@ -1,0 +1,5 @@
+load_from:
+  - grpc_server:
+      host: { "env": "DAGSTER_GRPC_SERVER_HOST" }
+      port: 4000
+      location_name: "lagoon"

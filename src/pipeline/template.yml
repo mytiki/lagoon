@@ -2,11 +2,19 @@
 
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
+Description: "mytiki-lagoon | pipline module | execute and automate data transformation with dbt pipelines and dagster orchestration"
 
 Parameters:
   StorageBucket:
     Type: String
     Description: The S3 bucket name for the Lagoon
+  SSLCertificate:
+    Type: String
+    Description: The ARN of the SSL certificate to use for HTTPS traffic
+  Password:
+    Type: String
+    Description: The password for the pipeline database. Please randomly generate this.
+    NoEcho: true
 
 Resources:
 
