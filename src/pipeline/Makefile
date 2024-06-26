@@ -12,7 +12,7 @@ compile: template.yml
 		echo "Processing: $$res"; \
 		yq eval '.Resources += load("'$$res'")' $(DIST)/templates/$(MODULE).yml -i || exit 1; \
 	done
-	cp Dockerfile dagster.yaml workspace.yaml $(DIST)/assets/deploy/$(MODULE)/dagster
+	cp Dockerfile dagster.yaml workspace.yaml src/daemon/daemon-health.py src/daemon/daemon-start.sh  $(DIST)/assets/deploy/$(MODULE)/dagster
 	cp -r ../../example/dbt/ $(DIST)/assets/deploy/$(MODULE)/dbt
 
 build: compile

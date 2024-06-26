@@ -1,7 +1,0 @@
-PipelineNLB:
-  Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-  Properties:
-    Type: network
-    Scheme: internal
-    Subnets:
-      - !Ref PipelineSubnet

@@ -75,4 +75,18 @@ impl EcrRepository {
             }
         }
     }
+
+    pub async fn has_image(&self, image_tag: &str) -> Result<bool, Box<dyn Error>> {
+        let resp = self
+            .client
+            .list_images()
+            .repository_name(self.name.clone())
+            .send()
+            .await?;
+        let images = resp.image_ids();
+        let tag_exists = images
+            .iter()
+            .any(|image| image.image_tag().map_or(false, |t| t == image_tag));
+        Ok(tag_exists)
+    }
 }

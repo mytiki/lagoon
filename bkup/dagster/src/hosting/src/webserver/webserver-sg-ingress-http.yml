@@ -1,8 +1,0 @@
-WebserverSGIngressHttp:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
-    IpProtocol: tcp
-    FromPort: 80
-    ToPort: 80
-    CidrIp: 0.0.0.0/0
-    GroupId: !Ref ClusterSG

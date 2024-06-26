@@ -1,7 +1,0 @@
-PipelineTarget:
-  Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  Properties:
-    Port: 8454
-    Protocol: TCP
-    VpcId: !Ref PipelineVPC
-    TargetType: ip

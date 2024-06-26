@@ -1,4 +1,0 @@
-PipelineRouteTable:
-  Type: AWS::EC2::RouteTable
-  Properties:
-    VpcId: !Ref PipelineVPC

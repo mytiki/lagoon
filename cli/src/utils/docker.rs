@@ -3,23 +3,27 @@ use std::io::Write;
 use std::process::{Command, Stdio};
 
 pub struct Docker {
+    uri: String,
     repository: String,
     context: Option<String>,
     tag: Option<String>,
-    args: Option<Vec<String>>,
     region: String,
     account: String,
+    target: Option<String>,
+    platform: Option<String>,
 }
 
 impl Docker {
-    pub fn new(account: &str, region: &str) -> Self {
+    pub fn new(account: &str, region: &str, repository: &str) -> Self {
         Docker {
-            repository: format!("{}.dkr.ecr.{}.amazonaws.com", account, region),
+            uri: format!("{}.dkr.ecr.{}.amazonaws.com", account, region),
+            repository: repository.to_string(),
             context: None,
             tag: None,
-            args: None,
             region: region.to_string(),
             account: account.to_string(),
+            target: None,
+            platform: None,
         }
     }
 
@@ -33,14 +37,13 @@ impl Docker {
         self
     }
 
-    pub fn with_arg(mut self, key: &str, value: &str) -> Self {
-        if self.args.is_none() {
-            self.args = Some(Vec::new())
-        }
-        self.args
-            .as_mut()
-            .unwrap()
-            .push(format!("{}={}", key, value));
+    pub fn with_target(mut self, target: &str) -> Self {
+        self.target = Some(target.to_string());
+        self
+    }
+
+    pub fn with_platform(mut self, platform: &str) -> Self {
+        self.platform = Some(platform.to_string());
         self
     }
 
@@ -63,7 +66,7 @@ impl Docker {
             .arg("--username")
             .arg("AWS")
             .arg("--password-stdin")
-            .arg(self.repository.clone())
+            .arg(self.uri.clone())
             .stdin(Stdio::piped())
             .spawn()?;
         docker_command
@@ -83,21 +86,22 @@ impl Docker {
 
     pub fn build(self) -> Result<Self, Box<dyn Error>> {
         let docker_tag = format!(
-            "{}:{}",
+            "{}/{}:{}",
+            self.uri,
             self.repository,
             self.tag.clone().unwrap_or("latest".to_string())
         );
         let mut command = Command::new("docker");
         command
             .arg("build")
-            .arg("-t")
+            .arg("--tag")
             .arg(&docker_tag)
             .arg(&self.context.clone().unwrap_or(".".to_string()));
-        if let Some(args) = &self.args {
-            for arg in args {
-                command.arg("--build-arg");
-                command.arg(arg);
-            }
+        if let Some(target) = self.target.clone() {
+            command.arg("--target").arg(target);
+        }
+        if let Some(platform) = self.platform.clone() {
+            command.arg("--platform").arg(platform);
         }
         let res = command.output()?;
         if !res.status.success() {
@@ -108,7 +112,8 @@ impl Docker {
 
     pub fn push(&self) -> Result<(), Box<dyn Error>> {
         let docker_tag = format!(
-            "{}:{}",
+            "{}/{}:{}",
+            self.uri,
             self.repository,
             self.tag.clone().unwrap_or("latest".to_string())
         );
@@ -126,9 +131,6 @@ impl Docker {
     pub fn repository(&self) -> &str {
         &self.repository
     }
-    pub fn args(&self) -> &Option<Vec<String>> {
-        &self.args
-    }
     pub fn context(&self) -> &Option<String> {
         &self.context
     }
@@ -140,5 +142,8 @@ impl Docker {
     }
     pub fn account(&self) -> &str {
         &self.account
+    }
+    pub fn target(&self) -> &Option<String> {
+        &self.target
     }
 }

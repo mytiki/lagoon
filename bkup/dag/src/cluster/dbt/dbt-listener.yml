@@ -1,9 +1,0 @@
-DbtListener:
-  Type: AWS::ElasticLoadBalancingV2::Listener
-  Properties:
-    DefaultActions:
-      - Type: forward
-        TargetGroupArn: !Ref DbtTG
-    LoadBalancerArn: !Ref ClusterNLB
-    Port: 4000
-    Protocol: TCP

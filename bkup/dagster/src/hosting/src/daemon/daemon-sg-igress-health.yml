@@ -1,8 +1,0 @@
-DaemonSGIngressHealth:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
-    IpProtocol: tcp
-    FromPort: 4001
-    ToPort: 4001
-    GroupId: !Ref ClusterSG
-    SourceSecurityGroupId: !Ref ClusterSG

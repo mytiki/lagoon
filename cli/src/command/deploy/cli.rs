@@ -17,9 +17,10 @@ pub struct Cli {
     #[arg(short, long)]
     ssl: String,
 
-    /// A password to use for communication between resources. Randomly generated if not provided.
+    /// A password to use for communication between resources. Required by the `pipeline` module.
+    /// Does not need to be memorable; you should randomly generate a strong password.
     #[arg(short, long)]
-    password: Option<String>,
+    password: String,
 }
 
 impl Cli {
@@ -32,7 +33,7 @@ impl Cli {
     pub fn ssl(&self) -> &str {
         &self.ssl
     }
-    pub fn password(&self) -> &Option<String> {
+    pub fn password(&self) -> &str {
         &self.password
     }
 }

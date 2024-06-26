@@ -1,5 +1,0 @@
-PipelineSubnet:
-  Type: AWS::EC2::Subnet
-  Properties:
-    VpcId: !Ref PipelineVPC
-    CidrBlock: 10.0.0.0/24

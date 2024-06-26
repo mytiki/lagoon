@@ -1,9 +1,0 @@
-DagsterSGEgressDatabase:
-  Type: AWS::EC2::SecurityGroupEgress
-  Properties:
-    IpProtocol: tcp
-    FromPort: 5432
-    ToPort: 5432
-    GroupId: !Ref DagsterSG
-    DestinationSecurityGroupId: !Ref DatabaseSG
-    Description: mytiki-lagoon-pipeline-database

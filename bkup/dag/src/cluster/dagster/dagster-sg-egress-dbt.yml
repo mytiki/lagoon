@@ -1,9 +1,0 @@
-DagsterSGEgressDbt:
-  Type: AWS::EC2::SecurityGroupEgress
-  Properties:
-    IpProtocol: tcp
-    FromPort: 4000
-    ToPort: 4000
-    GroupId: !Ref DagsterSG
-    DestinationSecurityGroupId: !Ref DbtSG
-    Description: mytiki-lagoon-pipeline-dbt

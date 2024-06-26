@@ -4,8 +4,8 @@ run_storage:
   config:
     postgres_db:
       username: dagster
-      password: DAGSTER_PG_PASSWORD
-      hostname: DAGSTER_PG_HOST
+      password: { "env": "DAGSTER_PG_PASSWORD" }
+      hostname: { "env": "DAGSTER_PG_HOST" }
       db_name: dagster
       port: 5432
 
@@ -15,8 +15,8 @@ schedule_storage:
   config:
     postgres_db:
       username: dagster
-      password: DAGSTER_PG_PASSWORD
-      hostname: DAGSTER_PG_HOST
+      password: { "env": "DAGSTER_PG_PASSWORD" }
+      hostname: { "env": "DAGSTER_PG_HOST" }
       db_name: dagster
       port: 5432
 
@@ -26,8 +26,8 @@ event_log_storage:
   config:
     postgres_db:
       username: dagster
-      password: DAGSTER_PG_PASSWORD
-      hostname: DAGSTER_PG_HOST
+      password: { "env": "DAGSTER_PG_PASSWORD" }
+      hostname: { "env": "DAGSTER_PG_HOST" }
       db_name: dagster
       port: 5432
 

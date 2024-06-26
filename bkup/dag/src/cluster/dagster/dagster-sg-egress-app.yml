@@ -1,9 +1,0 @@
-DagsterSGEgressApp:
-  Type: AWS::EC2::SecurityGroupEgress
-  Properties:
-    IpProtocol: tcp
-    FromPort: 3000
-    ToPort: 3000
-    GroupId: !Ref DagsterSG
-    DestinationSecurityGroupId: !Ref ClusterALBSG
-    Description: mytiki-lagoon-pipeline-dagster-app

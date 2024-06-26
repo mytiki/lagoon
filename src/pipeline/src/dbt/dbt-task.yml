@@ -4,7 +4,7 @@ DbtTask:
     ContainerDefinitions:
       - Name: mytiki-lagoon-pipeline-dbt
         Essential: true
-        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/mytiki-lagoon-pipeline:dbt-default
+        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:dbt-example
         PortMappings:
           - ContainerPort: 4000
         LogConfiguration:
@@ -14,6 +14,13 @@ DbtTask:
             awslogs-group: /ecs/mytiki-lagoon-pipeline-dbt
             awslogs-create-group: true
             awslogs-stream-prefix: ecs
+        Environment:
+          - Name: "DAGSTER_PG_PASSWORD"
+            Value: !Ref Password
+          - Name: "DAGSTER_PG_HOST"
+            Value: !GetAtt Database.Endpoint.Address
+          - Name: "DAGSTER_CURRENT_IMAGE"
+            Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:dbt-example
     Cpu: 512
     Memory: 2048
     NetworkMode: awsvpc

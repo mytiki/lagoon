@@ -1,9 +1,0 @@
-NetworkSubnetB:
-  Type: AWS::EC2::Subnet
-  Properties:
-    VpcId: !Ref NetworkVPC
-    CidrBlock: 10.0.2.0/24
-    AvailabilityZone: !Sub ${AWS::Region}b
-    Tags:
-      - Key: Name
-        Value: mytiki-lagoon-pipeline-subnet-b

@@ -1,9 +1,0 @@
-DaemonSGIngressDbt:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
-    IpProtocol: tcp
-    FromPort: 4000
-    ToPort: 4000
-    GroupId: !Ref DaemonSG
-    SourceSecurityGroupId: !Ref DbtSG
-    Description: mytiki-lagoon-pipeline-dbt

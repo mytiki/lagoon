@@ -1,7 +1,0 @@
-WebserverTarget:
-  Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  Properties:
-    Port: 3000
-    Protocol: HTTP
-    VpcId: !Ref VPC
-    TargetType: ip

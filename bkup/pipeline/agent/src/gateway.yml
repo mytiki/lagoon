@@ -1,2 +1,0 @@
-PipelineGateway:
-  Type: AWS::EC2::InternetGateway

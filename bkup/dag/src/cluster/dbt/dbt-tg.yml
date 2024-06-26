@@ -1,7 +1,0 @@
-DbtTG:
-  Type: AWS::ElasticLoadBalancingV2::TargetGroup
-  Properties:
-    Port: 4000
-    Protocol: TCP
-    VpcId: !Ref NetworkVPC
-    TargetType: ip

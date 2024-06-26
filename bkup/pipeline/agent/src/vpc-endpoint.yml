@@ -1,6 +1,0 @@
-PipelineEndpoint:
-  Type: AWS::EC2::VPCEndpointService
-  Properties:
-    NetworkLoadBalancerArns:
-      - !Ref PipelineNLB
-    AcceptanceRequired: false

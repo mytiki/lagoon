@@ -4,7 +4,7 @@ DaemonTask:
     ContainerDefinitions:
       - Name: mytiki-lagoon-pipeline-daemon
         Essential: true
-        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/mytiki-lagoon-pipeline:daemon-0.0.1
+        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:daemon-latest
         PortMappings:
           - ContainerPort: 4001
         LogConfiguration:
@@ -14,6 +14,13 @@ DaemonTask:
             awslogs-group: /ecs/mytiki-lagoon-pipeline-daemon
             awslogs-create-group: true
             awslogs-stream-prefix: ecs
+        Environment:
+          - Name: "DAGSTER_PG_PASSWORD"
+            Value: !Ref Password
+          - Name: "DAGSTER_PG_HOST"
+            Value: !GetAtt Database.Endpoint.Address
+          - Name: "DAGSTER_GRPC_SERVER_HOST"
+            Value: !GetAtt ClusterNLB.DNSName
         HealthCheck:
           Command:
             - CMD-SHELL

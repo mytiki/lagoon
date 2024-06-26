@@ -1,8 +1,0 @@
-WebserverSGIngressHttps:
-  Type: AWS::EC2::SecurityGroupIngress
-  Properties:
-    IpProtocol: tcp
-    FromPort: 443
-    ToPort: 443
-    CidrIp: 0.0.0.0/0
-    GroupId: !Ref ClusterSG

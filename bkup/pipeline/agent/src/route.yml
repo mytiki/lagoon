@@ -1,6 +1,0 @@
-PipelineRoute:
-  Type: AWS::EC2::Route
-  Properties:
-    RouteTableId: !Ref PipelineRouteTable
-    DestinationCidrBlock: 0.0.0.0/0
-    GatewayId: !Ref PipelineGateway
