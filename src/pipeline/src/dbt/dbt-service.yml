@@ -1,0 +1,27 @@
+DbtService:
+  Type: AWS::ECS::Service
+  DependsOn: DbtListener
+  Properties:
+    Cluster: !GetAtt Cluster.Arn
+    DeploymentConfiguration:
+      MinimumHealthyPercent: 50
+    DeploymentController:
+      Type: ECS
+    DesiredCount: 1
+    HealthCheckGracePeriodSeconds: 30
+    LaunchType: FARGATE
+    LoadBalancers:
+      - ContainerName: mytiki-lagoon-pipeline-dbt
+        ContainerPort: 4000
+        TargetGroupArn: !Ref DbtTG
+    NetworkConfiguration:
+      AwsvpcConfiguration:
+        AssignPublicIp: ENABLED
+        SecurityGroups:
+          - !GetAtt DbtSG.GroupId
+        Subnets:
+          - !Ref NetworkSubnetA
+          - !Ref NetworkSubnetB
+    PlatformVersion: LATEST
+    ServiceName: mytiki-lagoon-pipeline-dbt
+    TaskDefinition: !GetAtt DbtTask.TaskDefinitionArn

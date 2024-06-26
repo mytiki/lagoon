@@ -1,0 +1,41 @@
+DaemonTask:
+  Type: AWS::ECS::TaskDefinition
+  Properties:
+    ContainerDefinitions:
+      - Name: mytiki-lagoon-pipeline-daemon
+        Essential: true
+        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:daemon-latest
+        PortMappings:
+          - ContainerPort: 4001
+        LogConfiguration:
+          LogDriver: awslogs
+          Options:
+            awslogs-region: !Ref AWS::Region
+            awslogs-group: /ecs/mytiki-lagoon-pipeline-daemon
+            awslogs-create-group: true
+            awslogs-stream-prefix: ecs
+        Environment:
+          - Name: "DAGSTER_PG_PASSWORD"
+            Value: !Ref Password
+          - Name: "DAGSTER_PG_HOST"
+            Value: !GetAtt Database.Endpoint.Address
+          - Name: "DAGSTER_GRPC_SERVER_HOST"
+            Value: !GetAtt ClusterNLB.DNSName
+        HealthCheck:
+          Command:
+            - CMD-SHELL
+            - dagster-daemon liveness-check || exit 1
+          Interval: 30
+          Timeout: 5
+          Retries: 3
+          StartPeriod: 120
+    Cpu: 512
+    Memory: 2048
+    NetworkMode: awsvpc
+    RequiresCompatibilities:
+      - FARGATE
+    ExecutionRoleArn: !GetAtt ClusterRole.Arn
+    TaskRoleArn: !GetAtt DaemonRole.Arn
+    RuntimePlatform:
+      CpuArchitecture: X86_64
+      OperatingSystemFamily: LINUX

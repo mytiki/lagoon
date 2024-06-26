@@ -1,0 +1,22 @@
+[package]
+name = "mytiki_lagoon_cli"
+version = "0.0.1"
+description = "A CLI tool to manage Tiki's AWS resources"
+authors = ["Tiki inc."]
+edition = "2021"
+
+[[bin]]
+name = "lagoon"
+path = "src/main.rs"
+
+[dependencies]
+aws-config = { version = "1.5.3", features = ["behavior-version-latest"] }
+aws-sdk-cloudformation = "1.38.0"
+aws-sdk-ecr = "1.33.0"
+aws-sdk-s3 = "1.38.0"
+aws-sdk-sts = "1.33.0"
+clap = { version = "4.5.7", features = ["derive"] }
+env_logger = "0.11.3"
+log = { version = "0.4.21" }
+rand = "0.8.5"
+tokio = { version = "1", features = ["full"] }

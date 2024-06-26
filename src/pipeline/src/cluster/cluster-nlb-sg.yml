@@ -1,0 +1,48 @@
+ClusterNLBSG:
+  Type: AWS::EC2::SecurityGroup
+  Properties:
+    VpcId: !Ref NetworkVPC
+    GroupName: mytiki-lagoon-pipeline-internal
+    GroupDescription: Security group for the pipeline network load balancer
+    SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 4001
+        ToPort: 4001
+        DestinationSecurityGroupId: !Ref DaemonSG
+        Description: mytiki-lagoon-pipeline-daemon
+      - IpProtocol: tcp
+        FromPort: 4000
+        ToPort: 4000
+        DestinationSecurityGroupId: !Ref DbtSG
+        Description: mytiki-lagoon-pipeline-dbt
+      - IpProtocol: tcp
+        FromPort: 4000
+        ToPort: 4000
+        DestinationSecurityGroupId: !Ref DaemonSG
+        Description: mytiki-lagoon-pipeline-daemon
+      - IpProtocol: tcp
+        FromPort: 4000
+        ToPort: 4000
+        DestinationSecurityGroupId: !Ref DagsterSG
+        Description: mytiki-lagoon-pipeline-dagster
+    SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 4001
+        ToPort: 4001
+        SourceSecurityGroupId: !Ref DaemonSG
+        Description: mytiki-lagoon-pipeline-daemon
+      - IpProtocol: tcp
+        FromPort: 4000
+        ToPort: 4000
+        SourceSecurityGroupId: !Ref DagsterSG
+        Description: mytiki-lagoon-pipeline-dagster
+      - IpProtocol: tcp
+        FromPort: 4000
+        ToPort: 4000
+        SourceSecurityGroupId: !Ref DaemonSG
+        Description: mytiki-lagoon-pipeline-daemon
+      - IpProtocol: tcp
+        FromPort: 4000
+        ToPort: 4000
+        SourceSecurityGroupId: !Ref DbtSG
+        Description: mytiki-lagoon-pipeline-dbt

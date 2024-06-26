@@ -1,0 +1,7 @@
+NetworkRouteTable:
+  Type: AWS::EC2::RouteTable
+  Properties:
+    VpcId: !Ref NetworkVPC
+    Tags:
+      - Key: Name
+        Value: mytiki-lagoon-pipeline

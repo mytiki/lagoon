@@ -1,0 +1,6 @@
+NetworkGateway:
+  Type: AWS::EC2::InternetGateway
+  Properties:
+    Tags:
+      - Key: Name
+        Value: mytiki-lagoon-pipeline

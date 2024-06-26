@@ -44,5 +44,5 @@ PrepareStepFunction:
             MessageGroupId: mytiki-lagoon-prepare
             QueueUrl: !Sub
               - "https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/${QueueName}"
-              - QueueName: !Select [5, !Split [":", !Ref LogQueue]]
+              - QueueName: !Select [ 5, !Split [ ":", !ImportValue mytiki-lagoon-log-queue ] ]
           End: true

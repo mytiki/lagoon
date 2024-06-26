@@ -8,5 +8,5 @@ WriteQueue:
     FifoThroughputLimit: perMessageGroupId
     MessageRetentionPeriod: 604800
     RedrivePolicy:
-      deadLetterTargetArn: !Ref LogQueue
+      deadLetterTargetArn: !ImportValue mytiki-lagoon-log-queue
       maxReceiveCount: 5

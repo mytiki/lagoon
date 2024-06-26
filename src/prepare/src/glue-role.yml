@@ -1,7 +1,7 @@
 PrepareGlueRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: mytiki-lagoon-prepare-glue-role
+    RoleName: mytiki-lagoon-prepare-glue
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:

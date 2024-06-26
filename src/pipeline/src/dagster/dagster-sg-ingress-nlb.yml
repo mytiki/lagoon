@@ -1,0 +1,9 @@
+DagsterSGIngressNLB:
+  Type: AWS::EC2::SecurityGroupIngress
+  Properties:
+    IpProtocol: tcp
+    FromPort: 4000
+    ToPort: 4000
+    GroupId: !Ref DagsterSG
+    SourceSecurityGroupId: !Ref ClusterNLBSG
+    Description: mytiki-lagoon-pipeline-internal
