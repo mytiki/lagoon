@@ -16,3 +16,5 @@ pub mod resource_name;
 mod s3_bucket;
 #[allow(dead_code)]
 mod sts_account;
+#[allow(dead_code)]
+pub mod zip_dir;

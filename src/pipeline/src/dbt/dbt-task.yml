@@ -14,13 +14,15 @@ DbtTask:
             awslogs-group: /ecs/mytiki-lagoon-pipeline-dbt
             awslogs-create-group: true
             awslogs-stream-prefix: ecs
-        Environment:
+        Secrets:
           - Name: "DAGSTER_PG_PASSWORD"
-            Value: !Ref Password
+            ValueFrom: !Sub "${ClusterSecret}:DAGSTER_PG_PASSWORD::"
           - Name: "DAGSTER_PG_HOST"
-            Value: !GetAtt Database.Endpoint.Address
+            ValueFrom: !Sub "${ClusterSecret}:DAGSTER_PG_HOST::"
           - Name: "DAGSTER_CURRENT_IMAGE"
-            Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:dbt-example
+            ValueFrom: !Sub "${ClusterSecret}:DAGSTER_CURRENT_IMAGE::"
+          - Name: "S3_BUCKET"
+            ValueFrom: !Sub "${ClusterSecret}:S3_BUCKET::"
     Cpu: 512
     Memory: 2048
     NetworkMode: awsvpc

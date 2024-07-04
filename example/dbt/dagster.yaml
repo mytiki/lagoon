@@ -45,5 +45,12 @@ telemetry:
 run_launcher:
   module: dagster_aws.ecs
   class: EcsRunLauncher
-  config:
-    secrets_tag: ""
+
+run_queue:
+  max_concurrent_runs: 15
+  tag_concurrency_limits:
+    - key: "source"
+      value:
+        applyLimitPerUniqueValue: true
+      limit: 1
+

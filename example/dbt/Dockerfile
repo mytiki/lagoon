@@ -11,4 +11,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 4000
 
-ENTRYPOINT ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-f", "defs.py"]
+CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-f", "defs.py"]

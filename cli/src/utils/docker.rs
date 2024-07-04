@@ -51,12 +51,14 @@ impl Docker {
         format!("{}.dkr.ecr.{}.amazonaws.com", account, region)
     }
 
-    pub fn auth(self) -> Result<Self, Box<dyn Error>> {
+    pub fn auth(self, profile: &str) -> Result<Self, Box<dyn Error>> {
         let aws_output = Command::new("aws")
             .arg("ecr")
             .arg("get-login-password")
             .arg("--region")
             .arg(self.region.clone())
+            .arg("--profile")
+            .arg(profile)
             .output()?;
         if !aws_output.status.success() {
             Err(format!("{} auth failed: {:?}", self.repository, aws_output))?;

@@ -1,0 +1,19 @@
+CodeEventRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: mytiki-lagoon-pipeline-deploy-event
+    AssumeRolePolicyDocument:
+      Version: 2012-10-17
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service: events.amazonaws.com
+          Action: sts:AssumeRole
+    Policies:
+      - PolicyName: CodePipeline
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: codepipeline:StartPipelineExecution
+              Resource: !Sub arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${CodePipeline}

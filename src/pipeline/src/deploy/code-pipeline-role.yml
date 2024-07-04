@@ -1,0 +1,60 @@
+CodePipelineRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: mytiki-lagoon-pipeline-deploy-codepipeline
+    AssumeRolePolicyDocument:
+      Version: 2012-10-17
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service: codepipeline.amazonaws.com
+          Action: sts:AssumeRole
+    Policies:
+      - PolicyName: CodeBuild
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - codebuild:BatchGetBuilds
+                - codebuild:StartBuild
+                - codebuild:BatchGetBuildBatches
+                - codebuild:StartBuildBatch
+              Resource: !GetAtt CodeBuild.Arn
+      - PolicyName: S3
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: s3:*
+              Resource:
+                - !Sub arn:aws:s3:::${StorageBucket}/*
+                - !Sub arn:aws:s3:::${StorageBucket}
+      - PolicyName: ECS
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - ecs:DescribeServices
+                - ecs:DescribeTasks
+                - ecs:ListTasks
+                - ecs:TagResource
+                - ecs:UpdateService
+              Resource:
+                - !Sub arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:service/${Cluster}/*
+                - !Sub arn:aws:ecs:${AWS::Region}:${AWS::AccountId}:task/${Cluster}/*
+            - Effect: Allow
+              Action:
+                - ecs:DescribeTaskDefinition
+                - ecs:RegisterTaskDefinition
+              Resource: "*"
+      - PolicyName: IAM
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: iam:PassRole
+              Resource:
+                - !GetAtt ClusterRole.Arn
+                - !GetAtt DbtRole.Arn
