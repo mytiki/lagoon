@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mytiki.lagoon</groupId>
   <artifactId>write-layer-aws</artifactId>
-  <version>0.3.15</version>
+  <version>0.3.16</version>
   <packaging>jar</packaging>
   <name>Lagoon: Write Layer - AWS</name>
   <properties>
