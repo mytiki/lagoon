@@ -38,9 +38,24 @@ scheduler:
 run_coordinator:
   module: dagster.core.run_coordinator
   class: QueuedRunCoordinator
+  config:
+    max_concurrent_runs: 10
+    tag_concurrency_limits:
+      - key: "source"
+        value:
+          applyLimitPerUniqueValue: true
+        limit: 1
 
 telemetry:
   enabled: false
+
+auto_materialize:
+  run_tags:
+    key: "dagster/auto_materialize"
+
+run_launcher:
+  module: dagster_aws.ecs
+  class: EcsRunLauncher
 
 #compute_logs:
 #  module: dagster_aws.s3.compute_log_manager

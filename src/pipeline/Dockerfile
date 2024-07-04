@@ -20,7 +20,7 @@ RUN chmod +x ./daemon-start.sh
 EXPOSE 4000
 EXPOSE 4001
 
-ENTRYPOINT ["./daemon-start.sh"]
+CMD ["./daemon-start.sh"]
 
 FROM dagster as webserver
 
@@ -28,4 +28,4 @@ RUN pip install dagster-webserver dagster-graphql
 
 EXPOSE 3000
 
-ENTRYPOINT ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "workspace.yaml"]
+CMD ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "workspace.yaml"]

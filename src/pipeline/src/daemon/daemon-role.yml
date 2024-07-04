@@ -10,3 +10,58 @@ DaemonRole:
           Action: sts:AssumeRole
           Principal:
             Service: ecs-tasks.amazonaws.com
+    Policies:
+      - PolicyName: S3
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: s3:*
+              Resource:
+                - !Sub arn:aws:s3:::${StorageBucket}
+                - !Sub arn:aws:s3:::${StorageBucket}/*
+      - PolicyName: Athena
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: athena:*
+              Resource: !Sub arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${PipelineAthenaWorkgroup}
+      - PolicyName: Glue
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: glue:*
+              Resource:
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
+      - PolicyName: ECS
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: ecs:*
+              Resource: "*"
+      - PolicyName: EC2
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: ec2:DescribeNetworkInterfaces
+              Resource: "*"
+      - PolicyName: SecretsManager
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: secretsmanager:ListSecrets
+              Resource: "*"
+      - PolicyName: IAM
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action: iam:PassRole
+              Resource: arn:aws:iam::590184107666:role/mytiki-lagoon-pipeline-*

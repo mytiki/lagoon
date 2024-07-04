@@ -33,4 +33,4 @@ seeds:
 
 models:
   mytiki:
-    materialized: table
+    +materialized: incremental

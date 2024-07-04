@@ -1,0 +1,22 @@
+CodeEvent:
+  Type: AWS::Events::Rule
+  Properties:
+    Name: mytiki-lagoon-pipeline-deploy
+    Description: Automatically deploy code changes to the Lagoon pipeline
+    EventPattern:
+      source:
+        - aws.s3
+      detail-type:
+        - Object Created
+      detail:
+        bucket:
+          name:
+            - !Ref StorageBucket
+        object:
+          key:
+            - assets/deploy/pipeline/dbt.zip
+    State: "ENABLED"
+    Targets:
+      - Arn: !Sub arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${CodePipeline}
+        RoleArn: !GetAtt CodeEventRole.Arn
+        Id: !Ref CodePipeline

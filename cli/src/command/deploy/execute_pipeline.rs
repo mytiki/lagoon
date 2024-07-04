@@ -1,9 +1,9 @@
 use std::error::Error;
 
 use super::{
-    Cli,
-    execute::STACK_PREFIX,
     super::super::utils::{CfDeploy, Docker, EcrRepository, StsAccount},
+    execute::STACK_PREFIX,
+    Cli,
 };
 
 pub async fn execute(account: &StsAccount, cli: &Cli, name: &str) -> Result<(), Box<dyn Error>> {
@@ -22,7 +22,7 @@ async fn deploy_images(account: &StsAccount, name: &str) -> Result<(), Box<dyn E
             .with_tag("dagster-latest")
             .with_target("webserver")
             .with_platform("linux/x86_64")
-            .auth()?
+            .auth(account.profile())?
             .build()?
             .push()?;
     }
@@ -33,7 +33,7 @@ async fn deploy_images(account: &StsAccount, name: &str) -> Result<(), Box<dyn E
             .with_tag("daemon-latest")
             .with_target("daemon")
             .with_platform("linux/x86_64")
-            .auth()?
+            .auth(account.profile())?
             .build()?
             .push()?;
     }
@@ -43,7 +43,7 @@ async fn deploy_images(account: &StsAccount, name: &str) -> Result<(), Box<dyn E
             .with_context("../dist/assets/deploy/pipeline/dbt")
             .with_tag("dbt-example")
             .with_platform("linux/x86_64")
-            .auth()?
+            .auth(account.profile())?
             .build()?
             .push()?;
     }

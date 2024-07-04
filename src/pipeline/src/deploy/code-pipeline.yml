@@ -1,0 +1,54 @@
+CodePipeline:
+  Type: AWS::CodePipeline::Pipeline
+  Properties:
+    Name: codepipeline-dbt
+    RoleArn: !GetAtt CodePipelineRole.Arn
+    PipelineType: V2
+    ExecutionMode: QUEUED
+    ArtifactStore:
+      Type: S3
+      Location: !Ref StorageBucket
+    Stages:
+      - Name: Source
+        Actions:
+          - Name: S3
+            ActionTypeId:
+              Category: Source
+              Owner: AWS
+              Version: 1
+              Provider: S3
+            Configuration:
+              S3Bucket: !Ref StorageBucket
+              S3ObjectKey: assets/deploy/pipeline/dbt.zip
+              PollForSourceChanges: false
+            OutputArtifacts:
+              - Name: SourceArtifact
+      - Name: Build
+        Actions:
+          - Name: Docker
+            ActionTypeId:
+              Category: Build
+              Owner: AWS
+              Version: 1
+              Provider: CodeBuild
+            Configuration:
+              ProjectName: !Ref CodeBuild
+            InputArtifacts:
+              - Name: SourceArtifact
+            OutputArtifacts:
+              - Name: BuildArtifact
+      - Name: Deploy
+        Actions:
+          - Name: ECS
+            ActionTypeId:
+              Category: Deploy
+              Owner: AWS
+              Version: 1
+              Provider: ECS
+            Configuration:
+              ClusterName: !Ref Cluster
+              ServiceName: !Ref DbtService
+              FileName: imagedefinitions.json
+              DeploymentTimeout: 15
+            InputArtifacts:
+              - Name: BuildArtifact

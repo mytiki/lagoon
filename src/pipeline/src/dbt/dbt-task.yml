@@ -21,6 +21,8 @@ DbtTask:
             Value: !GetAtt Database.Endpoint.Address
           - Name: "DAGSTER_CURRENT_IMAGE"
             Value: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:dbt-example
+          - Name: "S3_BUCKET"
+            Value: !Ref StorageBucket
     Cpu: 512
     Memory: 2048
     NetworkMode: awsvpc
