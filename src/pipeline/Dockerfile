@@ -8,7 +8,7 @@ WORKDIR $DAGSTER_HOME
 COPY dagster.yaml $DAGSTER_HOME
 COPY workspace.yaml $DAGSTER_HOME
 
-RUN pip install dagster dagster-postgres dagster-aws
+RUN pip install 'dagster==1.7.12' dagster-postgres dagster-aws
 
 FROM dagster as daemon
 COPY daemon-health.py $DAGSTER_HOME

@@ -21,3 +21,15 @@ ClusterRole:
             - Effect: Allow
               Action: logs:CreateLogGroup
               Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/ecs/*:"
+      - PolicyName: Secret
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParameters
+                - secretsmanager:GetSecretValue
+                - kms:Decrypt
+              Resource:
+                - !Ref ClusterSecret
+                - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"

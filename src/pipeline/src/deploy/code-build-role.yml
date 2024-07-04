@@ -64,3 +64,16 @@ CodeBuildRole:
             - Effect: Allow
               Action: ecr:GetAuthorizationToken
               Resource: "*"
+      - PolicyName: SecretsManager
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - secretsmanager:UpdateSecret
+                - ssm:GetParameters
+                - secretsmanager:GetSecretValue
+                - kms:Decrypt
+              Resource:
+                - !Ref ClusterSecret
+                - !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"

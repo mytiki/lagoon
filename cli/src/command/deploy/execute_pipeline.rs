@@ -1,9 +1,9 @@
 use std::error::Error;
 
 use super::{
-    super::super::utils::{CfDeploy, Docker, EcrRepository, StsAccount},
-    execute::STACK_PREFIX,
     Cli,
+    execute::STACK_PREFIX,
+    super::super::utils::{CfDeploy, Docker, EcrRepository, StsAccount},
 };
 
 pub async fn execute(account: &StsAccount, cli: &Cli, name: &str) -> Result<(), Box<dyn Error>> {
@@ -16,10 +16,11 @@ async fn deploy_images(account: &StsAccount, name: &str) -> Result<(), Box<dyn E
     log::info!("Building `pipeline` images...");
     let ecr = EcrRepository::connect(account.profile(), name).await?;
 
-    if !ecr.has_image("dagster-latest").await? {
+    let image_tag = format!("dagster-{}", "1.7.12");
+    if !ecr.has_image(&image_tag).await? {
         Docker::new(account.account_id(), &account.region().to_string(), name)
             .with_context("../dist/assets/deploy/pipeline/dagster")
-            .with_tag("dagster-latest")
+            .with_tag(&image_tag)
             .with_target("webserver")
             .with_platform("linux/x86_64")
             .auth(account.profile())?
@@ -27,10 +28,11 @@ async fn deploy_images(account: &StsAccount, name: &str) -> Result<(), Box<dyn E
             .push()?;
     }
 
-    if !ecr.has_image("daemon-latest").await? {
+    let image_tag = format!("daemon-{}", "1.7.12");
+    if !ecr.has_image(&image_tag).await? {
         Docker::new(account.account_id(), &account.region().to_string(), name)
             .with_context("../dist/assets/deploy/pipeline/dagster")
-            .with_tag("daemon-latest")
+            .with_tag(&image_tag)
             .with_target("daemon")
             .with_platform("linux/x86_64")
             .auth(account.profile())?
