@@ -39,7 +39,7 @@ jobs:
       - name: Update Versions
         run: |
           make semver version=${{ steps.semver.outputs.nextStrict }}
-          sed -i '3 s/version = *.*.*/version = "${{ steps.semver.outputs.nextStrict }}"/' src/Cargo.toml
+          sed -i '3 s/version = *.*.*/version = "${{ steps.semver.outputs.nextStrict }}"/' cli/Cargo.toml
 
       - name: Commit Changes
         continue-on-error: true
