@@ -2,6 +2,7 @@
 
 semver:
 	cd src/write && make semver version=$(version)
+	cd cli && sed -i'.bak' '3 s/version = *.*.*/version = "$(version)"/' Cargo.toml && rm Cargo.toml.bak
 
 compile:
 	cd src/log && make build
