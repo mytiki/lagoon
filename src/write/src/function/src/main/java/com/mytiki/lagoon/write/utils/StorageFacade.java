@@ -43,6 +43,7 @@ public class StorageFacade {
     public static StorageFacade withProvider(AwsCredentialsProvider provider) {
         Configuration clientConfig = new Configuration();
         clientConfig.set("fs.s3a.aws.credentials.provider", provider.getClass().getName());
+        clientConfig.set("parquet.avro.readInt96AsFixed", "true");
         S3Client client = S3Client.builder()
                 .credentialsProvider(provider)
                 .region(DefaultAwsRegionProviderChain.builder().build().getRegion())
@@ -76,7 +77,7 @@ public class StorageFacade {
     }
 
     public Schema readSchema(ParquetFileReader reader) {
-        AvroSchemaConverter converter = new AvroSchemaConverter();
+        AvroSchemaConverter converter = new AvroSchemaConverter(clientConfig);
         ParquetMetadata footer = reader.getFooter();
         MessageType parquetSchema = footer.getFileMetaData().getSchema();
         return AvroSchemaUtil.toIceberg(converter.convert(parquetSchema));
