@@ -3,13 +3,12 @@
 DIST = ../../../../dist
 MODULE = write
 PACKAGE = function
-
-semver:
-	xmlstarlet ed -L -u "_:project/_:version" -v "$(version)" pom.xml
-	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='write-layer-aws']/_:version" -v "$(version)" pom.xml
-	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='write-layer-iceberg']/_:version" -v "$(version)" pom.xml
+VERSION = $(shell cat ../../../../version.txt)
 
 compile:
+	xmlstarlet ed -L -u "_:project/_:version" -v "$(VERSION)" pom.xml
+	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='write-layer-aws']/_:version" -v "$(VERSION)" pom.xml
+	xmlstarlet ed -L -u "/_:project/_:dependencies/_:dependency[_:groupId='com.mytiki.lagoon' and _:artifactId='write-layer-iceberg']/_:version" -v "$(VERSION)" pom.xml
 	cd ../layer-aws && make install
 	cd ../layer-iceberg && make install
 	mvn compile

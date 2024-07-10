@@ -5,7 +5,7 @@ DIST = ../../dist
 MODULE = prepare
 
 compile: template.yml
-	@echo "YML files to merge: $(RESOURCES)"
+	echo "YML files to merge: $(RESOURCES)"
 	mkdir -p $(DIST)/templates $(DIST)/assets/deploy/$(MODULE)
 	cp template.yml $(DIST)/templates/$(MODULE).yml
 	for res in $(RESOURCES); do \

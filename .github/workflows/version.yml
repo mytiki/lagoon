@@ -26,6 +26,12 @@ jobs:
           export PR_BRANCH=$(git branch --show-current)
           echo "branch=$PR_BRANCH" >> $GITHUB_OUTPUT
 
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
       - name: Install xmlstarlet
         run: sudo apt-get update && sudo apt-get install -y xmlstarlet
 
@@ -38,7 +44,7 @@ jobs:
 
       - name: Update Versions
         run: |
-          make semver version=${{ steps.semver.outputs.nextStrict }}
+          make bump version=${{ steps.semver.outputs.nextStrict }}
 
       - name: Commit Changes
         continue-on-error: true

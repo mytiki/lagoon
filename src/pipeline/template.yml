@@ -15,6 +15,14 @@ Parameters:
     Type: String
     Description: The password for the pipeline database. Please randomly generate this.
     NoEcho: true
+  Dagster:
+    Type: String
+    Description: The version of the dagster image to use for the pipeline
+    Default: 0.3.19
+  Dbt:
+    Type: String
+    Description: "The URI:tag of corresponding to the dbt image to use in the pipeline"
+    Default: public.ecr.aws/mytiki/mytiki-lagoon:dbt-example-0.3.19
 
 Resources:
 

@@ -4,7 +4,7 @@ DaemonTask:
     ContainerDefinitions:
       - Name: mytiki-lagoon-pipeline-daemon
         Essential: true
-        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:daemon-1.7.12
+        Image: !Sub public.ecr.aws/mytiki/mytiki-lagoon:daemon-${Dagster}
         PortMappings:
           - ContainerPort: 4001
         LogConfiguration:

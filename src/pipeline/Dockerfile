@@ -1,4 +1,4 @@
-FROM python:3.10-slim as dagster
+FROM python:3.10-slim as base
 
 ENV DAGSTER_HOME=/opt/dagster/dagster_home/
 
@@ -10,9 +10,9 @@ COPY workspace.yaml $DAGSTER_HOME
 
 RUN pip install 'dagster==1.7.12' dagster-postgres dagster-aws
 
-FROM dagster as daemon
-COPY daemon-health.py $DAGSTER_HOME
-COPY daemon-start.sh $DAGSTER_HOME
+FROM base as daemon
+COPY src/daemon/daemon-health.py $DAGSTER_HOME
+COPY src/daemon/daemon-start.sh $DAGSTER_HOME
 
 RUN pip install Flask
 RUN chmod +x ./daemon-start.sh
@@ -22,7 +22,7 @@ EXPOSE 4001
 
 CMD ["./daemon-start.sh"]
 
-FROM dagster as webserver
+FROM base as dagster
 
 RUN pip install dagster-webserver dagster-graphql
 
