@@ -8,5 +8,9 @@ Parameters:
   StorageBucket:
     Type: String
     Description: The S3 bucket name for the Lagoon
+  Version:
+    Type: String
+    Description: The Lagoon write function version
+    Default: 0.3.20
 
 Resources:

@@ -1,4 +1,4 @@
-.PHONY: clean semver
+.PHONY: clean
 
 DIST = ../../../../dist
 MODULE = write
@@ -11,11 +11,11 @@ install:
 
 build: install
 	mkdir -p target/lambda/java/lib
-	mkdir -p $(DIST)/assets/deploy/$(MODULE)
+	mkdir -p $(DIST)/assets/deploy/$(MODULE)/$(VERSION)
 	cp -r target/write-layer-*.jar target/lambda/java/lib
 	cd target/lambda && zip -r layer-content.zip java
-	mv target/lambda/layer-content.zip $(DIST)/assets/deploy/$(MODULE)/$(PACKAGE).zip
+	mv target/lambda/layer-content.zip $(DIST)/assets/deploy/$(MODULE)/$(VERSION)/$(PACKAGE).zip
 
 clean:
 	mvn clean
-	rm -rf target .aws-sam $(DIST)/assets/deploy/$(MODULE)/$(PACKAGE).zip
+	rm -rf target .aws-sam $(DIST)/assets/deploy/$(MODULE)/$(VERSION)/$(PACKAGE).zip
