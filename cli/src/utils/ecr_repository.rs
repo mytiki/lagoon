@@ -1,6 +1,7 @@
 use std::error::Error;
 
-use aws_sdk_ecr::{Client, types::ImageTagMutability};
+use aws_sdk_ecr::{Client, primitives::DateTime, types::ImageTagMutability};
+use aws_sdk_ecr::types::ImageIdentifier;
 
 use super::super::utils::StsAccount;
 
@@ -88,5 +89,53 @@ impl EcrRepository {
             .iter()
             .any(|image| image.image_tag().map_or(false, |t| t == image_tag));
         Ok(tag_exists)
+    }
+
+    pub async fn get_image(&self, prefix: &str) -> Result<String, Box<dyn Error>> {
+        let error_message = "No matching tags found.";
+        let rsp = self
+            .client
+            .list_images()
+            .repository_name(self.name.clone())
+            .send()
+            .await?;
+        let mut matching_tags: Vec<ImageIdentifier> = Vec::new();
+        rsp.image_ids().iter().for_each(|image| {
+            if let Some(tag) = image.image_tag() {
+                if tag.starts_with(prefix) {
+                    matching_tags.push(image.clone());
+                }
+            }
+        });
+        let matching_tags = (!matching_tags.is_empty()).then_some(matching_tags);
+        if matching_tags.is_none() {
+            return Err(error_message.into());
+        }
+        let describe_tags = self
+            .client
+            .describe_images()
+            .set_image_ids(matching_tags)
+            .repository_name(self.name.clone())
+            .send()
+            .await?;
+        let mut images: Vec<(DateTime, Option<Vec<String>>)> = describe_tags
+            .image_details()
+            .iter()
+            .filter_map(|details| {
+                details
+                    .image_pushed_at
+                    .and_then(|pushed_at| Some((pushed_at, details.image_tags.clone())))
+            })
+            .collect();
+        images.sort_by(|a, b| b.0.cmp(&a.0));
+        let tag = images
+            .first()
+            .map(|(_, tags)| {
+                let tags = tags.clone().ok_or(error_message)?;
+                let tag = tags.first().ok_or(error_message)?;
+                Ok(tag.clone())
+            })
+            .ok_or("No matching tags found")?;
+        tag
     }
 }

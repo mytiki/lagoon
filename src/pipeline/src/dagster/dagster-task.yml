@@ -4,7 +4,7 @@ DagsterTask:
     ContainerDefinitions:
       - Name: mytiki-lagoon-pipeline-dagster
         Essential: true
-        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:dagster-1.7.12
+        Image: !Sub public.ecr.aws/mytiki/mytiki-lagoon:dagster-${Dagster}
         PortMappings:
           - ContainerPort: 3000
         LogConfiguration:

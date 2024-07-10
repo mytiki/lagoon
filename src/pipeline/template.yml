@@ -1,6 +1,6 @@
 #file: noinspection YamlFormatViolation
 
-AWSTemplateFormatVersion: 2010-09-09
+AWSTemplateFormatVersion: "0.3.18"
 Transform: AWS::Serverless-2016-10-31
 Description: "mytiki-lagoon | pipline module | execute and automate data transformation with dbt pipelines and dagster orchestration"
 
@@ -15,6 +15,14 @@ Parameters:
     Type: String
     Description: The password for the pipeline database. Please randomly generate this.
     NoEcho: true
+  Dagster:
+    Type: String
+    Description: The version of the dagster image to use for the pipeline
+    Default: 0.3.18
+  Dbt:
+    Type: String
+    Description: "The URI:tag of corresponding to the dbt image to use in the pipeline"
+    Default: public.ecr.aws/mytiki/mytiki-lagoon:dbt-example-0.3.18
 
 Resources:
 

@@ -3,11 +3,10 @@
 DIST = ../../../../dist
 MODULE = write
 PACKAGE = layer-iceberg
-
-semver:
-	xmlstarlet ed -L -u "_:project/_:version" -v "$(version)" pom.xml
+VERSION = $(shell cat ../../../../version.txt)
 
 install:
+	xmlstarlet ed -L -u "_:project/_:version" -v "$(VERSION)" pom.xml
 	mvn install
 
 build: install

@@ -17,10 +17,16 @@ pub struct Cli {
     #[arg(short, long)]
     ssl: String,
 
-    /// A password to use for communication between resources. Required by the `pipeline` module.
-    /// Does not need to be memorable; you should randomly generate a strong password.
+    /// A password to use for communication between resources. Auto-generated on each run
+    /// if not provided.
     #[arg(short, long)]
-    password: String,
+    password: Option<String>,
+
+    /// The full URI:tag for the docker image hosted in your Lagoon ECR repository.
+    /// If not provided, the most recent image will be used. If not found, a default example
+    /// image will be used.
+    #[arg(short, long)]
+    dbt: Option<String>,
 }
 
 impl Cli {
@@ -33,7 +39,10 @@ impl Cli {
     pub fn ssl(&self) -> &str {
         &self.ssl
     }
-    pub fn password(&self) -> &str {
+    pub fn password(&self) -> &Option<String> {
         &self.password
+    }
+    pub fn dbt(&self) -> &Option<String> {
+        &self.dbt
     }
 }

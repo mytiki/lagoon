@@ -4,7 +4,7 @@ DbtTask:
     ContainerDefinitions:
       - Name: mytiki-lagoon-pipeline-dbt
         Essential: true
-        Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${StorageBucket}:dbt-example
+        Image: !Ref Dbt
         PortMappings:
           - ContainerPort: 4000
         LogConfiguration:
