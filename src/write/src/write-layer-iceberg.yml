@@ -10,4 +10,4 @@ WriteLayerIceberg:
     LicenseInfo: AGPL-3.0-or-later
     Content:
       S3Bucket: !Ref StorageBucket
-      S3Key: assets/deploy/write/layer-iceberg.zip
+      S3Key: !Sub assets/deploy/write/${Version}/layer-iceberg.zip

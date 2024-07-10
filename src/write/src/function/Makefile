@@ -1,4 +1,4 @@
-.PHONY: clean semver
+.PHONY: clean
 
 DIST = ../../../../dist
 MODULE = write
@@ -16,9 +16,9 @@ compile:
 build: compile
 	mvn package
 	mkdir -p target/lambda/
-	mkdir -p $(DIST)/assets/deploy/$(MODULE)
-	cp target/write-function-*.jar $(DIST)/assets/deploy/$(MODULE)/$(PACKAGE).jar
+	mkdir -p $(DIST)/assets/deploy/$(MODULE)/$(VERSION)
+	cp target/write-function-*.jar $(DIST)/assets/deploy/$(MODULE)/$(VERSION)/$(PACKAGE).jar
 
 clean:
 	mvn clean
-	rm -rf target .aws-sam $(DIST)/assets/deploy/$(MODULE)/$(PACKAGE).jar
+	rm -rf target .aws-sam $(DIST)/assets/deploy/$(MODULE)/$(VERSION)/$(PACKAGE).jar

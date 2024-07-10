@@ -5,7 +5,7 @@ WriteFunction:
     FunctionName: mytiki-lagoon-write
     Code:
       S3Bucket: !Ref StorageBucket
-      S3Key: assets/deploy/write/function.jar
+      S3Key: !Sub assets/deploy/write/${Version}/function.jar
     Handler: com.mytiki.lagoon.write.Handler::handleRequest
     Runtime: java21
     PackageType: Zip

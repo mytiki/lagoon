@@ -1,15 +1,12 @@
-.PHONY: clean semver
+.PHONY: clean
 
 RESOURCES = $(wildcard src/*.yml)
 DIST = ../../dist
 MODULE = write
-
-semver:
-	cd src/layer-iceberg && make semver version=$(version)
-	cd src/layer-aws && make semver version=$(version)
-	cd src/function && make semver version=$(version)
+VERSION = $(shell cat ../../version.txt)
 
 compile: template.yml
+	sed -i'.bak' '14 s/Default: *.*.*/Default: $(VERSION)/' template.yml && rm template.yml.bak
 	echo "YML files to merge: $(RESOURCES)"
 	mkdir -p $(DIST)/templates $(DIST)/assets/deploy/$(MODULE)
 	cp template.yml $(DIST)/templates/$(MODULE).yml
