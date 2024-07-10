@@ -28,9 +28,9 @@ publish: clean build
 	docker push $(repository):dagster-$(VERSION)
 	docker tag daemon-$(VERSION) $(repository):daemon-$(VERSION)
 	docker push $(repository):daemon-$(VERSION)
-	docker tag dbt-$(VERSION) $(repository):dbt-example-$(VERSION)
+	docker tag dbt-example-$(VERSION) $(repository):dbt-example-$(VERSION)
 	docker push $(repository):dbt-example-$(VERSION)
 
 clean:
 	rm -rf $(DIST)/templates/$(MODULE).yml -rf .aws-sam
-	docker rmi dagster-$(VERSION) daemon-$(VERSION) dbt-$(VERSION)
+	- docker rmi -f dagster-$(VERSION) daemon-$(VERSION) dbt-$(VERSION)

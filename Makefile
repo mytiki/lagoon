@@ -28,3 +28,4 @@ clean:
 	cd src/pipeline && make clean
 	cd src/write && make clean
 	rm -rf dist
+	- docker rmi -f cli-$(VERSION)
