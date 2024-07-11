@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mytiki.lagoon</groupId>
   <artifactId>write-layer-iceberg</artifactId>
-  <version>0.3.20</version>
+  <version>0.3.21</version>
   <packaging>jar</packaging>
   <name>Lagoon: Write Layer - Iceberg</name>
   <properties>
