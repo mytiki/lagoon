@@ -8,6 +8,7 @@ WORKDIR $DAGSTER_HOME
 
 COPY . .
 RUN pip install -r requirements.txt
+RUN cd src && dbt deps
 
 EXPOSE 4000
 

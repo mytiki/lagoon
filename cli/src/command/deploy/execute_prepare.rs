@@ -10,15 +10,16 @@ pub async fn execute(
     dist: &str,
     bucket: &S3Bucket,
 ) -> Result<(), Box<dyn Error>> {
-    deploy_assets(bucket).await?;
+    deploy_assets(bucket, dist).await?;
     deploy_template(account, dist, bucket).await?;
     Ok(())
 }
 
-async fn deploy_assets(bucket: &S3Bucket) -> Result<(), Box<dyn Error>> {
+async fn deploy_assets(bucket: &S3Bucket, dist: &str) -> Result<(), Box<dyn Error>> {
     log::info!("Creating `prepare` assets...");
+    let dir = format!("assets/deploy/write/{}", env!("CARGO_PKG_VERSION"));
     bucket
-        .upload_dir("assets/deploy/prepare", "../dist/assets/deploy/prepare")
+        .upload_dir(&dir, &format!("{}/{}", dist, dir))
         .await?;
     log::info!("`prepare` assets created.");
     Ok(())
