@@ -21,8 +21,8 @@ DagsterTask:
             ValueFrom: !Sub "${ClusterSecret}:DAGSTER_PG_HOST::"
           - Name: "DAGSTER_GRPC_SERVER_HOST"
             ValueFrom: !Sub "${ClusterSecret}:DAGSTER_GRPC_SERVER_HOST::"
-    Cpu: 512
-    Memory: 2048
+    Cpu: 256
+    Memory: 1024
     NetworkMode: awsvpc
     RequiresCompatibilities:
       - FARGATE
