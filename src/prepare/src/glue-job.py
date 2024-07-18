@@ -1,4 +1,5 @@
 import sys
+
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.transforms import *
@@ -35,7 +36,12 @@ outputFrame = glueContext.write_dynamic_frame.from_options(
     frame=inputFrame,
     connection_type="s3", format="glueparquet",
     connection_options={"path": f"s3://{args['S3_BUCKET']}/load/{db_table}", "partitionKeys": []},
-    format_options={"compression": "uncompressed"},
+    format_options={
+        "compression": "uncompressed",
+        "useGlueParquetWriter": True,
+        "blockSize": 134217728,
+        "pageSize": 1048576
+    },
     transformation_ctx="outputFrame")
 
 job.commit()
