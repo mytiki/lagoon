@@ -24,7 +24,7 @@ WriteFunction:
       - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1
     LoggingConfig:
       LogFormat: JSON
-      ApplicationLogLevel: TRACE
-      SystemLogLevel: DEBUG
+      ApplicationLogLevel: WARN
+      SystemLogLevel: WARN
       LogGroup: /aws/lambda/mytiki-lagoon-write
     Role: !GetAtt WriteRole.Arn

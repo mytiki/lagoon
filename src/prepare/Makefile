@@ -3,16 +3,18 @@
 RESOURCES = $(wildcard src/*.yml)
 DIST = ../../dist
 MODULE = prepare
+VERSION = $(shell cat ../../version.txt)
 
 compile: template.yml
+	sed -i'.bak' '14 s/Default: *.*.*/Default: $(VERSION)/' template.yml && rm template.yml.bak
 	echo "YML files to merge: $(RESOURCES)"
-	mkdir -p $(DIST)/templates $(DIST)/assets/deploy/$(MODULE)
+	mkdir -p $(DIST)/templates $(DIST)/assets/deploy/$(MODULE)/$(VERSION)
 	cp template.yml $(DIST)/templates/$(MODULE).yml
 	for res in $(RESOURCES); do \
 		echo "Processing: $$res"; \
 		yq eval '.Resources += load("'$$res'")' $(DIST)/templates/$(MODULE).yml -i || exit 1; \
 	done
-	cp src/glue-job.py $(DIST)/assets/deploy/$(MODULE)/glue-job.py
+	cp src/glue-job.py $(DIST)/assets/deploy/$(MODULE)/$(VERSION)/glue-job.py
 
 build: compile
 	sam build --template $(DIST)/templates/$(MODULE).yml

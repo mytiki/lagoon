@@ -18,11 +18,11 @@ Parameters:
   Dagster:
     Type: String
     Description: The version of the dagster image to use for the pipeline
-    Default: 0.3.23
+    Default: 0.3.24
   Dbt:
     Type: String
     Description: "The URI:tag of corresponding to the dbt image to use in the pipeline"
-    Default: public.ecr.aws/mytiki/mytiki-lagoon:dbt-example-0.3.23
+    Default: public.ecr.aws/mytiki/mytiki-lagoon:dbt-example-0.3.24
 
 Resources:
 
