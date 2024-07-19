@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mytiki.lagoon</groupId>
   <artifactId>write-function</artifactId>
-  <version>0.3.23</version>
+  <version>0.3.24</version>
   <packaging>jar</packaging>
   <name>Lagoon: Write Function</name>
   <properties>
@@ -20,13 +20,13 @@
     <dependency>
       <groupId>com.mytiki.lagoon</groupId>
       <artifactId>write-layer-aws</artifactId>
-      <version>0.3.23</version>
+      <version>0.3.24</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.mytiki.lagoon</groupId>
       <artifactId>write-layer-iceberg</artifactId>
-      <version>0.3.23</version>
+      <version>0.3.24</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
