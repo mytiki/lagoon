@@ -61,12 +61,12 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
     }
 
     private void reportFailure(SQSEvent event, Exception exception) {
-        logger.error(exception, exception.fillInStackTrace());
+        logger.error(String.format("Event: %s", event), exception);
         event.getRecords().forEach(ev -> failures.add(new SQSBatchResponse.BatchItemFailure(ev.getMessageId())));
     }
 
     private void reportFailure(SQSEvent.SQSMessage message, Exception exception) {
-        logger.error(exception, exception.fillInStackTrace());
+        logger.error(String.format("Message: %s", message), exception);
         failures.add(new SQSBatchResponse.BatchItemFailure(message.getMessageId()));
     }
 }
