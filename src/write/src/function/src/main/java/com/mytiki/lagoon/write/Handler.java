@@ -54,6 +54,7 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
         } catch (Exception ex) {
             reportFailure(event, ex);
         }
+        catalog.close();
         return SQSBatchResponse.builder()
                 .withBatchItemFailures(failures)
                 .build();

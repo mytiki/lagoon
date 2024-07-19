@@ -12,7 +12,7 @@ PrepareGlueJob:
       MaxConcurrentRuns: 4000
     Command:
       Name: glueetl
-      ScriptLocation: !Sub s3://${StorageBucket}/assets/deploy/prepare/glue-job.py
+      ScriptLocation: !Sub s3://${StorageBucket}/assets/deploy/prepare/${Version}/glue-job.py
     DefaultArguments:
       "--TempDir": !Sub s3://${StorageBucket}/tmp/prepare
     Role: !GetAtt PrepareGlueRole.Arn

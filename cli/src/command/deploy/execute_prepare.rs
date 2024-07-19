@@ -17,7 +17,7 @@ pub async fn execute(
 
 async fn deploy_assets(bucket: &S3Bucket, dist: &str) -> Result<(), Box<dyn Error>> {
     log::info!("Creating `prepare` assets...");
-    let dir = format!("assets/deploy/write/{}", env!("CARGO_PKG_VERSION"));
+    let dir = format!("assets/deploy/prepare/{}", env!("CARGO_PKG_VERSION"));
     bucket
         .upload_dir(&dir, &format!("{}/{}", dist, dir))
         .await?;
