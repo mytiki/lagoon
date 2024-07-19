@@ -30,7 +30,7 @@ DaemonTask:
           Retries: 3
           StartPeriod: 120
     Cpu: 512
-    Memory: 2048
+    Memory: 1024
     NetworkMode: awsvpc
     RequiresCompatibilities:
       - FARGATE

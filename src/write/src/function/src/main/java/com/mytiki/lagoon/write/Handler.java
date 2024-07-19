@@ -12,11 +12,6 @@ import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.events.ScheduledEvent;
 import com.amazonaws.services.lambda.runtime.serialization.PojoSerializer;
 import com.amazonaws.services.lambda.runtime.serialization.events.LambdaEventSerializers;
-import com.mytiki.lagoon.write.utils.AthenaFacade;
-import com.mytiki.lagoon.write.utils.IcebergFacade;
-import com.mytiki.lagoon.write.utils.StorageFacade;
-import com.mytiki.lagoon.write.write.WriteReq;
-import com.mytiki.lagoon.write.write.WriteService;
 import com.mytiki.utils.lambda.Initialize;
 import org.apache.logging.log4j.Logger;
 
@@ -29,34 +24,29 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
     private final PojoSerializer<ScheduledEvent> serializer = LambdaEventSerializers.serializerFor
             (ScheduledEvent.class, Thread.currentThread().getContextClassLoader());
     private final List<SQSBatchResponse.BatchItemFailure> failures = new ArrayList<>();
-    private final IcebergFacade iceberg;
-    private final StorageFacade storage;
-    private final AthenaFacade athena;
+    private final Catalog catalog;
+    private final Storage storage;
 
     public Handler() {
-        this(IcebergFacade.load(), StorageFacade.dflt(), AthenaFacade.dflt());
-        logger.debug("Initializing");
+        this(Catalog.load(), Storage.dflt());
     }
 
-    public Handler(IcebergFacade iceberg, StorageFacade storage, AthenaFacade athena) {
-        this.iceberg = iceberg.initialize();
+    public Handler(Catalog catalog, Storage storage) {
+        this.catalog = catalog.initialize();
         this.storage = storage;
-        this.athena = athena;
+        logger.debug("Handler: Initialized");
     }
 
     public SQSBatchResponse handleRequest(final SQSEvent event, final Context context) {
+        logger.debug("SQSEvent: {}", event);
         try {
-            WriteService writeService = new WriteService(iceberg, storage, athena);
-            logger.debug("SQSEvent: {}", event);
+            Write write = new Write(catalog, storage);
             event.getRecords().forEach(msg -> {
                 try {
                     ScheduledEvent scheduledEvent = serializer.fromJson(msg.getBody());
-                    WriteReq req = new WriteReq(scheduledEvent);
-                    try {
-                        writeService.write(req);
-                    } catch (Exception ex) {
-                        reportFailure(msg, ex);
-                    }
+                    Request req = Request.fromEvent(scheduledEvent);
+                    write.request(req);
+                    logger.debug("Complete: {}", req.toString());
                 } catch (Exception ex) {
                     reportFailure(msg, ex);
                 }

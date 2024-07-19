@@ -11,8 +11,8 @@ WriteFunction:
     PackageType: Zip
     Architectures:
       - x86_64
-    MemorySize: 512
-    Timeout: 30
+    MemorySize: 1024
+    Timeout: 900
     Environment:
       Variables:
         AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-sqs-handler

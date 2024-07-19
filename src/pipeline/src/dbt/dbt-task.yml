@@ -23,8 +23,8 @@ DbtTask:
             ValueFrom: !Sub "${ClusterSecret}:DAGSTER_CURRENT_IMAGE::"
           - Name: "S3_BUCKET"
             ValueFrom: !Sub "${ClusterSecret}:S3_BUCKET::"
-    Cpu: 512
-    Memory: 2048
+    Cpu: 256
+    Memory: 512
     NetworkMode: awsvpc
     RequiresCompatibilities:
       - FARGATE

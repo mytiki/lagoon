@@ -3,7 +3,7 @@
  * MIT license. See LICENSE file in root directory.
  */
 
-package com.mytiki.lagoon.write.utils;
+package com.mytiki.lagoon.write;
 
 import com.mytiki.utils.lambda.Env;
 import com.mytiki.utils.lambda.Initialize;
@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class IcebergFacade extends GlueCatalog {
-    protected static final Logger logger = LogManager.getLogger(IcebergFacade.class);
+public class Catalog extends GlueCatalog {
+    protected static final Logger logger = LogManager.getLogger(Catalog.class);
     public static final String NAME = "glue_catalog";
     public static final String CATALOG_NAME = "catalog-name";
     public static final String CATALOG_IMPL = "catalog-impl";
@@ -28,6 +28,7 @@ public class IcebergFacade extends GlueCatalog {
     public static final String PROPERTIES = "iceberg.properties";
     public static final String ENV_PREFIX = "ICEBERG_";
     public static final String ETL_LOADED_AT = "_etl_loaded_at";
+    public static final String ETL_LOADED_AT_PARTITION = "_etl_loaded_at_hour";
     public static final Map<String, String> CREATE_PROPERTIES = new HashMap<>() {{
         put("table_type", "ICEBERG");
         put("format", "parquet");
@@ -40,23 +41,23 @@ public class IcebergFacade extends GlueCatalog {
     }};
     private final Map<String, String> properties;
 
-    public IcebergFacade(Map<String, String> properties) {
+    public Catalog(Map<String, String> properties) {
         super();
         logger.debug("iceberg load: {}", properties);
         this.properties = properties;
     }
 
-    public IcebergFacade initialize() {
+    public Catalog initialize() {
         super.initialize(NAME, properties);
-        logger.debug("iceberg initialize: {}", NAME);
+        logger.debug("Catalog: {}", NAME);
         return this;
     }
 
-    public static IcebergFacade load() {
+    public static Catalog load() {
         return load(new Env());
     }
 
-    public static IcebergFacade load(Env env) {
+    public static Catalog load(Env env) {
         Properties properties = Initialize.properties(PROPERTIES);
 
         String catalogName = env.get(env.name(ENV_PREFIX + CATALOG_NAME));
@@ -73,7 +74,7 @@ public class IcebergFacade extends GlueCatalog {
             put(GLUE_SKIP_ARCHIVE, glueSkipArchive != null ? glueSkipArchive : properties.getProperty(GLUE_SKIP_ARCHIVE));
         }};
 
-        return new IcebergFacade(cfg);
+        return new Catalog(cfg);
     }
 
     public Namespace getDatabase(String name) {

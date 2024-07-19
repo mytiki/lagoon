@@ -64,4 +64,4 @@ DaemonRole:
           Statement:
             - Effect: Allow
               Action: iam:PassRole
-              Resource: arn:aws:iam::590184107666:role/mytiki-lagoon-pipeline-*
+              Resource: !Sub arn:aws:iam::${AWS::AccountId}:role/mytiki-lagoon-pipeline-*

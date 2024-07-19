@@ -7,7 +7,7 @@ DagsterService:
       MinimumHealthyPercent: 50
     DeploymentController:
       Type: ECS
-    DesiredCount: 2
+    DesiredCount: 1
     HealthCheckGracePeriodSeconds: 30
     LaunchType: FARGATE
     LoadBalancers:
