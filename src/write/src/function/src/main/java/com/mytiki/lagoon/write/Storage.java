@@ -56,7 +56,7 @@ public class Storage {
     }
 
     public void trash(String bucket, String key) {
-        logger.debug("trash file: {}/{}", bucket, key);
+        logger.debug("Trash: {}/{}", bucket, key);
         CopyObjectRequest copyReq = CopyObjectRequest.builder()
                 .sourceBucket(bucket)
                 .sourceKey(key)
@@ -64,13 +64,13 @@ public class Storage {
                 .destinationKey(String.format("%s/%s", TRASH_PREFIX, key))
                 .build();
         CopyObjectResponse copyRsp = s3.copyObject(copyReq);
-        logger.debug("trash file: {}", copyRsp);
+        logger.debug("Trash: {}", copyRsp);
         DeleteObjectRequest deleteReq = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build();
         DeleteObjectResponse deleteRsp = s3.deleteObject(deleteReq);
-        logger.debug("trash file: {}", deleteRsp);
+        logger.debug("Trash: {}", deleteRsp);
     }
 
     public Input read(String bucket, String key) {

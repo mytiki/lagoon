@@ -28,6 +28,7 @@ public class Catalog extends GlueCatalog {
     public static final String PROPERTIES = "iceberg.properties";
     public static final String ENV_PREFIX = "ICEBERG_";
     public static final String ETL_LOADED_AT = "_etl_loaded_at";
+    public static final String ETL_LOADED_AT_PARTITION = "_etl_loaded_at_hour";
     public static final Map<String, String> CREATE_PROPERTIES = new HashMap<>() {{
         put("table_type", "ICEBERG");
         put("format", "parquet");

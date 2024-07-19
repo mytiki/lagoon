@@ -9,6 +9,7 @@ import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.amazonaws.services.lambda.runtime.tests.annotations.Event;
 import com.mytiki.lagoon.write.mock.MockCatalog;
 import com.mytiki.lagoon.write.mock.MockStorage;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 
 public class WriteTest {

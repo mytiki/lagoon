@@ -29,23 +29,24 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
 
     public Handler() {
         this(Catalog.load(), Storage.dflt());
-        logger.debug("Handler: Initialized");
     }
 
     public Handler(Catalog catalog, Storage storage) {
         this.catalog = catalog.initialize();
         this.storage = storage;
+        logger.debug("Handler: Initialized");
     }
 
     public SQSBatchResponse handleRequest(final SQSEvent event, final Context context) {
         logger.debug("SQSEvent: {}", event);
         try {
-            Write write = new Write(storage, catalog);
+            Write write = new Write(catalog, storage);
             event.getRecords().forEach(msg -> {
                 try {
                     ScheduledEvent scheduledEvent = serializer.fromJson(msg.getBody());
                     Request req = Request.fromEvent(scheduledEvent);
                     write.request(req);
+                    logger.debug("Complete: {}", req.toString());
                 } catch (Exception ex) {
                     reportFailure(msg, ex);
                 }

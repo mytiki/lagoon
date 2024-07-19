@@ -5,27 +5,27 @@ use super::module::Module;
 #[derive(Parser, Debug)]
 pub struct Cli {
     /// Optional. Deploy a submodule of the Lagoon. If not provided, the entire Lagoon will be deployed.
-    #[arg(short, long, value_enum)]
+    #[arg(long, value_enum)]
     module: Option<Module>,
 
     /// Path to the dist folder containing the submodule deployment templates.
-    #[arg(short, long, default_value = ".")]
+    #[arg(long, default_value = ".")]
     dist: String,
 
     /// The ARN of the [AWS SSL certificate](https://aws.amazon.com/certificate-manager/) to
     /// use for the Dagster endpoint. Required by the `pipeline` module.
-    #[arg(short, long)]
+    #[arg(long)]
     ssl: String,
 
     /// A password to use for communication between resources. Auto-generated on each run
     /// if not provided.
-    #[arg(short, long)]
+    #[arg(long)]
     password: Option<String>,
 
     /// The full URI:tag for the docker image hosted in your Lagoon ECR repository.
     /// If not provided, the most recent image will be used. If not found, a default example
     /// image will be used.
-    #[arg(short, long)]
+    #[arg(long)]
     dbt: Option<String>,
 }
 

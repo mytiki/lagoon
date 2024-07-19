@@ -56,7 +56,7 @@ public class Request {
         Map<String, Object> s3Bucket = (Map<String, Object>) event.getDetail().get("bucket");
         String key = (String) s3Object.get("key");
         String bucket = (String) s3Bucket.get("name");
-        return new Request(key, bucket);
+        return new Request(bucket, key);
     }
 
     public String getBucket() {
