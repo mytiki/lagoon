@@ -1,6 +1,5 @@
 package com.mytiki.lagoon.write;
 
-import com.mytiki.utils.lambda.ApiExceptionBuilder;
 import com.mytiki.utils.lambda.Initialize;
 import org.apache.iceberg.*;
 import org.apache.iceberg.catalog.Namespace;
@@ -35,20 +34,14 @@ public class Write {
         logger.debug("Write: constructed");
     }
 
-    public void request(Request req) {
+    public void request(Request req) throws IOException {
         logger.debug("Request: {}", req);
         if (!req.getType().equals("parquet"))
-            throw new ApiExceptionBuilder(404)
-                    .message("Bad Request")
-                    .detail("Unsupported file type")
-                    .properties("path", req.getPath())
-                    .build();
-
+            throw new Warn(req.getKey(), "Unsupported file type. Must be .parquet");
         Input input = storage.read(req.getBucket(), req.getKey());
         Namespace database = catalog.getDatabaseSafe(req.getDatabase());
         TableIdentifier tableId = TableIdentifier.of(database, req.getTable());
         String location = String.format("s3://%s/%s/%s/%s", req.getBucket(), "stg", req.getDatabase(), req.getTable());
-
         Schema schema = getSchema(input);
         Table table = !catalog.tableExists(tableId) ? createTable(tableId, schema, location) : loadTable(tableId, schema);
         writeData(table, input, location);
@@ -91,41 +84,32 @@ public class Write {
         return table;
     }
 
-    private void writeData(Table table, Input input, String location) {
+    private void writeData(Table table, Input input, String location) throws IOException {
         logger.debug("Write data: {}", location);
-        try {
-            FileIO io = table.io();
-            LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
-            String partition = String.format("%s=%s",
-                    Catalog.ETL_LOADED_AT_PARTITION,
-                    now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH")));
-            String outputLocation = String.format("%s/data/%s/%s.parquet", location, partition, UUID.randomUUID());
-            OutputFile outputFile = io.newOutputFile(outputLocation);
-            FileAppender<Record> appender = Parquet.write(outputFile)
-                    .forTable(table)
-                    .createWriterFunc(GenericParquetWriter::buildWriter)
-                    .build();
-            try (CloseableIterable<Record> records = input.records(table.schema())) {
-                records.forEach(record -> {
-                    record.setField(Catalog.ETL_LOADED_AT, now);
-                    appender.add(record);
-                });
-            }
-            appender.close();
-            AppendFiles append = table.newAppend();
-            append.appendFile(DataFiles.builder(table.spec())
-                    .withInputFile(outputFile.toInputFile())
-                    .withMetrics(appender.metrics())
-                    .build());
-            append.commit();
-            io.close();
-        } catch (IOException e) {
-            logger.error("failed to write records to: {}", location);
-            throw new ApiExceptionBuilder(404)
-                    .message("Bad Request")
-                    .detail("Failed to write records")
-                    .properties("location", location)
-                    .build();
+        FileIO io = table.io();
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+        String partition = String.format("%s=%s",
+                Catalog.ETL_LOADED_AT_PARTITION,
+                now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH")));
+        String outputLocation = String.format("%s/data/%s/%s.parquet", location, partition, UUID.randomUUID());
+        OutputFile outputFile = io.newOutputFile(outputLocation);
+        FileAppender<Record> appender = Parquet.write(outputFile)
+                .forTable(table)
+                .createWriterFunc(GenericParquetWriter::buildWriter)
+                .build();
+        try (CloseableIterable<Record> records = input.records(table.schema())) {
+            records.forEach(record -> {
+                record.setField(Catalog.ETL_LOADED_AT, now);
+                appender.add(record);
+            });
         }
+        appender.close();
+        AppendFiles append = table.newAppend();
+        append.appendFile(DataFiles.builder(table.spec())
+                .withInputFile(outputFile.toInputFile())
+                .withMetrics(appender.metrics())
+                .build());
+        append.commit();
+        io.close();
     }
 }

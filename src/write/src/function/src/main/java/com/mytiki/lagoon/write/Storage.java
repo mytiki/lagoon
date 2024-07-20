@@ -1,6 +1,5 @@
 package com.mytiki.lagoon.write;
 
-import com.mytiki.utils.lambda.ApiExceptionBuilder;
 import com.mytiki.utils.lambda.Initialize;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -82,11 +81,7 @@ public class Storage {
                     org.apache.iceberg.hadoop.HadoopInputFile.fromPath(path, this.configuration);
             return new Input(parquet, iceberg);
         } catch (IOException e) {
-            logger.error("failed to open file: {}", path.toString());
-            throw new ApiExceptionBuilder(403)
-                    .message("Forbidden")
-                    .properties("path", path.toString())
-                    .build();
+            throw new Warn(path.toString(), "failed to open file", e);
         }
     }
 }

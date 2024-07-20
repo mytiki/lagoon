@@ -47,6 +47,8 @@ public class Handler implements RequestHandler<SQSEvent, SQSBatchResponse> {
                     Request req = Request.fromEvent(scheduledEvent);
                     write.request(req);
                     logger.debug("Complete: {}", req.toString());
+                } catch (Warn ex) {
+                    logger.debug(String.format("Skip message: %s", msg), ex);
                 } catch (Exception ex) {
                     reportFailure(msg, ex);
                 }

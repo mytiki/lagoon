@@ -1,7 +1,6 @@
 package com.mytiki.lagoon.write;
 
 import com.amazonaws.services.lambda.runtime.events.ScheduledEvent;
-import com.mytiki.utils.lambda.ApiExceptionBuilder;
 import com.mytiki.utils.lambda.Initialize;
 import org.apache.logging.log4j.Logger;
 
@@ -20,29 +19,13 @@ public class Request {
         this.bucket = bucket;
         this.key = key;
         String[] split = key.split("/");
-        if (!split[0].equals("load")) {
-            throw new ApiExceptionBuilder(400)
-                    .message("Invalid key")
-                    .help("Expected key to start with 'load/'")
-                    .properties("key", key)
-                    .build();
-        }
+        if (!split[0].equals("load"))
+            throw new Warn(key, "Invalid key. Expected key to start with 'load/'");
         int len = split.length;
-        if (len != 4) {
-            throw new ApiExceptionBuilder(400)
-                    .message("Invalid key")
-                    .help("Expected key to look like 'load/[database]/[table]/[file]'")
-                    .properties("key", key)
-                    .build();
-        }
-        if (!Character.isLetter(split[1].charAt(0)) || !Character.isLetter(split[2].charAt(0))) {
-            throw new ApiExceptionBuilder(400)
-                    .message("Invalid key")
-                    .detail("Database and table name must start with a letter")
-                    .help("Expected key to look like 'load/[database]/[table]/[file]'")
-                    .properties("key", key)
-                    .build();
-        }
+        if (len != 4)
+            throw new Warn(key, "Invalid key. Expected load/[database]/[table]/[file]'");
+        if (!Character.isLetter(split[1].charAt(0)) || !Character.isLetter(split[2].charAt(0)))
+            throw new Warn(key, "Invalid key. Database and table name must start with a letter");
         this.database = split[1].toLowerCase();
         this.table = split[2].toLowerCase();
         this.file = split[3];
