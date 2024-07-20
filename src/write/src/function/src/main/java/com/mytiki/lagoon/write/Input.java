@@ -1,6 +1,5 @@
 package com.mytiki.lagoon.write;
 
-import com.mytiki.utils.lambda.ApiExceptionBuilder;
 import com.mytiki.utils.lambda.Initialize;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.iceberg.Schema;
@@ -46,12 +45,7 @@ public class Input {
             MessageType parquetSchema = footer.getFileMetaData().getSchema();
             return AvroSchemaUtil.toIceberg(converter.convert(parquetSchema));
         } catch (IOException e) {
-            String path = parquet.getPath().toString();
-            logger.error("failed to read file: {}", path);
-            throw new ApiExceptionBuilder(403)
-                    .message("Forbidden")
-                    .properties("path", path)
-                    .build();
+            throw new Warn(parquet.getPath().toString(), "failed to read file", e);
         }
     }
 }
