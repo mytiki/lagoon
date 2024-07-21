@@ -6,6 +6,7 @@ import org.apache.iceberg.catalog.Namespace;
 import org.apache.iceberg.catalog.TableIdentifier;
 import org.apache.iceberg.data.Record;
 import org.apache.iceberg.data.parquet.GenericParquetWriter;
+import org.apache.iceberg.exceptions.CommitFailedException;
 import org.apache.iceberg.io.CloseableIterable;
 import org.apache.iceberg.io.FileAppender;
 import org.apache.iceberg.io.FileIO;
@@ -80,7 +81,15 @@ public class Write {
                 hasChanges = true;
             }
         }
-        if (hasChanges) update.commit();
+        if (hasChanges) {
+            try {
+                update.commit();
+            } catch (CommitFailedException e) {
+                logger.info("Table update failed. Retrying.");
+                table.refresh();
+                update.commit();
+            }
+        }
         return table;
     }
 

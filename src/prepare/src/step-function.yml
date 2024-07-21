@@ -17,7 +17,7 @@ PrepareStepFunction:
               "--S3_KEY.$": "$.detail.object.key"
           ResultPath: "$.GlueJobResult"
           Next: Delete
-          TimeoutSeconds: 900
+          TimeoutSeconds: 5400
           Catch:
             - ErrorEquals:
                 - States.ALL
@@ -30,7 +30,7 @@ PrepareStepFunction:
             "Key.$": "$.detail.object.key"
           Resource: arn:aws:states:::aws-sdk:s3:deleteObject
           End: true
-          TimeoutSeconds: 60
+          TimeoutSeconds: 180
           Catch:
             - ErrorEquals:
                 - States.ALL
