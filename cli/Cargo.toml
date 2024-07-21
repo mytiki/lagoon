@@ -1,6 +1,6 @@
 [package]
 name = "mytiki_lagoon_cli"
-version = "0.3.26"
+version = "0.3.27"
 description = "A CLI tool to manage Tiki's AWS resources"
 authors = ["Tiki inc."]
 edition = "2021"
