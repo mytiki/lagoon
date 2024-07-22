@@ -11,6 +11,6 @@ Parameters:
   Version:
     Type: String
     Description: The Lagoon write function version
-    Default: 0.3.27
+    Default: 0.3.28
 
 Resources:
