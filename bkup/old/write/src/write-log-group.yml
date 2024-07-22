@@ -1,0 +1,5 @@
+WriteLogGroup:
+  Type: AWS::Logs::LogGroup
+  Properties:
+    LogGroupName: !Sub /aws/lambda/${WriteFunction}
+    RetentionInDays: 14

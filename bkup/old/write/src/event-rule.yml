@@ -4,10 +4,8 @@ WriteEventRule:
     Name: mytiki-lagoon-write
     State: ENABLED
     Targets:
-      - Arn: !GetAtt WriteQueue.Arn
-        Id: !GetAtt WriteQueue.QueueName
-        SqsParameters:
-          MessageGroupId: lagoon-write
+      - Arn: !GetAtt EventQueue.Arn
+        Id: !GetAtt EventQueue.QueueName
     EventPattern:
       source:
         - aws.s3

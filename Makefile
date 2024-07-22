@@ -8,10 +8,8 @@ bump:
 
 compile:
 	cd cli && sed -i'.bak' '3 s/version = *.*.*/version = "$(VERSION)"/' Cargo.toml && rm Cargo.toml.bak
-	cd src/log && make build
-	cd src/prepare && make build
 	cd src/pipeline && make build
-	cd src/write && make build
+	cd src/load && make build
 
 build: compile
 	cd cli && cargo zigbuild --release --target=x86_64-unknown-linux-musl
@@ -23,9 +21,7 @@ publish: clean build
 	docker push $(repository):$(VERSION)
 
 clean:
-	cd src/log && make clean
-	cd src/prepare && make clean
 	cd src/pipeline && make clean
-	cd src/write && make clean
+	cd src/load && make clean
 	rm -rf dist
 	- docker rmi -f cli-$(VERSION)

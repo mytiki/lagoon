@@ -1,4 +1,4 @@
-FROM python:3.10-slim as base
+FROM python:3.10-slim AS base
 
 ENV DAGSTER_HOME=/opt/dagster/dagster_home/
 
@@ -12,7 +12,7 @@ COPY requirements.txt $DAGSTER_HOME/requirements-base.txt
 
 RUN pip install -r requirements-base.txt
 
-FROM base as daemon
+FROM base AS daemon
 
 COPY src/daemon/daemon-health.py $DAGSTER_HOME
 COPY src/daemon/daemon-start.sh $DAGSTER_HOME
@@ -26,7 +26,7 @@ EXPOSE 4001
 
 CMD ["./daemon-start.sh"]
 
-FROM base as dagster
+FROM base AS dagster
 
 COPY src/dagster/requirements.txt $DAGSTER_HOME/requirements-dagster.txt
 
