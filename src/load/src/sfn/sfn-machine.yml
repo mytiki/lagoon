@@ -18,6 +18,13 @@ SfnMachine:
           ResultPath: "$.GlueJobResult"
           Next: Delete
           TimeoutSeconds: 5400
+          Retry:
+            - ErrorEquals:
+                - States.ALL
+              IntervalSeconds: 900
+              MaxAttempts: 5
+              BackoffRate: 2
+              JitterStrategy: FULL
         Delete:
           Type: Task
           Parameters:
