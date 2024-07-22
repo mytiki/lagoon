@@ -7,7 +7,7 @@ DataGlueJob:
     GlueVersion: 4.0
     WorkerType: G.1X
     NumberOfWorkers: 10
-    MaxRetries: 0
+    MaxRetries: 5
     ExecutionProperty:
       MaxConcurrentRuns: 100
     Command:
