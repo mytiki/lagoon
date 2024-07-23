@@ -1,3 +1,5 @@
+# ADD STEP TO CHECK IF THE PATH AND FILE TYPE ARE VALID, EXIT IF NOT.
+
 SfnMachine:
   Type: AWS::Serverless::StateMachine
   Properties:
@@ -5,8 +7,15 @@ SfnMachine:
     Role: !GetAtt SfnRole.Arn
     Definition:
       Comment: Transform and load files into Lagoon Iceberg data lake tables
-      StartAt: Write
+      StartAt: IsValid
       States:
+        IsValid:
+          Type: Choice
+          Choices:
+            - Variable: "$.detail.object.key"
+              StringMatches: "load/*/*/*.*"
+              Next: Write
+          Default: Success
         Write:
           Type: Task
           Resource: arn:aws:states:::glue:startJobRun.sync
@@ -21,9 +30,9 @@ SfnMachine:
           Retry:
             - ErrorEquals:
                 - States.ALL
-              IntervalSeconds: 900
+              IntervalSeconds: 300
               MaxAttempts: 5
-              BackoffRate: 2
+              BackoffRate: 3
               JitterStrategy: FULL
         Delete:
           Type: Task
@@ -33,3 +42,5 @@ SfnMachine:
           Resource: arn:aws:states:::aws-sdk:s3:deleteObject
           End: true
           TimeoutSeconds: 180
+        Success:
+          Type: Succeed
