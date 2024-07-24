@@ -1,0 +1,26 @@
+EventRule:
+  Type: AWS::Events::Rule
+  Properties:
+    Name: mytiki-lagoon-load
+    State: ENABLED
+    Targets:
+      - Arn: !Ref SfnMachine
+        Id: !GetAtt SfnMachine.Name
+        RoleArn: !GetAtt EventRole.Arn
+        DeadLetterConfig:
+          Arn: !GetAtt EventRedrive.Arn
+        RetryPolicy:
+          MaximumRetryAttempts: 10
+          MaximumEventAgeInSeconds: 86400
+    EventPattern:
+      source:
+        - aws.s3
+      detail-type:
+        - Object Created
+      detail:
+        bucket:
+          name:
+            - !Ref StorageBucket
+        object:
+          key:
+            - wildcard: load/*

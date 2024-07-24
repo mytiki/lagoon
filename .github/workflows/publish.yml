@@ -23,12 +23,6 @@ jobs:
           cargo install cargo-zigbuild
           rustup target add x86_64-unknown-linux-musl
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'corretto'
-
       - name: Assume OIDC Role
         uses: aws-actions/configure-aws-credentials@v4
         with:

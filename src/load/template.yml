@@ -1,0 +1,16 @@
+#file: noinspection YamlFormatViolation
+
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: "mytiki-lagoon | load module | transform raw data files and load into Lagoon Iceberg data lake tables"
+
+Parameters:
+  StorageBucket:
+    Type: String
+    Description: The S3 bucket name for the Lagoon
+  Version:
+    Type: String
+    Description: The Lagoon write function version
+    Default: 0.3.28
+
+Resources:

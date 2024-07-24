@@ -9,7 +9,7 @@ compile: template.yml
 	sed -i'.bak' '21 s/Default: *.*.*/Default: $(VERSION)/' template.yml && rm template.yml.bak
 	sed -i'.bak' '25 s|Default: public.ecr.aws/mytiki/mytiki-lagoon:dbt-example-*.*.*|Default: public.ecr.aws/mytiki/mytiki-lagoon:dbt-example-$(VERSION)|' template.yml && rm template.yml.bak
 	echo "YML files to merge: $(RESOURCES)"
-	mkdir -p $(DIST)/templates $(DIST)/assets/deploy/$(MODULE)/dagster $(DIST)/assets/deploy/$(MODULE)/dbt
+	mkdir -p $(DIST)/templates
 	cp template.yml $(DIST)/templates/$(MODULE).yml
 	for res in $(RESOURCES); do \
 		echo "Processing: $$res"; \
@@ -33,4 +33,4 @@ publish: clean build
 
 clean:
 	rm -rf $(DIST)/templates/$(MODULE).yml -rf .aws-sam
-	- docker rmi -f dagster-$(VERSION) daemon-$(VERSION) dbt-$(VERSION)
+	- docker rmi -f dagster-$(VERSION) daemon-$(VERSION) dbt-example-$(VERSION)

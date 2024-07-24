@@ -1,0 +1,5 @@
+EventRedrive:
+  Type: AWS::SQS::Queue
+  Properties:
+    QueueName: mytiki-lagoon-load-event-redrive
+    DelaySeconds: 900

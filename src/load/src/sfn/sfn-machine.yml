@@ -1,0 +1,46 @@
+# ADD STEP TO CHECK IF THE PATH AND FILE TYPE ARE VALID, EXIT IF NOT.
+
+SfnMachine:
+  Type: AWS::Serverless::StateMachine
+  Properties:
+    Name: mytiki-lagoon-load
+    Role: !GetAtt SfnRole.Arn
+    Definition:
+      Comment: Transform and load files into Lagoon Iceberg data lake tables
+      StartAt: IsValid
+      States:
+        IsValid:
+          Type: Choice
+          Choices:
+            - Variable: "$.detail.object.key"
+              StringMatches: "load/*/*/*.*"
+              Next: Write
+          Default: Success
+        Write:
+          Type: Task
+          Resource: arn:aws:states:::glue:startJobRun.sync
+          Parameters:
+            JobName: !Ref DataGlueJob
+            Arguments:
+              "--S3_BUCKET.$": "$.detail.bucket.name"
+              "--S3_KEY.$": "$.detail.object.key"
+          ResultPath: "$.GlueJobResult"
+          Next: Delete
+          TimeoutSeconds: 5400
+          Retry:
+            - ErrorEquals:
+                - States.ALL
+              IntervalSeconds: 300
+              MaxAttempts: 5
+              BackoffRate: 3
+              JitterStrategy: FULL
+        Delete:
+          Type: Task
+          Parameters:
+            "Bucket.$": "$.detail.bucket.name"
+            "Key.$": "$.detail.object.key"
+          Resource: arn:aws:states:::aws-sdk:s3:deleteObject
+          End: true
+          TimeoutSeconds: 180
+        Success:
+          Type: Succeed

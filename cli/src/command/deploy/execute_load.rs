@@ -16,12 +16,12 @@ pub async fn execute(
 }
 
 async fn deploy_assets(bucket: &S3Bucket, dist: &str) -> Result<(), Box<dyn Error>> {
-    log::info!("Creating `prepare` assets...");
-    let dir = format!("assets/deploy/prepare/{}", env!("CARGO_PKG_VERSION"));
+    log::info!("Creating `load` assets...");
+    let dir = format!("assets/deploy/load/{}", env!("CARGO_PKG_VERSION"));
     bucket
         .upload_dir(&dir, &format!("{}/{}", dist, dir))
         .await?;
-    log::info!("`prepare` assets created.");
+    log::info!("`load` assets created.");
     Ok(())
 }
 
@@ -30,12 +30,12 @@ async fn deploy_template(
     dist: &str,
     bucket: &S3Bucket,
 ) -> Result<(), Box<dyn Error>> {
-    log::info!("Deploying `prepare` module...");
-    let stack = format!("{}-prepare", STACK_PREFIX);
+    log::info!("Deploying `load` module...");
+    let stack = format!("{}-load", STACK_PREFIX);
     CfDeploy::connect(
         account.profile(),
         &stack,
-        &format!("{}/templates/prepare.yml", dist),
+        &format!("{}/templates/load.yml", dist),
     )
     .await?
     .capability("CAPABILITY_AUTO_EXPAND")?
@@ -43,6 +43,6 @@ async fn deploy_template(
     .parameter("StorageBucket", &bucket.name())
     .deploy()
     .await?;
-    log::info!("`prepare` module deployed.");
+    log::info!("`load` module deployed.");
     Ok(())
 }

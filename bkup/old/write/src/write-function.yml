@@ -1,0 +1,30 @@
+WriteFunction:
+  Type: AWS::Lambda::Function
+  Properties:
+    Description: Write data files as mytiki-lagoon (Iceberg) compatible tables
+    FunctionName: mytiki-lagoon-write
+    Code:
+      S3Bucket: !Ref StorageBucket
+      S3Key: !Sub assets/deploy/write/${Version}/function.jar
+    Handler: com.mytiki.lagoon.write.Handler::handleRequest
+    Runtime: java21
+    PackageType: Zip
+    Architectures:
+      - x86_64
+    MemorySize: 1024
+    Timeout: 900
+    Environment:
+      Variables:
+        AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-sqs-handler
+        ICEBERG_WAREHOUSE: !Sub s3://${StorageBucket}
+    ReservedConcurrentExecutions: 1
+    Layers:
+      - !Ref WriteLayerAws
+      - !Ref WriteLayerIceberg
+      - !Sub arn:aws:lambda:${AWS::Region}:901920570463:layer:aws-otel-java-wrapper-amd64-ver-1-30-0:1
+    LoggingConfig:
+      LogFormat: JSON
+      ApplicationLogLevel: WARN
+      SystemLogLevel: WARN
+      LogGroup: /aws/lambda/mytiki-lagoon-write
+    Role: !GetAtt WriteRole.Arn

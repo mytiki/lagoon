@@ -1,0 +1,12 @@
+EventRedrivePolicy:
+  Type: AWS::SQS::QueuePolicy
+  Properties:
+    Queues:
+      - !Ref EventRedrive
+    PolicyDocument:
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service: events.amazonaws.com
+          Action: sqs:SendMessage
+          Resource: !GetAtt EventRedrive.Arn

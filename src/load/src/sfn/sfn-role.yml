@@ -1,7 +1,7 @@
-StepFunctionRole:
+SfnRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: mytiki-lagoon-prepare-step
+    RoleName: mytiki-lagoon-load-sfn
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +10,7 @@ StepFunctionRole:
             Service: states.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: glue
+      - PolicyName: Glue
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -20,15 +20,8 @@ StepFunctionRole:
                 - glue:GetJobRun
                 - glue:GetJobRuns
                 - glue:BatchStopJobRun
-              Resource: !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:job/${PrepareGlueJob}
-      - PolicyName: sqs
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action: sqs:SendMessage
-              Resource: !ImportValue mytiki-lagoon-log-queue
-      - PolicyName: s3
+              Resource: !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:job/${DataGlueJob}
+      - PolicyName: S3
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -37,4 +30,4 @@ StepFunctionRole:
                 - "s3:Get*"
                 - "s3:List*"
                 - "s3:*Object*"
-              Resource: !Sub arn:aws:s3:::${StorageBucket}/prepare/*
+              Resource: !Sub arn:aws:s3:::${StorageBucket}/load/*

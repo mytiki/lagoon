@@ -1,7 +1,7 @@
-PrepareGlueRole:
+DataGlueRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: mytiki-lagoon-prepare-glue
+    RoleName: mytiki-lagoon-load-data
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -10,7 +10,7 @@ PrepareGlueRole:
             Service: glue.amazonaws.com
           Action: sts:AssumeRole
     Policies:
-      - PolicyName: WriteToS3
+      - PolicyName: S3
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -18,17 +18,14 @@ PrepareGlueRole:
               Action: "s3:*Object*"
               Resource:
                 - !Sub arn:aws:s3:::${StorageBucket}/load/*
-                - !Sub arn:aws:s3:::${StorageBucket}/prepare/*
-      - PolicyName: ReadFromS3
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
+                - !Sub arn:aws:s3:::${StorageBucket}/stg/*
+                - !Sub arn:aws:s3:::${StorageBucket}/tmp/*
             - Effect: Allow
               Action:
                 - "s3:Get*"
                 - "s3:List*"
               Resource: "*"
-      - PolicyName: cloudwatch
+      - PolicyName: Cloudwatch
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -38,3 +35,13 @@ PrepareGlueRole:
                 - logs:CreateLogStream
                 - logs:PutLogEvents
               Resource: "*"
+      - PolicyName: Glue
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action: glue:*
+              Resource:
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
+                - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
