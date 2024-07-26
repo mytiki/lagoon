@@ -3,6 +3,7 @@ use std::error::Error;
 use aws_config::Region;
 use aws_sdk_sts::Client as StsClient;
 
+#[derive(Clone)]
 pub struct StsAccount {
     client: StsClient,
     account_id: String,

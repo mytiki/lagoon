@@ -45,3 +45,15 @@ DataGlueRole:
                 - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/*
                 - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/*/*
                 - !Sub arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog
+      - PolicyName: KMS
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - kms:Decrypt
+                - kms:DescribeKey
+                - kms:Encrypt
+                - kms:ReEncrypt*
+                - kms:GenerateDataKey*
+              Resource: !Ref StorageKey

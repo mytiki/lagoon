@@ -23,6 +23,10 @@ Parameters:
     Type: String
     Description: "The URI:tag of corresponding to the dbt image to use in the pipeline"
     Default: public.ecr.aws/mytiki/mytiki-lagoon:dbt-example-0.3.28
+  StorageKey:
+    Type: String
+    Description: The encryption key arn for the lagoon data.
+    NoEcho: true
 
 Resources:
 

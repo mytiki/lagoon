@@ -8,8 +8,13 @@ use super::{
     super::super::utils::{CfDeploy, EcrRepository, StsAccount},
 };
 
-pub async fn execute(account: &StsAccount, cli: &Cli, name: &str) -> Result<(), Box<dyn Error>> {
-    deploy_template(account, cli, name).await?;
+pub async fn execute(
+    account: &StsAccount,
+    cli: &Cli,
+    name: &str,
+    key: &str,
+) -> Result<(), Box<dyn Error>> {
+    deploy_template(account, cli, name, key).await?;
     Ok(())
 }
 
@@ -17,6 +22,7 @@ async fn deploy_template(
     account: &StsAccount,
     cli: &Cli,
     name: &str,
+    key: &str,
 ) -> Result<(), Box<dyn Error>> {
     log::info!("Deploying `pipeline` module...");
     let stack = format!("{}-pipeline", STACK_PREFIX);
@@ -54,6 +60,7 @@ async fn deploy_template(
     .parameter("SSLCertificate", cli.ssl())
     .parameter("Password", &password)
     .parameter("Dbt", &dbt)
+    .parameter("StorageKey", key)
     .deploy()
     .await?;
     log::info!("`pipeline` module deployed.");

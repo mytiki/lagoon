@@ -9,9 +9,10 @@ pub async fn execute(
     account: &StsAccount,
     dist: &str,
     bucket: &S3Bucket,
+    key: &str,
 ) -> Result<(), Box<dyn Error>> {
     deploy_assets(bucket, dist).await?;
-    deploy_template(account, dist, bucket).await?;
+    deploy_template(account, dist, bucket, key).await?;
     Ok(())
 }
 
@@ -29,6 +30,7 @@ async fn deploy_template(
     account: &StsAccount,
     dist: &str,
     bucket: &S3Bucket,
+    key: &str,
 ) -> Result<(), Box<dyn Error>> {
     log::info!("Deploying `load` module...");
     let stack = format!("{}-load", STACK_PREFIX);
@@ -41,6 +43,7 @@ async fn deploy_template(
     .capability("CAPABILITY_AUTO_EXPAND")?
     .capability("CAPABILITY_NAMED_IAM")?
     .parameter("StorageBucket", &bucket.name())
+    .parameter("StorageKey", key)
     .deploy()
     .await?;
     log::info!("`load` module deployed.");

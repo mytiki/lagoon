@@ -19,13 +19,14 @@ pub struct S3Bucket {
 }
 
 impl S3Bucket {
-    pub async fn connect(profile: &str, name: &str) -> Result<Self, Box<dyn Error>> {
+    pub async fn connect(profile: &str, name: &str, key_arn: &str) -> Result<Self, Box<dyn Error>> {
         let config = aws_config::from_env().profile_name(profile).load().await;
         let client = Client::new(&config);
         Self::create_if_not_exists(
             &client,
             name,
             config.region().ok_or("Region required for profile")?,
+            key_arn,
         )
         .await?;
         Ok(Self {
@@ -67,6 +68,7 @@ impl S3Bucket {
         client: &Client,
         name: &str,
         region: &Region,
+        key_arn: &str,
     ) -> Result<(), Box<dyn Error>> {
         let exists = client.head_bucket().bucket(name).send().await;
         match exists {
@@ -93,6 +95,7 @@ impl S3Bucket {
                         ServerSideEncryptionRule::builder()
                             .apply_server_side_encryption_by_default(
                                 ServerSideEncryptionByDefault::builder()
+                                    .kms_master_key_id(key_arn)
                                     .sse_algorithm(ServerSideEncryption::AwsKms)
                                     .build()?,
                             )
