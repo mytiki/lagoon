@@ -21,8 +21,6 @@ DaemonTask:
             ValueFrom: !Sub "${ClusterSecret}:DAGSTER_PG_HOST::"
           - Name: "DAGSTER_GRPC_SERVER_HOST"
             ValueFrom: !Sub "${ClusterSecret}:DAGSTER_GRPC_SERVER_HOST::"
-          - Name: "S3_BUCKET"
-            ValueFrom: !Sub "${ClusterSecret}:S3_BUCKET::"
         HealthCheck:
           Command:
             - CMD-SHELL
