@@ -31,3 +31,15 @@ SfnRole:
                 - "s3:List*"
                 - "s3:*Object*"
               Resource: !Sub arn:aws:s3:::${StorageBucket}/load/*
+      - PolicyName: KMS
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - kms:Decrypt
+                - kms:DescribeKey
+                - kms:Encrypt
+                - kms:ReEncrypt*
+                - kms:GenerateDataKey*
+              Resource: !Ref StorageKey

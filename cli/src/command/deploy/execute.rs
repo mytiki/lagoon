@@ -1,5 +1,7 @@
 use std::error::Error;
 
+use crate::utils::KmsKey;
+
 use super::{
     Cli,
     execute_load, execute_pipeline,
@@ -14,15 +16,21 @@ pub async fn execute(profile: &str, cli: &Cli) -> Result<(), Box<dyn Error>> {
     let dist = cli.dist();
     let account = StsAccount::connect(profile).await?;
     let name = resource_name::from_account(&account);
-    let bucket = S3Bucket::connect(profile, &name).await?;
+    let key = KmsKey::connect(&account, &format!("alias/{}", STACK_PREFIX))
+        .await?
+        .get_key()
+        .await?;
+    let bucket = S3Bucket::connect(profile, &name, &key).await?;
 
     if cli.module().is_none() {
-        execute_load::execute(&account, dist, &bucket).await?;
-        execute_pipeline::execute(&account, cli, bucket.name()).await?;
+        execute_load::execute(&account, dist, &bucket, &key).await?;
+        execute_pipeline::execute(&account, cli, bucket.name(), &key).await?;
     } else {
         match cli.module().unwrap() {
-            Module::Load => execute_load::execute(&account, dist, &bucket).await?,
-            Module::Pipeline => execute_pipeline::execute(&account, cli, bucket.name()).await?,
+            Module::Load => execute_load::execute(&account, dist, &bucket, &key).await?,
+            Module::Pipeline => {
+                execute_pipeline::execute(&account, cli, bucket.name(), &key).await?
+            }
         }
     }
     log::info!("Deployment complete.");
