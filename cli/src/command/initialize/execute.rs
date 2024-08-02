@@ -7,7 +7,7 @@ pub async fn execute(profile: &str, _: &Cli) -> Result<(), Box<dyn Error>> {
     log::info!("Initializing Lagoon storage...");
     let account = StsAccount::connect(profile).await?;
     let name = resource_name::from_account(&account);
-    let key = KmsKey::connect(&account, "alias/mytiki-lagoon")
+    let key = KmsKey::connect(&account, &format!("alias/{}", name))
         .await?
         .get_key()
         .await?;
