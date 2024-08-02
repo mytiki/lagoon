@@ -16,7 +16,7 @@ def process_key(key: str):
         key = key[1:]
     parts: List[str] = key.split("/")
     parts.pop(0)
-    return parts[0], parts[1], key.split(".")[-1]
+    return parts[0], parts[1], key.split(".")[1]
 
 
 def create_database(client, bucket: str, name: str):
