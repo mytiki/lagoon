@@ -7,7 +7,10 @@ pub async fn execute(profile: &str, _: &Cli) -> Result<(), Box<dyn Error>> {
     log::info!("Initializing Lagoon storage...");
     let account = StsAccount::connect(profile).await?;
     let name = resource_name::from_account(&account);
-    let key = KmsKey::connect(&account, &name).await?.get_key().await?;
+    let key = KmsKey::connect(&account, "alias/mytiki-lagoon")
+        .await?
+        .get_key()
+        .await?;
     S3Bucket::connect(profile, &name, &key).await?;
     EcrRepository::connect(profile, &name).await?;
     log::info!("Initialization complete: s3://{}", name);
